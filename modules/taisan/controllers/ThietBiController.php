@@ -12,7 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use app\modules\user\models\User;
 use app\modules\taisan\models\HeThong;
-
+use app\modules\suachua\models\PhieuSuaChuaSearch;
 /**
  * ThietBiController implements the CRUD actions for ThietBi model.
  */
@@ -166,10 +166,27 @@ class ThietBiController extends Controller
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $model=$this->findModel($id);
+            $searchModel = new PhieuSuaChuaSearch();
+            $searchModel->id_thiet_bi=$model->id;
+            if(isset($_POST['search']) && $_POST['search'] != null){
+                $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
+            } else if ($searchModel->load(Yii::$app->request->post())) {
+                $searchModel = new PhieuSuaChuaSearch(); // "reset"
+                $dataProvider = $searchModel->search(Yii::$app->request->post());
+            } else {
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            }    
+            // return $this->render('index', [
+            //     'searchModel' => $searchModel,
+            //     'dataProvider' => $dataProvider,
+            // ]);
             return [
                     'title'=> "Thiết bị/tài sản",
                     'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
+                        'model' => $model,
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote']).

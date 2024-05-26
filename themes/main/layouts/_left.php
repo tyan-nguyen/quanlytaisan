@@ -39,6 +39,7 @@
 				<?= $this->render('menus/kho-luu-tru') ?>
 				
 				<?= $this->render('menus/bao-tri') ?>
+				<?= $this->render('menus/sua-chua') ?>
 				
 				<?= $this->render('menus/tai-khoan') ?>				
 				

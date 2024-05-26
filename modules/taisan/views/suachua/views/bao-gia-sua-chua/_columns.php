@@ -1,0 +1,137 @@
+<?php
+use yii\helpers\Url;
+use app\modules\dungchung\models\CustomFunc;
+
+return [
+    [
+        'class' => 'kartik\grid\CheckboxColumn',
+        'width' => '20px',
+    ],
+    [
+        'class' => 'kartik\grid\SerialColumn',
+        'width' => '30px',
+    ],
+        // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'id',
+    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_phieu_sua_chua',
+        'value'=>function($model)
+        {
+            return $model->phieuSuaChua->thietBi->ten_thiet_bi;
+        }
+    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'so_bao_gia',
+    // ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'flag_index',
+    // ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'ngay_bao_gia',
+    // ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'ngay_ket_thuc',
+    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'ngay_gui_bg',
+        'value'=>function($model){
+            $cus = new CustomFunc();
+            if ($model->ngay_gui_bg != null) {
+                return $cus->convertYMDHISToDMYHID($model->ngay_gui_bg);
+            }
+            else return null;
+        }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'trang_thai',
+        'value'=>function($model){
+            return $model->getDmTrangThai()[$model->trang_thai];
+        },
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'phi_linh_kien',
+        'value'=>function($model){
+            return number_format($model->phi_linh_kien);
+        },
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'phi_khac',
+        'value'=>function($model){
+            return number_format($model->phi_khac);
+        },
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'tong_tien',
+        'value'=>function($model){
+            return number_format($model->tong_tien);
+        },
+    ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'ghi_chu_bg1',
+    // ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'ghi_chu_bg2',
+    // ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'ngay_tao',
+    // ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'nguoi_tao',
+    // ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'ngay_cap_nhat',
+    // ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'nguoi_cap_nhat',
+    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'nguoi_duyet_bg',
+    ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
+        'dropdown' => false,
+        'vAlign'=>'middle',
+        'width' => '200px',
+        'template'=>'{update}',
+        'urlCreator' => function($action, $model, $key, $index) { 
+                return Url::to([$action,'id'=>$key]);
+        },
+        'viewOptions'=>['role'=>'modal-remote','title'=>'View','title'=>'Xem thông tin',
+            'class'=>'btn ripple btn-primary btn-sm',
+            'data-bs-placement'=>'top',
+            'data-bs-toggle'=>'tooltip-primary'],
+        'updateOptions'=>['role'=>'modal-remote','title'=>'Cập nhật dữ liệu', 
+            'class'=>'btn ripple btn-info btn-sm',
+            'data-bs-placement'=>'top',
+            'data-bs-toggle'=>'tooltip-info'],
+        'deleteOptions'=>['role'=>'modal-remote','title'=>'Xóa dữ liệu này', 
+                          'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                          'data-request-method'=>'post',
+                          'data-toggle'=>'tooltip',
+                          'data-confirm-title'=>'Xác nhận xóa dữ liệu?',
+                          'data-confirm-message'=>'Bạn có chắc chắn thực hiện hành động này?',
+                           'class'=>'btn ripple btn-secondary btn-sm',
+                           'data-bs-placement'=>'top',
+                           'data-bs-toggle'=>'tooltip-secondary'], 
+    ],
+
+];   

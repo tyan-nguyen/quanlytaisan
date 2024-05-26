@@ -294,4 +294,25 @@ class KhoController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    public function actionGetVatTuList()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $khoVatTu = Yii::$app->request->post('kho_vat_tu');
+        // Lấy danh sách vật tư dựa trên kho_vat_tu
+        $vatTuList = $this->getVatTuByKho($khoVatTu);
+
+        return $vatTuList;
+    }
+
+    protected function getVatTuByKho($khoVatTu)
+    {
+        // Giả sử bạn có một model DmVatTu và bảng chứa danh sách vật tư
+        return \app\modules\kholuutru\models\DmVatTu::find()
+            ->select(['ten_vat_tu','id'])
+            ->where(['id_kho' => $khoVatTu])
+            ->indexBy('id')
+            ->column();
+    }
+
 }

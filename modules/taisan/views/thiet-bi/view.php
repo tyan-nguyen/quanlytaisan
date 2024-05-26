@@ -30,6 +30,9 @@ use app\widgets\views\ImageWithButtonWidget;
 				<li><a href="#tab4" data-bs-toggle="tab" aria-selected="true" role="tab">
 					Lịch sử thay đổi
 				</a></li>
+                <li><a href="#tab5" data-bs-toggle="tab" aria-selected="true" role="tab">
+					Lịch sử sửa chữa
+				</a></li>
 			</ul>
 		</div>
 	</div>
@@ -166,6 +169,13 @@ use app\widgets\views\ImageWithButtonWidget;
 			
 			<div class="tab-pane" id="tab4" role="tabpanel">
 				<?= History::showHistory(ThietBi::MODEL_ID, $model->id) ?>
+			</div>
+            <div class="tab-pane" id="tab5" role="tabpanel">
+            <?= $this->render('lich-su-sua-chua', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            //"phieuSuaChua"=>$phieuSuaChua
+                        ]) ?>
 			</div>
 		</div>
 	</div>

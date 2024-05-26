@@ -26,6 +26,8 @@
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/kholuutru/kho?menu=klt1') ?>" class="slide-item" data-menu="klt1">Danh sách kho</a>
 							</li>
+							<li class=""><a href="<?= Yii::getAlias('@web/kholuutru/dm-vat-tu?menu=klt2') ?>" class="slide-item" data-menu="klt2">Danh sách vật tư</a>
+							</li>
 						</ul>
 						<div class="menutabs-content px-0">
 							<!-- menu tab here -->
