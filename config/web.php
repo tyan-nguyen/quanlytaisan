@@ -32,6 +32,9 @@ $config = [
         'dungchung' => [
             'class' => 'app\modules\dungchung\Module',
         ],
+        'suachua' => [
+            'class' => 'app\modules\suachua\Module',
+        ],
         'user-management' => [
             'class' => 'webvimark\modules\UserManagement\UserManagementModule',
             
