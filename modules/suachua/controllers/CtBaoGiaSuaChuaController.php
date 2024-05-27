@@ -103,7 +103,7 @@ class CtBaoGiaSuaChuaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm mới CtBaoGiaSuaChua",
+                    'title'=> "Thêm mới chi tiết báo giá",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -114,7 +114,7 @@ class CtBaoGiaSuaChuaController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Thêm mới CtBaoGiaSuaChua",
+                    'title'=> "Thêm mới chi tiết báo giá",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -123,7 +123,7 @@ class CtBaoGiaSuaChuaController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới CtBaoGiaSuaChua",
+                    'title'=> "Thêm mới chi tiết báo giá",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -166,7 +166,7 @@ class CtBaoGiaSuaChuaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật CtBaoGiaSuaChua",
+                    'title'=> "Cập nhật chi tiết báo giá",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -176,7 +176,7 @@ class CtBaoGiaSuaChuaController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "CtBaoGiaSuaChua",
+                    'title'=> "Cập nhật chi tiết báo giá",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -186,7 +186,7 @@ class CtBaoGiaSuaChuaController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật CtBaoGiaSuaChua",
+                    'title'=> "Cập nhật chi tiết báo giá",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),

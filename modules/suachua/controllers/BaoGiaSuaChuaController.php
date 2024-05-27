@@ -154,22 +154,24 @@ class BaoGiaSuaChuaController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
-        $buttonStatus=Html::a('Duyệt báo giá', null, [
-            'class' => 'btn btn-success',
+        $model = $this->findModel($id);   
+        $buttonStatus="";   
+        if($model->trang_thai=="submited") 
+        $buttonStatus=Html::button('Duyệt báo giá',[
+            'class' => 'btn btn-success btnSubmit',
+            'value'=>'approved',
+            'type'=>"submit"
+            
+        ]);
+        if($model->trang_thai!="draft")
+        $buttonStatus .= Html::button('Từ chối báo giá', [
+            'class' => 'btn btn-warning btnSubmit',
             'style'=>"margin-left:5px",
-            'data' => [
-                'method' => 'post',
-                'params'=>['BaoGiaSuaChua[trang_thai]'=>'approved']
-            ]
-        ]).Html::a('Từ chối báo giá', null, [
-            'class' => 'btn btn-warning',
-            'style'=>"margin-left:5px",
-            'data' => [
-                'method' => 'post',
-                'params'=>['BaoGiaSuaChua[trang_thai]'=>'rejected']
-            ]
-            ]);
+            'type'=>"submit",
+            'value'=>'rejected'
+
+        ]);
+        
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -177,14 +179,15 @@ class BaoGiaSuaChuaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật BaoGiaSuaChua",
+                    'title'=> "Thông tin báo giá",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"]).$buttonStatus
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit",'id'=>'btnSubmitBaoGia']).$buttonStatus
                 ];         
             }else if($model->load($request->post()) && $model->save()){
+                
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "BaoGiaSuaChua",
@@ -197,7 +200,7 @@ class BaoGiaSuaChuaController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật BaoGiaSuaChua",
+                    'title'=> "Thông tin báo giá",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),

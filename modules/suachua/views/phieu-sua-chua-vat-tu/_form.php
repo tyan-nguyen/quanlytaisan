@@ -69,7 +69,7 @@ $vatTu=$model->vatTu;
         ]) ?>
         </div>
         <div class="col-2">
-            <?= $form->field($model, 'so_luong')->textInput() ?>
+            <?= $form->field($model, 'so_luong')->textInput(["type"=>'number']) ?>
         </div>
     </div>
 

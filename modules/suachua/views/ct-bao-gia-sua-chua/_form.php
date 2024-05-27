@@ -38,10 +38,10 @@ use kartik\select2\Select2;
             <?= $form->field($model, 'don_vi_tinh')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-4">
-            <?= $form->field($model, 'so_luong')->textInput() ?>
+            <?= $form->field($model, 'so_luong')->textInput(["type"=>'number']) ?>
         </div>
         <div class="col-4">
-            <?= $form->field($model, 'don_gia')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'don_gia')->textInput(['maxlength' => true,"type"=>'number']) ?>
         </div>
 
     </div>

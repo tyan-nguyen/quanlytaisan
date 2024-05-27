@@ -161,6 +161,18 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         
         return parent::afterSave($insert,$changedAttributes);
     }
+    public function beforeDelete(){
+        if($this->vatTus){
+            return false;
+        }
+        $baoGia=$this->baoGiaSuaChua;
+        if(isset($baoGia->trang_thai) && $baoGia->trang_thai=="approved"){
+            //nếu trạng thái đã duyệt hoặc đã từ chói thì không lưu
+            return false;
+        }
+        return parent::beforeDelete();
+
+    }
     public static function getDmTrangThai(){
         return [
             "new"=>'Mới',

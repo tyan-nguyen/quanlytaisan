@@ -72,6 +72,11 @@ class CtBaoGiaSuaChua extends \yii\db\ActiveRecord
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
         }
+        $baoGia=$this->baoGia;
+        if($baoGia->trang_thai=="rejected" || $baoGia->trang_thai=="approved"){
+            //nếu trạng thái đã duyệt hoặc đã từ chói thì không lưu
+            return false;
+        }
         $this->ngay_cap_nhat = date('Y-m-d H:i:s');
         $this->thanh_tien = $this->so_luong*$this->don_gia;
         return parent::beforeSave($insert);

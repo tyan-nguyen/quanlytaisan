@@ -55,7 +55,7 @@ return [
         'dropdown' => false,
         'vAlign'=>'middle',
         'width' => '200px',
-        'visible'=>!$isCheckUpdate,
+        'visible'=>$isCheckUpdate,
         'urlCreator' => function($action, $model, $key, $index) { 
                 return Url::to(["/suachua/phieu-sua-chua-vat-tu/".$action,'id'=>$key]);
         },

@@ -122,6 +122,10 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             $this->ngay_gui_bg = date('Y-m-d H:i:s');
             //$this->save();
         }
+        elseif($this->trang_thai=="rejected" || $this->trang_thai=="approved"){
+            //nếu trạng thái đã duyệt hoặc đã từ chói thì không lưu
+            return false;
+        }
         return parent::beforeSave($insert);
     }
     public function afterSave($insert,$changedAttributes) {

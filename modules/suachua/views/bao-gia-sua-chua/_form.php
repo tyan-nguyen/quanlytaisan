@@ -9,7 +9,12 @@ use app\widgets\forms\RadioWidget;
 
 <div class="bao-gia-sua-chua-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'your-model-form',
+        'action' => ['/suachua/bao-gia-sua-chua/update','id'=>$model->id],
+        'enableAjaxValidation' => false,
+        'enableClientValidation' => true,
+    ]); ?>
     
     <?php include __DIR__.'/ct-bao-gia.php' ?>
     <div class="row">
@@ -32,7 +37,7 @@ use app\widgets\forms\RadioWidget;
         </div>
     </div>
     
-
+    <?= $form->field($model, 'trang_thai')->hiddenInput(["type"=>"hidden","id"=>"trang_thai_bg"])->label(false) ?>
 
 
     <?php if (!Yii::$app->request->isAjax){ ?>
@@ -44,3 +49,23 @@ use app\widgets\forms\RadioWidget;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$script = <<< JS
+$(document).ready(function() {
+$('.btnSubmit').on('click', function(e) {
+    e.preventDefault();
+    var trangThai=$(this).attr("value");
+    $("#trang_thai_bg").val(trangThai);
+    $('#btnSubmitBaoGia').click();
+    
+    
+});
+});
+// $('#your-model-form button[type=submit]').on('click', function() {
+//     $('button[type=submit]', $(this).parents('form')).removeAttr('clicked');
+//     $(this).attr('clicked', 'true');
+// });
+JS;
+$this->registerJs($script);
+?>

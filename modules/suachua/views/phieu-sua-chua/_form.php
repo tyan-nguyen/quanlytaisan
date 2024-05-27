@@ -120,7 +120,7 @@ if ($model->ngay_hoan_thanh != null) {
 
     </div>
 
-    
+    <?php if (!Yii::$app->request->isAjax ) {?>
     <div class="row">
         <div class="col-4">
             <?=$form->field($model, 'phi_linh_kien')->textInput(['disabled' => true])?>
@@ -134,7 +134,7 @@ if ($model->ngay_hoan_thanh != null) {
         
         
     </div>
-    
+    <?php }?>
 
 
 

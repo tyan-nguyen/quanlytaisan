@@ -83,18 +83,18 @@ return [
         },
         'buttons'=>[
             'view'=>function ($url, $model)  {
-                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ["view", "id"=>$model->id],['role'=>'modal-remote','title'=> 'Xem chi tiết','class'=>'btn btn-xs btn-info']);
+                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ["/suachua/ct-bao-gia-sua-chua/view", "id"=>$model->id],['role'=>'modal-remote','title'=> 'Xem chi tiết','class'=>'btn btn-xs btn-info']);
             },
             'update'=>function ($url, $model) use ($checkCreate) {
                 if($checkCreate)
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ["update", "id"=>$model->id],['role'=>'modal-remote','title'=> 'Xem chi tiết','class'=>'btn btn-xs btn-primary']);
+                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ["/suachua/ct-bao-gia-sua-chua/update", "id"=>$model->id],['role'=>'modal-remote','title'=> 'Xem chi tiết','class'=>'btn btn-xs btn-primary']);
             },
             'delete'=>function ($url, $model) use ($checkCreate) {
                 //$trang_thai=$model->baoGia->trang_thai;
                 //\Yii::warning("hi there", 'mycategory');
                 if($checkCreate)
                 return Html::a('<span class="glyphicon glyphicon-trash"></span>', 
-                ["delete", "id"=>$model->id],
+                ["/suachua/ct-bao-gia-sua-chua/delete", "id"=>$model->id],
                 [
                     'class'=>'btn btn-xs btn-danger',
                     'role'=>'modal-remote','title'=>'Delete', 

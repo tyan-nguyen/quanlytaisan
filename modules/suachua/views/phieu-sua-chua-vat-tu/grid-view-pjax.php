@@ -26,8 +26,8 @@ $isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
-                !$isCheckUpdate ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['/suachua/phieu-sua-chua-vat-tu/create',"phieu_sua_chua"=>$phieuSuaChua->id],
-                    ['role'=>'modal-remote-2','title'=> 'Thêm mới vật tư vào phiếu sửa chữa','class'=>'btn btn-outline-primary']) : ''.
+                ($isCheckUpdate ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['/suachua/phieu-sua-chua-vat-tu/create',"phieu_sua_chua"=>$phieuSuaChua->id],
+                    ['role'=>'modal-remote-2','title'=> 'Thêm mới vật tư vào phiếu sửa chữa','class'=>'btn btn-outline-primary']) : '').
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', ['',"id_phieu_sua_chua"=>$phieuSuaChua->id],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
                     //'{toggleData}'.
