@@ -83,7 +83,7 @@ class DmVatTuController extends Controller
             //     'dataProvider' => $dataProvider,
             // ]);
             return [
-                    'title'=> "DmVatTu",
+                    'title'=> "Thông tin vật tư",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'searchModel' => $searchModel,
@@ -117,7 +117,7 @@ class DmVatTuController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm mới DmVatTu",
+                    'title'=> "Thêm mới vật tư",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -128,7 +128,7 @@ class DmVatTuController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Thêm mới DmVatTu",
+                    'title'=> "Thêm mới vật tư",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -137,7 +137,7 @@ class DmVatTuController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới DmVatTu",
+                    'title'=> "Thêm mới vật tư",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -180,7 +180,7 @@ class DmVatTuController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật DmVatTu",
+                    'title'=> "Cập nhật vật tư",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -213,7 +213,7 @@ class DmVatTuController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật DmVatTu",
+                    'title'=> "Cập nhật vật tư",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),

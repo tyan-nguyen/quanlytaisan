@@ -43,7 +43,19 @@ use kartik\select2\Select2;
             <?= $form->field($model, 'don_gia')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-4">
-            <?= $form->field($model, 'trang_thai')->textInput(['maxlength' => true]) ?>
+        <?=$form->field($model, 'trang_thai')->widget(Select2::classname(), [
+                'data' => $model->getDmTrangThai(),
+                'language' => 'vi',
+                'options' => [
+                    'placeholder' => 'Chọn thiết bị...'
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '100%',
+                    'dropdownParent' => Yii::$app->request->isAjax ? new yii\web\JsExpression('$("#ajaxCrudModal")') : null,
+                ],
+            ]);?>
+            
         </div>
     </div>
     <div class="row">

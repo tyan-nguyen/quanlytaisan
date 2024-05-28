@@ -56,19 +56,19 @@ Yii::$app->params['showExport'] = true;
                 //'type' => 'primary', 
                 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Danh sách',
                 'before'=>'<em>* Danh sách báo giá sửa chữa</em>',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
-                                ["bulkdelete"] ,
-                                [
-                                    'class'=>'btn ripple btn-secondary',
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Xác nhận xóa?',
-                                    'data-confirm-message'=>'Bạn có chắc muốn xóa?'
-                                ]),
-                        ]).                        
-                        '<div class="clearfix"></div>',
+                // 'after'=>BulkButtonWidget::widget([
+                //             'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
+                //                 ["bulkdelete"] ,
+                //                 [
+                //                     'class'=>'btn ripple btn-secondary',
+                //                     'role'=>'modal-remote-bulk',
+                //                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                //                     'data-request-method'=>'post',
+                //                     'data-confirm-title'=>'Xác nhận xóa?',
+                //                     'data-confirm-message'=>'Bạn có chắc muốn xóa?'
+                //                 ]),
+                //         ]).                        
+                 //       '<div class="clearfix"></div>',
             ]
         ])?>
     </div>

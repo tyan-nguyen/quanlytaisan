@@ -220,11 +220,24 @@ class ThietBiController extends Controller
             $model2->thoi_gian_tao = null;
             $model2->nguoi_tao = null;
             if($model2->save()){
+                $modelCopy=$this->findModel($model2->id);
+                $searchModel = new PhieuSuaChuaSearch();
+                $searchModel->id_thiet_bi=$modelCopy->id;
+                if(isset($_POST['search']) && $_POST['search'] != null){
+                    $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
+                } else if ($searchModel->load(Yii::$app->request->post())) {
+                    $searchModel = new PhieuSuaChuaSearch(); // "reset"
+                    $dataProvider = $searchModel->search(Yii::$app->request->post());
+                } else {
+                    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                } 
                 return [
                     'title'=> "Thiết bị/tài sản",
                     'forceReload'=>'#crud-datatable-pjax',
                     'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($model2->id),
+                        'model' => $modelCopy,
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider
                     ]),
                     'footer'=> Html::button('Đóng',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                     Html::a('Sửa',['update','id'=>$model2->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -274,6 +287,17 @@ class ThietBiController extends Controller
                     ];   
                 }
                 else{
+                    $model=$this->findModel($model->id);
+                    $searchModel = new PhieuSuaChuaSearch();
+                    $searchModel->id_thiet_bi=$model->id;
+                    if(isset($_POST['search']) && $_POST['search'] != null){
+                        $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
+                    } else if ($searchModel->load(Yii::$app->request->post())) {
+                        $searchModel = new PhieuSuaChuaSearch(); // "reset"
+                        $dataProvider = $searchModel->search(Yii::$app->request->post());
+                    } else {
+                        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                    }
                     return [
                         'forceReload'=>'#crud-datatable-pjax',
                         //'title'=> "Thêm mới Nhân viên",
@@ -281,6 +305,8 @@ class ThietBiController extends Controller
                         'title'=>'Tài sản/Thiết bị',
                         'content'=>$this->renderAjax( ('view'), [
                             'model' => $model,
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider
                         ]),
                         'tcontent'=>'Thêm mới thành công!',
                         'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -341,11 +367,24 @@ class ThietBiController extends Controller
                                 Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
+                //$modelCopy=$this->findModel($model2->id);
+                $searchModel = new PhieuSuaChuaSearch();
+                $searchModel->id_thiet_bi=$model->id;
+                if(isset($_POST['search']) && $_POST['search'] != null){
+                    $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
+                } else if ($searchModel->load(Yii::$app->request->post())) {
+                    $searchModel = new PhieuSuaChuaSearch(); // "reset"
+                    $dataProvider = $searchModel->search(Yii::$app->request->post());
+                } else {
+                    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Tài sản/Thiết bị",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider
                     ]),
                     'footer'=> Html::button('Đóng',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])

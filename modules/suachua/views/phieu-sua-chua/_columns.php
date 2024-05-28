@@ -80,10 +80,13 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'tong_tien',
     // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'trang_thai',
-    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'trang_thai',
+        'value'=>function($model){
+            return $model->getDmTrangThai()[$model->trang_thai];
+        }
+    ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'ngay_tao',
@@ -116,7 +119,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
-        'width' => '200px',
+        'width' => '80px',
         'template'=>'{delete}',
         'urlCreator' => function($action, $model, $key, $index) { 
                 return Url::to([$action,'id'=>$key]);

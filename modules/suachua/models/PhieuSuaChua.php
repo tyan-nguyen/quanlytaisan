@@ -131,14 +131,19 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         return $this->hasOne(DmTTSuaChua::class, ['id' => 'id_tt_sua_chua']);
     }
     public function beforeSave($insert) {
+        //ngaythangnam
+        $cus = new CustomFunc();
         if ($this->isNewRecord) {
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
             $this->trang_thai = "new";
+            //mặc định khi tạo mới thì ngày hoàn thành bằng ngày dự kiến hoàn thành
+            if($this->ngay_du_kien_hoan_thanh != null)
+            $this->ngay_hoan_thanh = $cus->convertDMYToYMD($this->ngay_du_kien_hoan_thanh);
+
         }
         
-        //ngaythangnam
-        $cus = new CustomFunc();
+        
         if($this->ngay_sua_chua != null)
             $this->ngay_sua_chua = $cus->convertDMYToYMD($this->ngay_sua_chua);
         if($this->ngay_du_kien_hoan_thanh != null)
@@ -151,6 +156,17 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     }
     public function afterSave($insert,$changedAttributes) {
 
+        if ($insert) {
+            $thietBi=$this->thietBi;
+            $thietBi->trang_thai=ThietBiBase::STATUS_SUACHUA;
+            $thietBi->save();
+        }
+        elseif($changedAttributes["trang_thai"]!=$this->trang_thai && $this->trang_thai=="completed")
+        {
+            $thietBi=$this->thietBi;
+            $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
+            $thietBi->save();
+        }
         if(isset($changedAttributes['danh_gia_sc']))
         {
             $avg=PhieuSuaChua::find()->where(['id_tt_sua_chua'=>$this->id_tt_sua_chua])->average('danh_gia_sc');
@@ -170,9 +186,16 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             //nếu trạng thái đã duyệt hoặc đã từ chói thì không lưu
             return false;
         }
+
+        //cập nhật lại status thiết bị trước khi xóa
+        $thietBi=$this->thietBi;
+        $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
+        $thietBi->save();
+
         return parent::beforeDelete();
 
     }
+    
     public static function getDmTrangThai(){
         return [
             "new"=>'Mới',
