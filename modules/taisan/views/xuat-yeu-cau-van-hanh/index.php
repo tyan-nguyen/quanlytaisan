@@ -9,10 +9,10 @@ use yii\widgets\Pjax;
 use app\widgets\FilterFormWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\taisan\models\GuiYeuCauVanHanhSearch */
+/* @var $searchModel app\modules\taisan\models\XuatYeuCauVanHanhSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Phê duyệt phiếu yêu cầu vận hành';
+$this->title = 'Xuất phiếu yêu cầu vận hành';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -81,7 +81,7 @@ Yii::$app->params['showExport'] = true;
         'id'=>'ajaxCrudModal',
         'tabindex' => false // important for Select2 to work properly
    ],
-   'dialogOptions'=>['class'=>'modal-lg'],
+   'dialogOptions'=>['class'=>'modal-xl'],
    'closeButton'=>['label'=>'<span aria-hidden=\'true\'>×</span>'],
    'id'=>'ajaxCrudModal',
     'footer'=>'',// always need it for jquery plugin

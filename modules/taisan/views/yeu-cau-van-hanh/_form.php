@@ -63,23 +63,23 @@ $cus = new CustomFunc();
         ]
     ); ?>
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col">
-            <?php if ($model->hieu_luc === 'NHAP') { ?>
+            <?php //if ($model->hieu_luc === 'NHAP') { ?>
                 <div class="form-group">
-                    <?= Html::a('Gửi phê duyệt', ['yeu-cau-van-hanh/submit', 'id' => $model->id], [
+                    <?php /* Html::a('Gửi phê duyệt', ['yeu-cau-van-hanh/submit', 'id' => $model->id], [
                         'class' => 'btn btn-success text-right',
                         'style' => "margin-left:5px",
                         'data' => [
                             'method' => 'post',
                             'params' => ['hieu_luc' => 'CHODUYET'],
                         ],
-                    ]);
+                    ]);*/
                     ?>
                 </div>
-            <?php } ?>
+            <?php //} ?>
         </div>
-    </div>
+    </div> -->
 
     <div class="row">
         <div class="col-6">

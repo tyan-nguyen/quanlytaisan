@@ -17,6 +17,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     const MODEL_ID = 'yeu-cau-van-hanh';
 
     const STATUS_NHAP = 'NHAP';
+    const STATUS_DAGUI = 'DAGUI';
     const STATUS_CHODUYET = 'CHODUYET';
     const STATUS_DADUYET = 'DADUYET';
     const STATUS_VANHANH = 'VANHANH';
@@ -34,6 +35,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     {
         return [
             YeuCauVanHanhBase::STATUS_NHAP => 'Nháp',
+            YeuCauVanHanhBase::STATUS_DAGUI => 'Đã gửi',
             YeuCauVanHanhBase::STATUS_CHODUYET => 'Chờ duyệt',
             YeuCauVanHanhBase::STATUS_DADUYET => 'Đã duyệt',
             YeuCauVanHanhBase::STATUS_DATRA => 'Đã trả',
@@ -54,6 +56,9 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
         switch ($val) {
             case YeuCauVanHanhBase::STATUS_NHAP:
                 $label = "Nháp";
+                break;
+            case YeuCauVanHanhBase::STATUS_DAGUI:
+                $label = "Đã gửi";
                 break;
             case YeuCauVanHanhBase::STATUS_VANHANH:
                 $label = "Đang vận hành";
@@ -84,6 +89,12 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 $icon = 'fe fe-file';
                 $type = 'default';
                 break;
+
+            case "DAGUI":
+                $label = "Đã gửi";
+                $icon = 'fe fe-send';
+                $type = 'default';
+                break;
             case "CHODUYET":
                 $label = "Chờ duyệt";
                 $icon = 'fe fe-clock';
@@ -93,6 +104,12 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 $label = "Đã duyệt";
                 $icon = 'fe fe-check';
                 $type = 'success';
+                break;
+
+            case "VANHANH":
+                $label = "Đang vận hành";
+                $icon = 'fe fe-check';
+                $type = 'warning';
                 break;
             case "DATRA":
                 $label = "Đã trả";
@@ -125,7 +142,11 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
             ],
             [
                 [
-                    'ngay_lap', 'ngay_duyet', 'ngay_xuat', 'ngay_nhan', 'created_at', 'updated_at', 'deleted_at', 'noi_dung_duyet'
+                    'ngay_lap', 'ngay_duyet', 'ngay_xuat', 'ngay_nhan', 'created_at', 'updated_at', 'deleted_at',
+                    'noi_dung_duyet', 'id_nguoi_duyet',
+                    'noi_dung_gui', 'id_nguoi_gui',
+                    'noi_dung_xuat', 'id_nguoi_xuat',
+                    'noi_dung_nhan', 'id_nguoi_nhan'
                     //  'idNguoiDuyet', 'ngayDuyet', 'noiDungDuyet'
                 ],
                 'safe'

@@ -387,7 +387,7 @@ class YeuCauVanHanhController extends Controller
     }
 
 
-    public function actionSubmit($id)
+    /* public function actionSubmit($id)
     {
         $model = $this->findModel($id);
 
@@ -410,11 +410,8 @@ class YeuCauVanHanhController extends Controller
             // var_dump('Status is not pending');
         }
 
-
         return $this->redirect(['view', 'id' => $model->id]);
-    }
-
-
+    } */
 
 
 

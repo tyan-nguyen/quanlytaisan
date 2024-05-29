@@ -13,8 +13,6 @@ use yii\db\Expression;
 class YeuCauVanHanh extends YeuCauVanHanhBase
 {
 
-
-
     public function behaviors()
     {
         return [
@@ -35,12 +33,18 @@ class YeuCauVanHanh extends YeuCauVanHanhBase
 
         if ($this->ngay_lap != null)
             $this->ngay_lap = $cus->convertDMYToYMD($this->ngay_lap);
+
         if ($this->ngay_duyet != null)
             $this->ngay_duyet = $cus->convertDMYToYMD($this->ngay_duyet);
-        // if ($this->ngayDuyet != null)
-        //     $this->ngayDuyet = $cus->convertDMYToYMD($this->ngayDuyet);
-        // ngayDuyet
 
+        if ($this->ngay_gui != null)
+            $this->ngay_gui = $cus->convertDMYToYMD($this->ngay_gui);
+
+        if ($this->ngay_xuat != null)
+            $this->ngay_xuat = $cus->convertDMYToYMD($this->ngay_xuat);
+
+        if ($this->ngay_nhan != null)
+            $this->ngay_nhan = $cus->convertDMYToYMD($this->ngay_nhan);
 
         if ($insert) {
             $this->hieu_luc = 'NHAP';

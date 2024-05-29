@@ -29,23 +29,26 @@ return [
             return ($model->nguoiYeuCau->ten_nhan_vien) ?? "-";
         }
     ],
+
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'hieu_luc',
-        // 'value' => function($model) {
-        //     return ($model->tenHieuLucWithBadge) ?? "-";
-
-        // }
         'format' => 'raw',
         'value' => 'tenHieuLucWithBadge'
     ],
-    // [
-    //     'class' => '\kartik\grid\DataColumn',
-    //     'attribute' => 'id_nguoi_gui',
-    //     'value' => function ($model) {
-    //         return ($model->nguoiGui->ten_nhan_vien) ?? "-";
-    //     }
-    // ],
+
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'id_nguoi_gui',
+        'value' => function ($model) {
+            return ($model->nguoiGui->ten_nhan_vien) ?? "-";
+        }
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'ngay_gui',
+    ],
+
     // [
     //     'class' => '\kartik\grid\DataColumn',
     //     'attribute' => 'id_nguoi_duyet',
@@ -61,24 +64,24 @@ return [
     //     }
     // ],
     // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'id_nguoi_nhan',
-    //     'value' => function ($model) {
-    //         return ($model->nguoiNhan->ten_nhan_vien) ?? "-";
-    //     }
-    // ],
-
-    // [
     // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'id_bo_phan',
+    // 'attribute'=>'id_nguoi_nhan',
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'id_cong_trinh',
+    // 'attribute'=>'id_bo_phan_quan_ly',
+    // ],
+    // [
+    // 'class'=>'\kartik\grid\DataColumn',
+    // 'attribute'=>'cong_trinh',
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'ngay_lap',
+    // ],
+    // [
+    // 'class'=>'\kartik\grid\DataColumn',
+    // 'attribute'=>'ngay_gui',
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
@@ -94,23 +97,15 @@ return [
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'ngay_bat_dau',
-    // ],
-    // [
-    // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'ngay_ket_thuc',
-    // ],
-    // [
-    // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'ly_do',
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'hieu_luc',
+    // 'attribute'=>'noi_dung_lap',
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'noi_dung_lap',
+    // 'attribute'=>'noi_dung_gui',
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
@@ -128,10 +123,10 @@ return [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'dia_diem',
     // ],
-    [
-        'class' => '\kartik\grid\DataColumn',
-        'attribute' => 'created_at',
-    ],
+    // [
+    // 'class'=>'\kartik\grid\DataColumn',
+    // 'attribute'=>'created_at',
+    // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'updated_at',
@@ -145,6 +140,7 @@ return [
         'dropdown' => false,
         'vAlign' => 'middle',
         'width' => '200px',
+        'template' => '{view}',
         'urlCreator' => function ($action, $model, $key, $index) {
             return Url::to([$action, 'id' => $key]);
         },

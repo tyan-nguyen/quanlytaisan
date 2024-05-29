@@ -18,6 +18,15 @@ use yii\data\ArrayDataProvider;
                 'value' => $model->nguoiLap ? $model->nguoiLap->ten_nhan_vien : '-',
                 'label' => 'Người Lập',
             ],
+
+            [
+                'attribute' => 'id_nguoi_yeu_cau',
+                'value' => $model->nguoiYeuCau ? $model->nguoiYeuCau->ten_nhan_vien : '-',
+                'label' => 'Người yêu cầu',
+
+            ],
+            'ngay_lap',
+
             // 'id_nguoi_duyet',
             // 'id_nguoi_xuat',
             // 'id_nguoi_nhan',
@@ -26,7 +35,6 @@ use yii\data\ArrayDataProvider;
             // 'ngay_duyet',
             // 'ngay_xuat',
             // 'ngay_nhan',
-            'ngay_lap',
             'ly_do',
             // 'hieu_luc',
             [
@@ -58,8 +66,8 @@ use yii\data\ArrayDataProvider;
                 'attribute' => 'id_thiet_bi',
                 'value' => function ($model) {
                     return $model->thietBi ? $model->thietBi->ten_thiet_bi : "";
-                } 
-                
+                }
+
             ],
             'ngay_bat_dau',
             'ngay_ket_thuc',
