@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
+use app\modules\user\models\User;
 
 /**
  * BaoGiaSuaChuaController implements the CRUD actions for BaoGiaSuaChua model.
@@ -156,14 +157,15 @@ class BaoGiaSuaChuaController extends Controller
         $request = Yii::$app->request;
         $model = $this->findModel($id);   
         $buttonStatus="";   
-        if($model->trang_thai=="submited") 
+        $permissionCheck=User::hasPermission("qDuyetBaoGiaSuaChua");
+        if($model->trang_thai=="submited" && $permissionCheck) 
         $buttonStatus=Html::button('Duyệt báo giá',[
             'class' => 'btn btn-success btnSubmit',
             'value'=>'approved',
             'type'=>"submit"
             
         ]);
-        if($model->trang_thai!="draft")
+        if($model->trang_thai!="draft" && $permissionCheck)
         $buttonStatus .= Html::button('Từ chối báo giá', [
             'class' => 'btn btn-warning btnSubmit',
             'style'=>"margin-left:5px",
