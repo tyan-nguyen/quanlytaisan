@@ -46,7 +46,7 @@ $isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
                 //'before'=>'<em></em>',
                 'heading'=>false,
                 'after'=>BulkButtonWidget::widget([
-                            'buttons'=>!$isCheckUpdate ? Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
+                            'buttons'=>$isCheckUpdate ? Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
                                 ["bulkdelete"] ,
                                 [
                                     'class'=>'btn ripple btn-secondary',

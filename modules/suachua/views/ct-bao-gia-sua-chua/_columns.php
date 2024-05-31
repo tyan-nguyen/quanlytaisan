@@ -2,7 +2,6 @@
 use yii\helpers\Url;
 use yii\bootstrap5\Html;
 
-$checkCreate=$baoGiaSuaChua->trang_thai=="draft";
 return [
     [
         'class' => 'kartik\grid\CheckboxColumn',
@@ -74,7 +73,7 @@ return [
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
-        'visible'=>$checkCreate ? true : false,
+        'visible'=>$checkAction ? true : false,
         'vAlign'=>'middle',
         'width' => '200px',
         'template'=>'{update} {delete}',
@@ -85,14 +84,14 @@ return [
             'view'=>function ($url, $model)  {
                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ["/suachua/ct-bao-gia-sua-chua/view", "id"=>$model->id],['role'=>'modal-remote','title'=> 'Xem chi tiết','class'=>'btn btn-xs btn-info']);
             },
-            'update'=>function ($url, $model) use ($checkCreate) {
-                if($checkCreate)
+            'update'=>function ($url, $model) use ($checkAction) {
+                if($checkAction)
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ["/suachua/ct-bao-gia-sua-chua/update", "id"=>$model->id],['role'=>'modal-remote','title'=> 'Xem chi tiết','class'=>'btn btn-xs btn-primary']);
             },
-            'delete'=>function ($url, $model) use ($checkCreate) {
+            'delete'=>function ($url, $model) use ($checkAction) {
                 //$trang_thai=$model->baoGia->trang_thai;
                 //\Yii::warning("hi there", 'mycategory');
-                if($checkCreate)
+                if($checkAction)
                 return Html::a('<span class="glyphicon glyphicon-trash"></span>', 
                 ["/suachua/ct-bao-gia-sua-chua/delete", "id"=>$model->id],
                 [

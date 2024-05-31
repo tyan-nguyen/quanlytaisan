@@ -3,6 +3,7 @@
 namespace app\modules\suachua\models;
 
 use Yii;
+use app\modules\user\models\User;
 
 /**
  * This is the model class for table "ts_bao_gia_sua_chua".
@@ -78,7 +79,7 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             'nguoi_tao' => 'Người tạo',
             'ngay_cap_nhat' => 'Ngày cập nhật',
             'nguoi_cap_nhat' => 'Người cập nhật',
-            'nguoi_duyet_bg' => 'Người duyệt báo giá',
+            'nguoi_duyet_bg' => 'Người duyệt',
         ];
     }
 
@@ -120,6 +121,8 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             }
             if($this->trang_thai=="submited")
             $this->ngay_gui_bg = date('Y-m-d H:i:s');
+            $this->ngay_cap_nhat = date('Y-m-d H:i:s');
+            $this->nguoi_cap_nhat = Yii::$app->user->id;
             //$this->save();
         }
         elseif($this->trang_thai=="rejected" || $this->trang_thai=="approved"){
@@ -189,5 +192,25 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             "rejected"=>"Từ chối",
             "approved"=>'Đã duyệt',
         ];
+    }
+    public static function getColorTrangThai(){
+        return [
+            "draft"=>'info',
+            "submited"=>'warning',
+            "rejected"=>"danger",
+            "approved"=>'success',
+        ];
+    }
+    public function getNguoiTao()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
+    }
+    public function getNguoiCapNhat()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_cap_nhat']);
+    }
+    public function getNguoiDuyet()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_duyet_bg']);
     }
 }

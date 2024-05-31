@@ -89,15 +89,15 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
         if ($this->isNewRecord) {
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
-            $this->vatTu->so_luong=$this->vatTu->so_luong - $this->so_luong;
+            //$this->vatTu->so_luong=$this->vatTu->so_luong - $this->so_luong;
             
         }
         else{
-            $this->vatTu->so_luong=$this->vatTu->so_luong - $this->so_luong + $this->getOldAttribute('so_luong');
+            //$this->vatTu->so_luong=$this->vatTu->so_luong - $this->so_luong + $this->getOldAttribute('so_luong');
             
         }
-        $this->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$this->phieuSuaChua->thietBi->ten_thiet_bi;
-        $this->vatTu->save();
+        // $this->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$this->phieuSuaChua->thietBi->ten_thiet_bi;
+        // $this->vatTu->save();
         $this->ngay_cap_nhat = date('Y-m-d H:i:s');
         $this->nguoi_cap_nhat = Yii::$app->user->id;
         $this->don_vi_tinh=$this->vatTu->don_vi_tinh;
@@ -105,9 +105,9 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
     public function beforeDelete(){
-        $this->vatTu->so_luong=$this->vatTu->so_luong + $this->so_luong;
-        $this->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$this->phieuSuaChua->thietBi->ten_thiet_bi;
-        $this->vatTu->save();
+        // $this->vatTu->so_luong=$this->vatTu->so_luong + $this->so_luong;
+        // $this->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$this->phieuSuaChua->thietBi->ten_thiet_bi;
+        // $this->vatTu->save();
         return parent::beforeDelete();
     }
     public function getVatTuByKho()

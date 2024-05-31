@@ -53,8 +53,11 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'trang_thai',
+        'format'=>'raw',
         'value'=>function($model){
-            return $model->getDmTrangThai()[$model->trang_thai];
+            $html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
+            return $html;
+            //return $model->getDmTrangThai()[$model->trang_thai];
         },
     ],
     [
@@ -105,6 +108,9 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'nguoi_duyet_bg',
+        'value'=>function($model){
+            return $model->nguoiDuyet->username ?? "";
+         }
     ],
     [
         'class' => 'kartik\grid\ActionColumn',

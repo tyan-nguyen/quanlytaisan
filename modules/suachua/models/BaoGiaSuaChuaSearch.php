@@ -49,6 +49,8 @@ class BaoGiaSuaChuaSearch extends BaoGiaSuaChua
             'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
+                    //'trang_thai'=>[new \yii\db\Expression('FIELD (trang_thai, submited,approved,rejected,draft)')]
+                    //'trang_thai'=>['submited','approved','rejected','draft']
                 ]
             ]
         ]);
@@ -62,7 +64,7 @@ class BaoGiaSuaChuaSearch extends BaoGiaSuaChua
         }
 		if($cusomSearch != NULL){
 			$query->andFilterWhere ( [ 'OR' ,['like', 'so_bao_gia', $cusomSearch],
-            ['like', 'trang_thai', $cusomSearch],
+            //['like', 'trang_thai', $cusomSearch],
             ['like', 'ghi_chu_bg1', $cusomSearch],
             ['like', 'ghi_chu_bg2', $cusomSearch]] );
  
@@ -85,10 +87,11 @@ class BaoGiaSuaChuaSearch extends BaoGiaSuaChua
         ]);
 
         $query->andFilterWhere(['like', 'so_bao_gia', $this->so_bao_gia])
-            ->andFilterWhere(['like', 'trang_thai', $this->trang_thai])
+            ->andFilterWhere(['<>', 'trang_thai', "draft"])//không hiển thị trạng thái nhấp trên ds duyệt báo giá
             ->andFilterWhere(['like', 'ghi_chu_bg1', $this->ghi_chu_bg1])
             ->andFilterWhere(['like', 'ghi_chu_bg2', $this->ghi_chu_bg2]);
 		}
+        $query->orderBy([new \yii\db\Expression("FIELD (trang_thai, 'submited','approved','rejected','draft')")]);
         return $dataProvider;
     }
 }

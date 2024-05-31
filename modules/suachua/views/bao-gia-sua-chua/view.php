@@ -1,6 +1,7 @@
 <?php
 
 use yii\widgets\DetailView;
+use app\modules\dungchung\models\CustomFunc;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\BaoGiaSuaChua */
@@ -31,23 +32,106 @@ use yii\widgets\DetailView;
                         'model' => $model,
                         'attributes' => [
                             'id',
-                            'id_phieu_sua_chua',
+                            'phieuSuaChua.thietBi.ten_thiet_bi',
                             'so_bao_gia',
-                            'flag_index',
-                            'ngay_bao_gia',
-                            'ngay_ket_thuc',
-                            'ngay_gui_bg',
-                            'trang_thai',
-                            'phi_linh_kien',
-                            'phi_khac',
-                            'tong_tien',
+                            [
+                                'attribute'=>'ngay_bao_gia',
+                                'value'=>function($model){
+                                    $cus = new CustomFunc();
+                                    if ($model->ngay_bao_gia != null) {
+                                        return $cus->convertYMDToDMY($model->ngay_bao_gia);
+                                    }
+                                    else return null;
+                                }
+                            ],
+                            [
+                                'attribute'=>'ngay_ket_thuc',
+                                'value'=>function($model){
+                                    $cus = new CustomFunc();
+                                    if ($model->ngay_ket_thuc != null) {
+                                        return $cus->convertYMDToDMY($model->ngay_ket_thuc);
+                                    }
+                                    else return null;
+                                }
+                            ],
+                            [
+                                'attribute'=>'ngay_gui_bg',
+                                'value'=>function($model){
+                                    $cus = new CustomFunc();
+                                    if ($model->ngay_gui_bg != null) {
+                                        return $cus->convertYMDToDMY($model->ngay_gui_bg);
+                                    }
+                                    else return null;
+                                }
+                            ],
+                            [
+                                'attribute'=>'trang_thai',
+                                'value'=>function($model){
+                                   return $model->getDmTrangThai()[$model->trang_thai];
+                                }
+                            ],
+                            [
+                                'attribute'=>'phi_linh_kien',
+                                'value'=>function($model){
+                                   return number_format($model->phi_linh_kien);
+                                }
+                            ],
+                            [
+                                'attribute'=>'phi_khac',
+                                'value'=>function($model){
+                                   return number_format($model->phi_khac);
+                                }
+                            ],
+                            [
+                                'attribute'=>'tong_tien',
+                                'value'=>function($model){
+                                   return number_format($model->tong_tien);
+                                }
+                            ],
                             'ghi_chu_bg1:ntext',
                             'ghi_chu_bg2:ntext',
-                            'ngay_tao',
-                            'nguoi_tao',
-                            'ngay_cap_nhat',
-                            'nguoi_cap_nhat',
-                            'nguoi_duyet_bg',
+                            [
+                                'attribute'=>'ngay_tao',
+                                'value'=>function($model){
+                                    $cus = new CustomFunc();
+                                    if ($model->ngay_tao != null) {
+                                        return $cus->convertYMDToDMY($model->ngay_tao);
+                                    }
+                                    else return null;
+                                }
+                            ],
+                            
+                            
+                            [
+                                'attribute'=>'nguoi_tao',
+                                'value'=>function($model){
+                                   return $model->nguoiTao->username;
+                                }
+                            ],
+                            [
+                                'attribute'=>'ngay_cap_nhat',
+                                'value'=>function($model){
+                                    $cus = new CustomFunc();
+                                    if ($model->ngay_cap_nhat != null) {
+                                        return $cus->convertYMDToDMY($model->ngay_cap_nhat);
+                                    }
+                                    else return null;
+                                }
+                            ],
+                           
+                            
+                            [
+                                'attribute'=>'nguoi_cap_nhat',
+                                'value'=>function($model){
+                                   return $model->nguoiCapNhat->username ?? "";
+                                }
+                            ],
+                            [
+                                'attribute'=>'nguoi_duyet_bg',
+                                'value'=>function($model){
+                                   return $model->nguoiDuyet->username ?? "";
+                                }
+                            ]
                         ],
                     ]) ?>
 

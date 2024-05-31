@@ -84,6 +84,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'trang_thai',
         'value'=>function($model){
+            //$html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
             return $model->getDmTrangThai()[$model->trang_thai];
         }
     ],

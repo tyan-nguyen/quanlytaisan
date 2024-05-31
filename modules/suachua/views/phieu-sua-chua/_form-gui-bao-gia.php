@@ -5,6 +5,8 @@ use app\widgets\forms\RadioWidget;
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\BaoGiaSuaChua */
 /* @var $form yii\widgets\ActiveForm */
+
+$isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
 ?>
 
 <div class="bao-gia-sua-chua-form">
@@ -26,7 +28,7 @@ use app\widgets\forms\RadioWidget;
         
         
             Trạng thái báo giá:
-            <span class="badge rounded-pill bg-primary"><?= $model->getDmTrangThai()[$model->trang_thai] ?></span>
+            <span class="badge rounded-pill bg-<?= $model->getColorTrangThai()[$model->trang_thai] ?>"><?= $model->getDmTrangThai()[$model->trang_thai] ?></span>
             
         
         </div>
@@ -35,7 +37,7 @@ use app\widgets\forms\RadioWidget;
 
 
 
-    <?php if ($model->trang_thai ==='draft'){ ?>
+    <?php if ($isCheckUpdate && $model->trang_thai ==='draft'){ ?>
     <div class="form-group text-center">
     <?= Html::a(' Gửi báo giá', null, [
                 'class' => 'btn btn-success',
@@ -46,7 +48,7 @@ use app\widgets\forms\RadioWidget;
                 ]
             ]);
     ?>
-        <?= Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        
     </div>
     <?php } ?>
  

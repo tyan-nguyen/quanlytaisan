@@ -165,7 +165,7 @@ class BaoGiaSuaChuaController extends Controller
             'type'=>"submit"
             
         ]);
-        if($model->trang_thai!="draft" && $permissionCheck)
+        if($model->trang_thai=="submited" && $permissionCheck)
         $buttonStatus .= Html::button('Từ chối báo giá', [
             'class' => 'btn btn-warning btnSubmit',
             'style'=>"margin-left:5px",
@@ -186,13 +186,13 @@ class BaoGiaSuaChuaController extends Controller
                         'model' => $model,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit",'id'=>'btnSubmitBaoGia']).$buttonStatus
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit",'id'=>'btnSubmitBaoGia','style'=>'display:none;']).$buttonStatus
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "BaoGiaSuaChua",
+                    'title'=> "Thông tin báo giá",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),

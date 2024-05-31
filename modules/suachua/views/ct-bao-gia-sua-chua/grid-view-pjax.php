@@ -6,7 +6,10 @@ use kartik\grid\GridView;
 use cangak\ajaxcrud\CrudAsset; 
 use cangak\ajaxcrud\BulkButtonWidget;
 use yii\widgets\Pjax;
-$checkCreate=$baoGiaSuaChua->trang_thai=="draft";
+$isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
+$checkAction=($isCheckUpdate && $baoGiaSuaChua->trang_thai=="draft");
+
+
 ?>
 
 <?php Pjax::begin([
@@ -26,12 +29,12 @@ $checkCreate=$baoGiaSuaChua->trang_thai=="draft";
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
-                ($checkCreate ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['/suachua/ct-bao-gia-sua-chua/create',"id_bao_gia"=>$baoGiaSuaChua->id],
+                ($checkAction ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['/suachua/ct-bao-gia-sua-chua/create',"id_bao_gia"=>$baoGiaSuaChua->id],
                     ['role'=>'modal-remote','title'=> 'Thêm mới chi tiết báo giá','class'=>'btn btn-outline-primary']) : "").
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', ['',"id_phieu_sua_chua"=>$baoGiaSuaChua->id_phieu_sua_chua],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
                     //'{toggleData}'.
-                    '{export}'
+                    '{export}'.($checkAction ? var_dump($checkAction) : "")
                 ],
             ],          
             'striped' => false,
@@ -46,7 +49,7 @@ $checkCreate=$baoGiaSuaChua->trang_thai=="draft";
                 // 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Danh sách',
                 // 'before'=>'<em>* Danh sách linh kiện/phụ kiện</em>',
                 'after'=>BulkButtonWidget::widget([
-                            'buttons'=>$checkCreate ? Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
+                            'buttons'=>$checkAction ? Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
                                 ["bulkdelete"] ,
                                 [
                                     'class'=>'btn ripple btn-secondary',

@@ -6,6 +6,8 @@ use Yii;
 use app\modules\taisan\models\ThietBiBase;
 use app\modules\suachua\models\DmTTSuaChua;
 use app\modules\dungchung\models\CustomFunc;
+use app\modules\user\models\User;
+
 /**
  * This is the model class for table "ts_phieu_sua_chua".
  *
@@ -161,8 +163,14 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             $thietBi->trang_thai=ThietBiBase::STATUS_SUACHUA;
             $thietBi->save();
         }
-        elseif($changedAttributes["trang_thai"]!=$this->trang_thai && $this->trang_thai=="completed")
+        elseif(isset($changedAttributes["trang_thai"]) && $changedAttributes["trang_thai"]!=$this->trang_thai && $this->trang_thai=="completed")
         {
+            foreach($this->vatTus as $key=>$phieuSuaChuaVatTu)
+            {
+                $phieuSuaChuaVatTu->vatTu->so_luong=$phieuSuaChuaVatTu->vatTu->so_luong - $phieuSuaChuaVatTu->so_luong;
+                $phieuSuaChuaVatTu->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$phieuSuaChuaVatTu->phieuSuaChua->thietBi->ten_thiet_bi;
+                $phieuSuaChuaVatTu->vatTu->save();
+            }
             $thietBi=$this->thietBi;
             $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
             $thietBi->save();
@@ -192,6 +200,13 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
         $thietBi->save();
 
+        foreach($this->vatTus as $key=>$phieuSuaChuaVatTu)
+        {
+            $phieuSuaChuaVatTu->vatTu->so_luong=$phieuSuaChuaVatTu->vatTu->so_luong + $phieuSuaChuaVatTu->so_luong;
+            $phieuSuaChuaVatTu->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$this->thietBi->ten_thiet_bi;
+            $phieuSuaChuaVatTu->vatTu->save();
+        }
+
         return parent::beforeDelete();
 
     }
@@ -202,5 +217,13 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             "processing"=>'Đang sửa chữa',
             "completed"=>"Hoàn thành"
         ];
+    }
+    public function getNguoiTao()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
+    }
+    public function getNguoiCapNhat()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_cap_nhat']);
     }
 }

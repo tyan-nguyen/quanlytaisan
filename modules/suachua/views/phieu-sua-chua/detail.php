@@ -66,12 +66,14 @@ body .select2-container {
                     </div>
                     <div class="tab-pane" id="tab26" role="tabpanel">
                         <?= $this->render('_form-gui-bao-gia', [
-                            'model' => $baoGiaSuaChua
+                            'model' => $baoGiaSuaChua,
+                            "phieuSuaChua"=>$phieuSuaChua
                         ]) ?>
                         <?= $this->render('../ct-bao-gia-sua-chua/grid-view-pjax', [
                             'searchModel' => $searchModelBaoGia,
                             'dataProvider' => $dataProviderBaoGia,
-                            "baoGiaSuaChua"=>$baoGiaSuaChua
+                            "baoGiaSuaChua"=>$baoGiaSuaChua,
+                            "phieuSuaChua"=>$phieuSuaChua
                         ]) ?>
                     </div>
                     <div class="tab-pane" id="tab27" role="tabpanel">

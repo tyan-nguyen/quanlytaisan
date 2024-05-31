@@ -38,7 +38,7 @@ if ($model->ngay_sua_chua != null) {
 </style>
 
 <div class="print-phieu-sua-chua">
-<table style="width:503.0pt;border-collapse:collapse;border:none;">
+<table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
             <td style="width: 84.3pt;padding: 0cm 5.4pt;height: 77.5pt;vertical-align: top;">
@@ -64,7 +64,7 @@ if ($model->ngay_sua_chua != null) {
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Ngày yêu cầu: <?= $ngaySuaChua ?></span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Lý do: <?= $model->ghi_chu1 ?></span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Nội dung sửa chữa:</span></p>
-<table style="width:488.8pt;border-collapse:collapse;border:none;">
+<table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
             <td style="width: 35.2pt;border: 1pt solid windowtext;padding: 0cm 5.4pt;vertical-align: top;">
@@ -102,7 +102,7 @@ if ($model->ngay_sua_chua != null) {
     </tbody>
 </table>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Vật tư đề nghị (nếu có):</span></p>
-<table style="width:488.8pt;border-collapse:collapse;border:none;">
+<table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
             <td style="width: 35.2pt;border: 1pt solid windowtext;padding: 0cm 5.4pt;vertical-align: top;">
@@ -139,7 +139,7 @@ if ($model->ngay_sua_chua != null) {
 </table>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>&nbsp;</span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Ngày … tháng …. Năm</span></p>
-<table style="width:488.8pt;border-collapse:collapse;border:none;">
+<table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
             <td style="width: 155.8pt;padding: 0cm 5.4pt;vertical-align: top;">
