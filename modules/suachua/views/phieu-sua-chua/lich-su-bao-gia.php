@@ -23,7 +23,7 @@ $cus = new CustomFunc();
                 <td><?= $item->getDmTrangThai()[$item->trang_thai] ?></td>
                 <td><?= number_format($item->tong_tien) ?></td>
                 <td><?= $item->ngay_ket_thuc ? $cus->convertYMDHISToDMYHID($item->ngay_ket_thuc): "-" ?></td>
-                <td><?= "" ?></td>
+                <td><?= $item->nguoiDuyet->username ?? "" ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

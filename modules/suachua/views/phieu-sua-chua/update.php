@@ -2,6 +2,8 @@
 
 use yii\bootstrap5\Html;
 use app\widgets\forms\DocumentWidget;
+use app\widgets\views\DocumentListWidget;
+use app\widgets\views\ImageGridWidget;
 use app\widgets\forms\ImageWidget;
 use app\modules\suachua\models\PhieuSuaChua;
 /* @var $this yii\web\View */

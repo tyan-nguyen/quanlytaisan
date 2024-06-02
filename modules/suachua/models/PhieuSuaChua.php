@@ -226,4 +226,11 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_cap_nhat']);
     }
+    public function getDmDanhGia()
+    {
+        return [
+            '1'=>'1 sao',
+            '2'=>'2 sao'
+        ];
+    }
 }

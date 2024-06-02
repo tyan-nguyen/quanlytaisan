@@ -115,7 +115,13 @@ $this->registerJsFile("@web/js/bootstrap-rating.js",[
 /*     'depends' => [
         \yii\web\JqueryAsset::className()
     ], */
-    'position' => \yii\web\View::POS_END
+    'position' => \yii\web\View::POS_END 
+]);
+$this->registerJsFile("@web/assets/plugins/sumoselect/jquery.sumoselect.js",[
+/*     'depends' => [
+        \yii\web\JqueryAsset::className()
+    ], */
+    'position' => \yii\web\View::POS_END 
 ]);
 
 $this->registerCssFile('@web/css/bootstrap-rating.css', [

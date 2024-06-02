@@ -59,7 +59,12 @@ use yii\widgets\DetailView;
 
                                 },
                             ],
-                            'nguoi_tao',
+                            [
+                                'attribute' => 'nguoi_tao',
+                                'value' => function ($model) {
+                                    return $model->nguoiTao->username ?? "";
+                                },
+                            ],
                         ],
                     ])?>
 

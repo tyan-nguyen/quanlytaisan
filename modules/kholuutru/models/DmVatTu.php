@@ -3,7 +3,7 @@
 namespace app\modules\kholuutru\models;
 
 use Yii;
-
+use app\modules\user\models\User;
 /**
  * This is the model class for table "ts_dm_vat_tu".
  *
@@ -92,6 +92,10 @@ class DmVatTu extends \yii\db\ActiveRecord
             "damaged"=>'Hư hỏng',
 
         ];
+    }
+    public function getNguoiTao()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
     }
     public function afterSave($insert,$changedAttributes) {
 

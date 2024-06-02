@@ -7,7 +7,7 @@
 }
 
 .fa-star .fa-regular {
-  color: white;
+  color: rgb(241, 196, 15);
   
 }
 
@@ -15,6 +15,6 @@
   font-size: 20px;
 }
 .fa-star .fa-solid {
-  color: yellow;
-  
+  color: rgb(236, 240, 241);
+  border: 5px double rgb(236, 240, 241);
 }

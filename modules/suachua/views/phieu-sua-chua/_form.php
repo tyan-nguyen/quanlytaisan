@@ -23,7 +23,11 @@ if ($model->ngay_du_kien_hoan_thanh != null) {
 if ($model->ngay_hoan_thanh != null) {
     $model->ngay_hoan_thanh = $cus->convertYMDToDMY($model->ngay_hoan_thanh);
 }
-
+if(!$model->isNewRecord){
+    $model->phi_linh_kien=number_format($model->phi_linh_kien);
+    $model->phi_khac=number_format($model->phi_khac);
+    $model->tong_tien=number_format($model->tong_tien);
+}
 ?>
 
 <div class="phieu-sua-chua-form">
