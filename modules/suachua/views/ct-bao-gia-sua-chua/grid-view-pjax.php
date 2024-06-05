@@ -34,7 +34,7 @@ $checkAction=($isCheckUpdate && $baoGiaSuaChua->trang_thai=="draft");
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', ['',"id_phieu_sua_chua"=>$baoGiaSuaChua->id_phieu_sua_chua],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
                     //'{toggleData}'.
-                    '{export}'.($checkAction ? var_dump($checkAction) : "")
+                    '{export}'
                 ],
             ],          
             'striped' => false,

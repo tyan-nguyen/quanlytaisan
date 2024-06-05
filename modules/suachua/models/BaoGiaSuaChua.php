@@ -32,6 +32,7 @@ use app\modules\user\models\User;
  */
 class BaoGiaSuaChua extends \yii\db\ActiveRecord
 {
+    const MODEL_ID = 'bao-gia-sua-chua';
     /**
      * {@inheritdoc}
      */
