@@ -294,11 +294,14 @@ function ModalRemote(modalId) {
         
         //***dung chung hinh anh, tai lieu update html
 		if(typeof response.dungChungType !== 'undefined'){
-			if(response.dungChungType=='hinhAnh'){
-				$('#imgBlock').html(response.dungChungContent);
-			} else if(response.dungChungType=='taiLieu'){
-				$('#docsBlock').html(response.dungChungContent);
-			}
+			//cập nhật lại lỗi 1 page mà có >2 dùng chung hình và tài liệu
+            $(response.dungChungReload).html(response.dungChungContent);
+            
+			// if(response.dungChungType=='hinhAnh'){
+			// 	$('#imgBlock').html(response.dungChungContent);
+			// } else if(response.dungChungType=='taiLieu'){
+			// 	$('#docsBlock').html(response.dungChungContent);
+			// }
 		}
 
         // Close modal if response contains forceClose field

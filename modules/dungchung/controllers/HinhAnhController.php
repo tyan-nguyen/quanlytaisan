@@ -182,7 +182,7 @@ class HinhAnhController extends Controller
                     if (!empty($file))
                         $file->saveAs( Yii::getAlias('@webroot') . HinhAnh::FOLDER_IMAGES .  $model->duong_dan);
                     return [
-                        #'forceReload'=>'#hinh-anh-pjax',
+                        'dungChungReload'=>'#imgBlock'.$thamchieu,
                         'forceClose'=>true,
                        /*  'title'=> "Thêm mới Hình ảnh",
                         'content'=>'<span class="text-success">Thêm mới thành công</span>',
@@ -313,6 +313,7 @@ class HinhAnhController extends Controller
                 return [
                     #'forceClose'=>true,
                     #'forceReload'=>'#crud-datatable-pjax',
+                    'dungChungReload'=>'#imgBlock'.$thamchieu,
                     'title'=> "Hình ảnh",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
@@ -394,6 +395,7 @@ class HinhAnhController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose'=>true,/* 'forceReload'=>'#crud-datatable-pjax',  */ 
                 'dungChungType'=>'hinhAnh',
+                'dungChungReload'=>'#imgBlock'.$thamchieu,
                 'dungChungContent'=>ImageGridWidget::widget([
                     'loai' => $loai,
                     'id_tham_chieu' => $thamchieu

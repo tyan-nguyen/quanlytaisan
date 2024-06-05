@@ -15,8 +15,8 @@ class DocumentGridWidget extends Widget{
     
     public function run(){        
         $data = TaiLieu::getTaiLieuThamChieu($this->loai, $this->id_tham_chieu);
-        
-        $maHtml = '<div id="docsBlock"><div class="demo-avatar-group d-flex">';
+        $divId='docsBlock'.$this->id_tham_chieu;
+        $maHtml = '<div id="'.$divId.'"><div class="demo-avatar-group d-flex">';
         
         foreach ($data as $key=>$val){
             $maHtml .= '<div class="main-img-user avatar-xl  m-2 ">

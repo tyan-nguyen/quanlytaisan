@@ -186,6 +186,7 @@ class TaiLieuController extends Controller
                         $file->saveAs( Yii::getAlias('@webroot') . TaiLieu::FOLDER_DOCUMENTS .  $model->duong_dan);
                     return [
                         //'forceReload'=>'#crud-datatable-pjax',
+                        'dungChungReload'=>'#docsBlock'.$thamchieu,
                         'forceClose'=>true,
                        /* 'title'=> "Thêm mới TaiLieu",
                         'content'=>'<span class="text-success">Thêm mới thành công</span>',
@@ -332,6 +333,7 @@ class TaiLieuController extends Controller
                     ]),
                     'tcontent'=>'Cập nhật thành công!',
                     'dungChungType'=>'taiLieu',
+                    'dungChungReload'=>'#docsBlock'.$thamchieu,
                     //'dungChungContent'=>$this->renderAjax('_imagesByID', []),
                     'dungChungContent'=>DocumentGridWidget::widget([
                         'loai' => $model->loai,
@@ -414,6 +416,7 @@ class TaiLieuController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose'=>true,/* 'forceReload'=>'#crud-datatable-pjax',  */
                 'dungChungType'=>'taiLieu',
+                'dungChungReload'=>'#docsBlock'.$thamchieu,
                 'dungChungContent'=>DocumentGridWidget::widget([
                     'loai' => $loai,
                     'id_tham_chieu' => $thamchieu

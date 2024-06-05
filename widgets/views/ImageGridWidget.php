@@ -15,8 +15,8 @@ class ImageGridWidget extends Widget{
     
     public function run(){        
         $data = HinhAnh::getHinhAnhThamChieu($this->loai, $this->id_tham_chieu);
-        
-        $maHtml = '<div id="imgBlock"><div class="demo-avatar-group d-flex">';
+        $divId='imgBlock'.$this->id_tham_chieu;
+        $maHtml = '<div id="'.$divId.'"><div class="demo-avatar-group d-flex">';
         
         foreach ($data as $key=>$val){
             $maHtml .= '<div class="main-img-user avatar-xl  m-2 ">
