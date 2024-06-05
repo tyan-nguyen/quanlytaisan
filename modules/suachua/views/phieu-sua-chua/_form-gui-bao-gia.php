@@ -14,7 +14,7 @@ $isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
 
 <div class="bao-gia-sua-chua-form">
 <div class="row">
-<div class="col-8">
+<div class="col-6">
             <fieldset class="border p-2" style="margin:3px;"><!--Thông tin chung -->
             <legend class="legend"><p>Thông tin báo giá 
             <span class="badge rounded-pill bg-<?= $model->getColorTrangThai()[$model->trang_thai] ?>"><?= $model->getDmTrangThai()[$model->trang_thai] ?></span></p></legend>
@@ -56,7 +56,7 @@ $isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
     </fieldset>
 
     </div>
-    <div class="col-4">
+    <div class="col-6">
             <fieldset class="border p-2" style="margin:3px"><!--Tai lieu -->
                 <div class="row">
                     <div class="col">
