@@ -31,6 +31,13 @@ return [
     ],
     [
         'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'id_nguoi_gui',
+        'value' => function ($model) {
+            return ($model->nguoiGui->username) ?? "-";
+        }
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
         'attribute' => 'hieu_luc',
         // 'value' => function($model) {
         //     return ($model->tenHieuLucWithBadge) ?? "-";
@@ -39,13 +46,7 @@ return [
         'format' => 'raw',
         'value' => 'tenHieuLucWithBadge'
     ],
-    // [
-    //     'class' => '\kartik\grid\DataColumn',
-    //     'attribute' => 'id_nguoi_gui',
-    //     'value' => function ($model) {
-    //         return ($model->nguoiGui->ten_nhan_vien) ?? "-";
-    //     }
-    // ],
+
     // [
     //     'class' => '\kartik\grid\DataColumn',
     //     'attribute' => 'id_nguoi_duyet',
@@ -131,6 +132,9 @@ return [
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'created_at',
+        'value' => function ($model) {
+            return $model->createdAt;
+        }
     ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',

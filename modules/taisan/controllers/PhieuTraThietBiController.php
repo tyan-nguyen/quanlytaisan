@@ -3,28 +3,33 @@
 namespace app\modules\taisan\controllers;
 
 use Yii;
-use app\modules\taisan\models\YeuCauVanHanh;
-use app\modules\taisan\models\YeuCauVanHanhCt;
-use app\modules\taisan\models\YeuCauVanHanhSearch;
-use Exception;
+use app\modules\taisan\models\PhieuTraThietBi;
+use app\modules\taisan\models\PhieuTraThietBiCt;
+use app\modules\taisan\models\PhieuTraThietBiSearch;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
-use yii\filters\AccessControl;
-use yii\base\Model;
-use yii\base\Request;
-use yii\db\ActiveRecord;
-
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
 /**
- * YeuCauVanHanhController implements the CRUD actions for YeuCauVanHanh model.
+ * PhieuTraThietBiController implements the CRUD actions for PhieuTraThietBi model.
  */
-class YeuCauVanHanhController extends Controller
+class PhieuTraThietBiController extends Controller
 {
+
+
+    public function beforeAction($action)
+    {
+        Yii::$app->params['moduleID'] = 'Module Phiếu trả thiết bị';
+        Yii::$app->params['modelID'] = 'Quản lý Phiếu trả thiết bị';
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * @inheritdoc
      */
@@ -43,25 +48,17 @@ class YeuCauVanHanhController extends Controller
         ];
     }
 
-    public function beforeAction($action)
-    {
-        Yii::$app->params['moduleID'] = 'Module Phiếu yêu cầu vận hành';
-        Yii::$app->params['modelID'] = 'Quản lý Phiếu yêu cầu vận hành';
-
-        return parent::beforeAction($action);
-    }
-
     /**
-     * Lists all YeuCauVanHanh models.
+     * Lists all PhieuTraThietBi models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new YeuCauVanHanhSearch();
+        $searchModel = new PhieuTraThietBiSearch();
         if (isset($_POST['search']) && $_POST['search'] != null) {
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModel->load(Yii::$app->request->post())) {
-            $searchModel = new YeuCauVanHanhSearch(); // "reset"
+            $searchModel = new PhieuTraThietBiSearch(); // "reset"
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -74,7 +71,7 @@ class YeuCauVanHanhController extends Controller
 
 
     /**
-     * Displays a single YeuCauVanHanh model.
+     * Displays a single PhieuTraThietBi model.
      * @param integer $id
      * @return mixed
      */
@@ -90,24 +87,45 @@ class YeuCauVanHanhController extends Controller
             $isDraft = false;
         }
 
+
+
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if (Yii::$app->request->post('hieu_luc') === 'DATRA') {
+                $model->hieu_luc = Yii::$app->request->post('hieu_luc');
+                if ($model->save(false)) {
+                    Yii::$app->session->setFlash('success', 'Successfully.');
+                    return $this->redirect(['index']);
+                    // return [
+                    //     'success' => true,
+                    //     'redirectUrl' => \yii\helpers\Url::to(['index']),
+                    // ];
+                } else {
+                    Yii::$app->session->setFlash('error', 'Failed.');
+                    // return [
+                    //     'success' => false,
+                    //     'message' => 'Failed to approve the request.',
+                    // ];
+                }
+                // return $this->redirect(['view', 'id' => $model->id]);
+            }
+
             return [
-                'title' => "Yêu cầu vận hành",
+                'title' => "Phiếu trả thiết bị",
                 'content' => $this->renderAjax('view', [
                     'model' => $this->findModel($id),
                     'modelsDetail' => $modelsDetail,
                 ]),
                 'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                     Html::a('Sửa', ['update', 'id' => $id], [
-                        'class' => 'btn btn-primary',
-                        'role' => 'modal-remote',
+                        'class' => 'btn btn-primary', 'role' => 'modal-remote',
                         'hidden' => !$isDraft
-                    ]) .
-                    Html::button('<span class="fe fe-external-link"></span>Gửi phê duyệt', [
+                    ])
+                    . Html::submitButton('Xác nhận', [
                         'class' => 'btn btn-warning',
-                        'id' => 'send-request-button',
-                        'data-id' => $model->id,
+                        'id' => 'confirm-button',
+                        'form' => 'confirm-form',
                         'hidden' => !$isDraft
                     ])
             ];
@@ -119,82 +137,6 @@ class YeuCauVanHanhController extends Controller
             ]);
         }
     }
-
-
-    public function actionViewSendRequest($id)
-    {
-
-        $request = Yii::$app->request;
-        $model = $this->findModel($id);
-        $modelsDetail = $model->details;
-        // $model->scenario = YeuCauVanHanh::SCENARIO_SEND_REQUEST;
-
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return [
-                'title' => 'Gửi yêu cầu phê duyệt',
-                'content' => $this->renderAjax('view-send-request', [
-                    // 'model' => $model,
-                    'model' => $this->findModel($id),
-                    'modelsDetail' => $modelsDetail,
-                ]),
-                'footer' => Html::button('Đóng', [
-                    'class' => 'btn btn-default pull-left',
-                    'data-bs-dismiss' => 'modal'
-
-                ]) . Html::button('Gửi yêu cầu', [
-                    'class' => 'btn btn-primary',
-                    'type' => 'submit',
-                    'form' => 'send-request-form'
-                ])
-            ];
-        }
-
-        if (Yii::$app->request->post('hieu_luc') === 'CHODUYET') {
-
-            $model->hieu_luc = Yii::$app->request->post('hieu_luc');
-            // $model->id_nguoi_gui = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_gui'];
-            // $model->ngay_gui = Yii::$app->request->post('YeuCauVanHanh')['ngay_gui'];
-            $model->id_nguoi_gui = Yii::$app->user->identity->id;
-            $model->ngay_gui = date('Y-m-d H:i:s');
-            $model->noi_dung_gui = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_gui'];
-
-            // var_dump($model->validate());
-
-            // if ($model->validate() && $model->save(false)) {
-            if ($model->save(false)) {
-                Yii::$app->session->setFlash('success', 'Successfully.');
-                return $this->redirect(['index']);
-            } else {
-                Yii::$app->session->setFlash('error', 'Failed.');
-            }
-
-        return $this->redirect(['view', 'id' => $model->id]);
-            
-        }
-
-        return $this->redirect(['view', 'id' => $model->id]);
-    }
-
-    // public function actionValidateSendRequest($id)
-    // {
-    //     $model = $this->findModel($id);
-    //     $model->scenario = YeuCauVanHanh::SCENARIO_SEND_REQUEST;
-
-    //     if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-    //         Yii::$app->response->format = Response::FORMAT_JSON;
-    //         return ActiveForm::validate($model);
-    //     }
-    // }
-
-
-    /**
-     * Creates a new YeuCauVanHanh model.
-     * For ajax request will return json object
-     * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-
 
     protected function createMultiple($modelClass, $multipleModels = [])
     {
@@ -221,14 +163,23 @@ class YeuCauVanHanhController extends Controller
         return $models;
     }
 
+
+    /**
+     * Creates a new PhieuTraThietBi model.
+     * For ajax request will return json object
+     * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
         $request = Yii::$app->request;
-
-        $model = new YeuCauVanHanh();
-        $modelsDetail = [new YeuCauVanHanhCt()];
+        $model = new PhieuTraThietBi();
+        $modelsDetail = [new PhieuTraThietBiCt()];
 
         if ($request->isAjax) {
+            /*
+            *   Process for ajax request
+            */
             Yii::$app->response->format = Response::FORMAT_JSON;
 
             if ($request->isGet) {
@@ -238,34 +189,25 @@ class YeuCauVanHanhController extends Controller
                         'model' => $model,
                         'modelsDetail' => $modelsDetail,
                     ]),
-                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                        Html::button('Lưu Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                        Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"])
+
                 ];
             } else if ($model->load($request->post())) {
-                $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname());
+
+                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname());
                 Model::loadMultiple($modelsDetail, $request->post());
 
-                /* Debugging */
-                // var_dump($request->post());
-                // var_dump($model->attributes); 
-                // var_dump($modelsDetail); 
-
                 $valid = $model->validate();
-                // $validDetail = Model::validateMultiple($modelsDetail);
-
                 $valid = Model::validateMultiple($modelsDetail) && $valid;
 
-                /* Debugging */
-                // var_dump($valid);
-                // var_dump($model->errors);
-                // var_dump($modelsDetail);
 
                 if ($valid) {
                     $transaction = Yii::$app->db->beginTransaction();
                     try {
                         if ($flag = $model->save(false)) {
                             foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_yeu_cau_van_hanh = $model->id;
+                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
                                 if (!($flag = $modelDetail->save(false))) {
                                     $transaction->rollBack();
                                     break;
@@ -299,28 +241,22 @@ class YeuCauVanHanhController extends Controller
                 ];
             }
         } else {
+            /*
+            *   Process for non-ajax request
+            */
             if ($model->load($request->post())) {
-
-                $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname());
+                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname());
                 Model::loadMultiple($modelsDetail, $request->post());
-
-                // Debugging
-                // var_dump($request->post());
-                // var_dump($model->attributes);
-                // var_dump($modelsDetail);
 
                 $valid = $model->validate();
                 $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-                // Debugging
-                //var_dump($valid);
 
                 if ($valid) {
                     $transaction = Yii::$app->db->beginTransaction();
                     try {
                         if ($flag = $model->save(false)) {
                             foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_yeu_cau_van_hanh = $model->id;
+                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
                                 if (!($flag = $modelDetail->save(false))) {
                                     $transaction->rollBack();
                                     break;
@@ -337,14 +273,20 @@ class YeuCauVanHanhController extends Controller
                     }
                 }
             }
-
             return $this->render('create', [
                 'model' => $model,
-                'modelsDetail' => (empty($modelsDetail)) ? [new YeuCauVanHanhCt] : $modelsDetail,
+                'modelsDetail' => (empty($modelsDetail)) ? [new PhieuTraThietBiCt] : $modelsDetail,
             ]);
         }
     }
 
+    /**
+     * Updates an existing PhieuTraThietBi model.
+     * For ajax request will return json object
+     * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
@@ -362,28 +304,24 @@ class YeuCauVanHanhController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-
             if ($request->isGet) {
                 return [
                     'title' => "Cập nhật",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                         'modelsDetail' => $modelsDetail,
-                    ]),
-                    'footer' => Html::button('Đóng', [
-                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
-                    ])
-                        . Html::button('Lưu nháp', [
-                            'class' => 'btn btn-primary', 'type' => "submit", 'id' => 'draft-button',
-                            'disabled' => !$isDraft,
-                            'hidden' => !$isDraft
 
-                        ]),
+                    ]),
+                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                        Html::button('Lưu lại', [
+                            'class' => 'btn btn-primary', 'type' => "submit",
+                            'hidden' => !$isDraft
+                        ])
                 ];
             } else if ($model->load($request->post())) {
 
                 $oldIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
-                $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname(), $modelsDetail);
+                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname(), $modelsDetail);
                 Model::loadMultiple($modelsDetail, Yii::$app->request->post());
                 $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsDetail, 'id', 'id')));
 
@@ -391,17 +329,15 @@ class YeuCauVanHanhController extends Controller
                 $valid = $model->validate();
                 $valid = Model::validateMultiple($modelsDetail) && $valid;
 
-                // $valid = true;
-
                 if ($valid) {
                     $transaction = Yii::$app->db->beginTransaction();
                     try {
                         if ($flag = $model->save(false)) {
                             if (!empty($deletedIDs)) {
-                                YeuCauVanHanhCt::deleteAll(['id' => $deletedIDs]);
+                                PhieuTraThietBiCt::deleteAll(['id' => $deletedIDs]);
                             }
                             foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_yeu_cau_van_hanh = $model->id;
+                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
                                 if (!($flag = $modelDetail->save(false))) {
                                     $transaction->rollBack();
                                     break;
@@ -421,16 +357,12 @@ class YeuCauVanHanhController extends Controller
                                 ]),
                                 'tcontent' => 'Dữ liệu đã cập nhật!',
                                 'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                                    Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
-                                    . Html::button('Gửi phê duyệt', [
-                                        'class' => 'btn btn-warning',
-                                        'id' => 'send-request-button',
-                                        'data-id' => $model->id,
-                                        'hidden' => !$isDraft
+                                    Html::a('Cập nhật', ['update', 'id' => $id], [
+                                        'class' => 'btn btn-primary', 'role' => 'modal-remote',
                                     ]),
                             ];
                         }
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $transaction->rollBack();
                     }
                 }
@@ -442,20 +374,26 @@ class YeuCauVanHanhController extends Controller
                         'model' => $model,
                         'modelsDetail' => $modelsDetail,
                     ]),
-                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                        Html::button('Sửa', ['class' => 'btn btn-primary', 'type' => "submit"])
-                        . Html::button('Gửi phê duyệt', [
-                            'class' => 'btn btn-warning',
-                            'id' => 'send-request-button',
-                            'data-id' => $model->id,
+                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                        Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            } else {
+                return [
+                    'title' => "Cập nhật PhieuTraThietBi",
+                    'content' => $this->renderAjax('update', [
+                        'model' => $model,
+                    ]),
+                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                        Html::button('Lưu lại', [
+                            'class' => 'btn btn-primary', 'type' => "submit",
                             'hidden' => !$isDraft
-                        ]),
+                        ])
                 ];
             }
         } else {
             if ($model->load($request->post())) {
                 $oldIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
-                $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname(), $modelsDetail);
+                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname(), $modelsDetail);
                 Model::loadMultiple($modelsDetail, Yii::$app->request->post());
                 $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsDetail, 'id', 'id')));
 
@@ -468,10 +406,10 @@ class YeuCauVanHanhController extends Controller
                     try {
                         if ($flag = $model->save(false)) {
                             if (!empty($deletedIDs)) {
-                                YeuCauVanHanh::deleteAll(['id' => $deletedIDs]);
+                                PhieuTraThietBi::deleteAll(['id' => $deletedIDs]);
                             }
                             foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_yeu_cau_van_hanh = $model->id;
+                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
                                 if (!($flag = $modelDetail->save(false))) {
                                     $transaction->rollBack();
                                     break;
@@ -496,63 +434,8 @@ class YeuCauVanHanhController extends Controller
         }
     }
 
-
-    /* public function actionSubmit($id)
-    {
-        $model = $this->findModel($id);
-
-        // var_dump('Request method:', Yii::$app->request->method);
-        // var_dump('Post data:', Yii::$app->request->post());
-
-        if (Yii::$app->request->post('hieu_luc') === 'CHODUYET') {
-
-            $model->hieu_luc = 'CHODUYET';
-
-            if ($model->save(false)) {
-                // var_dump('Status updated successfully');
-
-                Yii::$app->session->setFlash('success', 'Hiệu lực được cập nhật sang chờ phê duyệt.');
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                Yii::$app->session->setFlash('error', 'Lỗi cập nhật hiệu lực.');
-            }
-        } else {
-            // var_dump('Status is not pending');
-        }
-
-        return $this->redirect(['view', 'id' => $model->id]);
-    } */
-
-    // public function actionSendRequest($id)
-    // {
-    //     $model = $this->findModel($id);
-
-    //     if (Yii::$app->request->post('hieu_luc') === 'CHODUYET') {
-
-    //         $model->hieu_luc = Yii::$app->request->post('hieu_luc');
-    //         $model->id_nguoi_gui = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_gui'];
-    //         $model->ngay_gui = Yii::$app->request->post('YeuCauVanHanh')['ngay_gui'];
-    //         $model->noi_dung_gui = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_gui'];
-
-    //         if ($model->save(false)) {
-    //             Yii::$app->session->setFlash('success', 'Successfully.');
-    //             return $this->redirect(['index']);
-    //         } else {
-    //             Yii::$app->session->setFlash('error', 'Failed.');
-    //         }
-    //     }
-
-    //     return $this->renderAjax('send-request', [
-    //         'model' => $model,
-    //     ]);
-
-    //     // return $this->redirect(['view', 'id' => $model->id]);
-    // }
-
-
-
     /**
-     * Delete an existing YeuCauVanHanh model.
+     * Delete an existing PhieuTraThietBi model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -577,11 +460,8 @@ class YeuCauVanHanhController extends Controller
         }
     }
 
-
-
-
     /**
-     * Delete multiple existing YeuCauVanHanh model.
+     * Delete multiple existing PhieuTraThietBi model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -621,30 +501,18 @@ class YeuCauVanHanhController extends Controller
     }
 
     /**
-     * Finds the YeuCauVanHanh model based on its primary key value.
+     * Finds the PhieuTraThietBi model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return YeuCauVanHanh the loaded model
+     * @return PhieuTraThietBi the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = YeuCauVanHanh::findOne($id)) !== null) {
+        if (($model = PhieuTraThietBi::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-    /* SOFT DELETE */
-    /*     
-    public function actionDelete($id)
-    {
-        $model = $this->findModel($id);
-        $model->deleted_at = time();
-        $model->save(false);
-
-        return $this->redirect(['index']);
-    } 
-    */
 }

@@ -2,15 +2,18 @@
 
 namespace app\modules\taisan\controllers;
 
+use app\modules\bophan\models\NhanVien;
 use Yii;
 use app\modules\taisan\models\YeuCauVanHanh;
 use app\modules\taisan\models\XuatYeuCauVanHanhSearch;
+use app\modules\user\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 
 /**
  * XuatYeuCauVanHanhController implements the CRUD actions for YeuCauVanHanh model.
@@ -49,6 +52,9 @@ class XuatYeuCauVanHanhController extends Controller
      */
     public function actionIndex()
     {
+        $currentUserId = Yii::$app->user->identity->id ?? null;
+        $currentUserName = Yii::$app->user->identity->username;
+
         $searchModel = new XuatYeuCauVanHanhSearch();
         if (isset($_POST['search']) && $_POST['search'] != null) {
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
@@ -61,6 +67,8 @@ class XuatYeuCauVanHanhController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'currentUserId' => $currentUserId,
+            'currentUserName' => $currentUserName,
         ]);
     }
 
@@ -76,29 +84,59 @@ class XuatYeuCauVanHanhController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
 
+        $currentUserId = Yii::$app->user->identity->id ?? 1;
+        $currentUserName = Yii::$app->user->identity->username;
+        $idNguoiYeuCau = $model->id_nguoi_yeu_cau;
+
+        // $users = User::find()
+        // ->alias('u')
+        // ->select(['u.id', 'u.username', 'e.ten_nhan_vien'])
+        // ->leftJoin(['e' => NhanVien::tableName()], 'u.username = e.ten_truy_cap')
+        // ->asArray()
+        // ->all();
+
+        // $userList = ArrayHelper::map($users, 'id', function($user) {
+        //     return $user['username'] . ' - ' . $user['ten_nhan_vien'];
+        // });
+
+        $userList = ArrayHelper::map(User::find()->all(), 'id', 'username');
+        $hieuLuc = $model->hieu_luc ?? null;
+        $isApproved = true;
+
+        if ($hieuLuc !== null && $hieuLuc !== 'DADUYET') {
+            $isApproved = false;
+        }
+
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-
-            $footerButtons = Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]);
-            // if ($model->hieu_luc === 'CHODUYET') {
-            //     $footerButtons .= Html::a('Phê duyệt', ['approve', 'id' => $id], ['class' => 'btn btn-success', 'role' => 'modal-remote']);
-            // }
-
             return [
-                'title' => "Yêu cầu vận hành",
+                'title' => "Xuất phiếu yêu cầu",
                 'content' => $this->renderAjax('view', [
                     'model' => $this->findModel($id),
                     'modelsDetail' => $modelsDetail,
+                    'currentUserId' => $currentUserId,
+                    'currentUserName' => $currentUserName,
+                    'userList' => $userList,
+                    'idNguoiYeuCau' => $idNguoiYeuCau
                 ]),
-                'footer' => $footerButtons
-                //'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) 
+                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
+                    . Html::button('Xuất', [
+                        'class' => 'btn btn-primary',
+                        'type' => 'submit',
+                        'form' => 'operate-form',
+                        'hidden' => !$isApproved
+                    ]),
                 // .Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
-
             ];
         } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
                 'modelsDetail' => $modelsDetail,
+                'userList' => $userList,
+                'currentUserId' => $currentUserId,
+                'currentUserName' => $currentUserName,
+                'idNguoiYeuCau' => $idNguoiYeuCau
+
 
             ]);
         }
@@ -110,8 +148,10 @@ class XuatYeuCauVanHanhController extends Controller
 
         if (Yii::$app->request->post('hieu_luc') === 'VANHANH') {
 
-            var_dump(Yii::$app->request->post());
+            var_dump(Yii::$app->request->post());   
+
             $model->hieu_luc = Yii::$app->request->post('hieu_luc');
+
             $model->id_nguoi_xuat = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_xuat'];
             $model->ngay_xuat = Yii::$app->request->post('YeuCauVanHanh')['ngay_xuat'];
             $model->noi_dung_xuat = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_xuat'];

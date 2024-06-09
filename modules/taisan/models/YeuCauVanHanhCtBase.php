@@ -70,4 +70,13 @@ class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
     {
         return $this->hasOne(ThietBi::class, ['id' => 'id_thiet_bi']);
     }
+
+    public function getNgayBatDau(){
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_bat_dau);
+    }
+    public function getNgayKetThuc(){
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_ket_thuc);
+    }
 }

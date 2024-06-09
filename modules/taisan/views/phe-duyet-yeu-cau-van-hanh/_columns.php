@@ -39,23 +39,23 @@ return [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id_nguoi_gui',
         'value' => function ($model) {
-            return ($model->nguoiGui->ten_nhan_vien) ?? "-";
+            return ($model->nguoiGui->username) ?? "-";
         }
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id_nguoi_duyet',
         'value' => function ($model) {
-            return ($model->nguoiDuyet->ten_nhan_vien) ?? "-";
+            return ($model->nguoiDuyet->username) ?? "-";
         }
     ],
-    [
-        'class' => '\kartik\grid\DataColumn',
-        'attribute' => 'id_nguoi_xuat',
-        'value' => function ($model) {
-            return ($model->nguoiXuat->ten_nhan_vien) ?? "-";
-        }
-    ],
+    // [
+    //     'class' => '\kartik\grid\DataColumn',
+    //     'attribute' => 'id_nguoi_xuat',
+    //     'value' => function ($model) {
+    //         return ($model->nguoiXuat->ten_nhan_vien) ?? "-";
+    //     }
+    // ],
     
     // [
         // 'class'=>'\kartik\grid\DataColumn',

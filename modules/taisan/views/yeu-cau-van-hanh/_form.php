@@ -37,6 +37,12 @@ if ($model->isNewRecord) {
 }
 
 $cus = new CustomFunc();
+
+$hieuLuc = $model->hieu_luc ?? null;
+$isDraft = true;
+if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
+    $isDraft = false;
+}
 ?>
 
 <style>
@@ -45,7 +51,6 @@ $cus = new CustomFunc();
         font-weight: bold;
         margin: 0px;
         padding: 0px;
-        /* background: #040404; */
     }
 </style>
 
@@ -55,7 +60,9 @@ $cus = new CustomFunc();
     <?php $form = ActiveForm::begin(
         [
             'id' => 'dynamic-form',
-            'options' => ['class' => 'form-horizontal', 'data-request-id' => $model->isNewRecord ? '' : $model->id],
+            'options' => [
+                'class' => 'form-horizontal', 'data-request-id' => $model->isNewRecord ? '' : $model->id
+            ],
             'fieldConfig' => [
                 'template' => '<div class="col-sm-12">{label}</div><div class="col-sm-12">{input}{error}</div>',
                 'labelOptions' => ['class' => 'col-md-12 control-label'],
@@ -63,23 +70,24 @@ $cus = new CustomFunc();
         ]
     ); ?>
 
-    <!-- <div class="row">
+    <div class="row">
         <div class="col">
-            <?php //if ($model->hieu_luc === 'NHAP') { ?>
+            <?php if ($model->hieu_luc === 'NHAP') { ?>
                 <div class="form-group">
-                    <?php /* Html::a('Gửi phê duyệt', ['yeu-cau-van-hanh/submit', 'id' => $model->id], [
-                        'class' => 'btn btn-success text-right',
-                        'style' => "margin-left:5px",
-                        'data' => [
-                            'method' => 'post',
-                            'params' => ['hieu_luc' => 'CHODUYET'],
-                        ],
-                    ]);*/
+                    <?php 
+                    // Html::a('Gửi phê duyệt', ['yeu-cau-van-hanh/submit', 'id' => $model->id], [
+                    //     'class' => 'btn btn-success text-right',
+                    //     'style' => "margin-left:5px",
+                    //     'data' => [
+                    //         'method' => 'post',
+                    //         'params' => ['hieu_luc' => 'CHODUYET'],
+                    //     ],
+                    // ]);
                     ?>
                 </div>
-            <?php //} ?>
+            <?php } ?>
         </div>
-    </div> -->
+    </div>
 
     <div class="row">
         <div class="col-6">
@@ -92,7 +100,10 @@ $cus = new CustomFunc();
                         <?= $form->field($model, 'id_nguoi_lap')->widget(Select2::classname(), [
                             'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
                             'language' => 'vi',
-                            'options' => ['placeholder' => 'Chọn...'],
+                            'options' => [
+                                'placeholder' => 'Chọn...',
+                                'disabled' => !$isDraft
+                            ],
                             'pluginOptions' => [
                                 'allowClear' => true,
                             ],
@@ -102,7 +113,8 @@ $cus = new CustomFunc();
                     <div class="col-6">
                         <?= $form->field($model, 'ngay_lap')->widget(DatePicker::classname(), [
                             'options' => [
-                                'placeholder' => 'Chọn ngày...'
+                                'placeholder' => 'Chọn ngày...',
+                                'disabled' => !$isDraft
                             ],
                             'pluginOptions' => [
                                 'autoclose' => true,
@@ -114,7 +126,11 @@ $cus = new CustomFunc();
                     </div>
 
                     <div class="col-12">
-                        <?= $form->field($model, 'noi_dung_lap')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'noi_dung_lap')->textInput([
+                            'maxlength' => true,
+                            'disabled' => !$isDraft
+
+                        ]) ?>
                     </div>
                 </div>
             </fieldset>
@@ -134,7 +150,9 @@ $cus = new CustomFunc();
                             'data' => (new BoPhan())->getListTree(),
                             'options' => [
                                 'id' => 'id-bo-phan',
-                                'placeholder' => 'Chọn ' . $model->getAttributeLabel('id_bo_phan_quan_ly') . '...'
+                                'placeholder' => 'Chọn ' . $model->getAttributeLabel('id_bo_phan_quan_ly') . '...',
+                                'disabled' => !$isDraft
+
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
@@ -149,7 +167,9 @@ $cus = new CustomFunc();
                         <?= $form->field($model, 'id_nguoi_yeu_cau')->widget(DepDrop::classname(), [
                             'options' => [
                                 'id' => 'id-nhan-vien',
-                                'placeholder' => 'Select ...'
+                                'placeholder' => 'Select ...',
+                                'disabled' => !$isDraft
+
                             ],
                             'data' => ($model->isNewRecord
                                 ? $newArr
@@ -171,7 +191,10 @@ $cus = new CustomFunc();
                     </div>
 
                     <div class="col-12">
-                        <?= $form->field($model, 'ly_do')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'ly_do')->textInput([
+                            'maxlength' => true,
+                            'disabled' => !$isDraft
+                        ]) ?>
                     </div>
                 </div>
 
@@ -186,30 +209,17 @@ $cus = new CustomFunc();
                     <p>Địa điểm công trình</p>
                 </legend>
                 <div class="row">
-                    <!-- <div class="col-4">
-                        <?php //$form->field($model, 'hieu_luc')->textInput(['maxlength' => true]) 
-                        ?>
-                        <label for="hieu_luc">
-                            <?php //$model->getAttributeLabel('hieu_luc') 
-                            ?>
-                        </label>
-                        <?php
-                        // RadioWidget::widget([
-                        //     'model' => $model,
-                        //     'attr' => 'hieu_luc',
-                        //     'isNew' => $model->isNewRecord,
-                        //     'showInline' => true,
-                        //     'list' => YeuCauVanHanh::getDmHieuLuc()
-                        // ]) 
-                        ?>
-                    </div> -->
-
                     <div class="col-6">
-                        <?= $form->field($model, 'dia_diem')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'dia_diem')->textInput([
+                            'maxlength' => true,
+                            'disabled' => !$isDraft
+                        ]) ?>
                     </div>
 
                     <div class="col-6">
-                        <?= $form->field($model, 'cong_trinh')->textInput() ?>
+                        <?= $form->field($model, 'cong_trinh')->textInput([
+                            'disabled' => !$isDraft
+                        ]) ?>
                     </div>
 
 
@@ -217,125 +227,6 @@ $cus = new CustomFunc();
             </fieldset>
         </div>
     </div>
-
-    <!-- <div class="row">
-        <div class="col">
-            <fieldset class="border p-2" style="margin:3px;">
-                <legend class="legend">
-                    <p>Thông tin người duyệt</p>
-                </legend>
-                <div class="row">
-                    <div class="col-6">
-                        <?= $form->field($model, 'id_nguoi_duyet')->widget(Select2::classname(), [
-                            'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
-                            'language' => 'vi',
-                            'options' => ['placeholder' => 'Chọn...'],
-                            'pluginOptions' => [
-                                'allowClear' => true
-                            ],
-                        ]); ?>
-                    </div>
-                    <div class="col-6">
-                        <?= $form->field($model, 'ngay_duyet')->widget(DatePicker::classname(), [
-                            'options' => [
-                                'placeholder' => 'Chọn ngày...'
-                            ],
-                            'pluginOptions' => [
-                                'autoclose' => true,
-                                'format' => 'dd/mm/yyyy',
-                                'todayHighlight' => true
-                            ]
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-12">
-                        <?= $form->field($model, 'noi_dung_duyet')->textInput(['maxlength' => true]) ?>
-                    </div>
-                </div>
-
-            </fieldset>
-        </div>
-
-        <div class="col">
-            <fieldset class="border p-2" style="margin:3px;">
-                <legend class="legend">
-                    <p>Thông tin người nhận</p>
-                </legend>
-                <div class="row">
-                    <div class="col-6">
-                        <?= $form->field($model, 'id_nguoi_nhan')->widget(Select2::classname(), [
-                            'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
-                            'language' => 'vi',
-                            'options' => ['placeholder' => 'Chọn...'],
-                            'pluginOptions' => [
-                                'allowClear' => true
-                            ],
-                        ]); ?>
-                    </div>
-                    <div class="col-6">
-                        <?= $form->field($model, 'ngay_nhan')->widget(DatePicker::classname(), [
-                            'options' => [
-                                'placeholder' => 'Chọn ngày...'
-                            ],
-                            'pluginOptions' => [
-                                'autoclose' => true,
-                                'format' => 'dd/mm/yyyy'
-                            ]
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-12">
-                        <?= $form->field($model, 'noi_dung_nhan')->textInput(['maxlength' => true]) ?>
-                    </div>
-                </div>
-
-            </fieldset>
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-            <fieldset class="border p-2" style="margin:3px;">
-                <legend class="legend">
-                    <p>Thông tin xuất</p>
-                </legend>
-                <div class="row">
-                    <div class="col-6">
-                        <?= $form->field($model, 'id_nguoi_xuat')->widget(Select2::classname(), [
-                            'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
-                            'language' => 'vi',
-                            'options' => ['placeholder' => 'Chọn...'],
-                            'pluginOptions' => [
-                                'allowClear' => true
-                            ],
-                        ]); ?>
-                    </div>
-
-                    <div class="col-6">
-                        <?= $form->field($model, 'ngay_xuat')->widget(DatePicker::classname(), [
-                            'options' => [
-                                'placeholder' => 'Chọn ngày...'
-                            ],
-                            'pluginOptions' => [
-                                'autoclose' => true,
-                                'format' => 'dd/mm/yyyy'
-                            ]
-                        ]);
-                        ?>
-                    </div>
-
-                    <div class="col-12">
-                        <?= $form->field($model, 'noi_dung_xuat')->textInput(['maxlength' => true]) ?>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div class="col-4">
-
-        </div>
-    </div> -->
-
 
     <!-- Them Chi tiet Thiet bi -->
 
@@ -364,8 +255,10 @@ $cus = new CustomFunc();
                 <div class="panel-heading text-primary bg-transparent">
                     <h3 class="panel-title pull-left m-2">Chi tiết thiết bị</h3>
                     <div class="pull-right">
-                        <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
-                        <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
+                        <?php if ($isDraft) : ?>
+                            <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
+                            <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
+                        <?php endif; ?>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -387,7 +280,11 @@ $cus = new CustomFunc();
                         </div>
                         <div class="col">
                             <?= $form->field($modelDetail, "[{$i}]ngay_bat_dau")->widget(DatePicker::classname(), [
-                                'options' => ['placeholder' => 'Nhập ngày ...'],
+                                'options' => [
+                                    'placeholder' => 'Nhập ngày ...',
+                                    'class' => 'date-picker'
+
+                                ],
                                 'pluginOptions' => [
                                     'autoclose' => true,
                                     'format' => 'dd/mm/yyyy',
@@ -397,7 +294,10 @@ $cus = new CustomFunc();
                         </div>
                         <div class="col">
                             <?= $form->field($modelDetail, "[{$i}]ngay_ket_thuc")->widget(DatePicker::classname(), [
-                                'options' => ['placeholder' => 'Nhập ngày ...'],
+                                'options' => [
+                                    'placeholder' => 'Nhập ngày ...',
+                                    'class' => 'date-picker'
+                                ],
                                 'pluginOptions' => [
                                     'autoclose' => true,
                                     'format' => 'dd/mm/yyyy',
@@ -460,4 +360,31 @@ $cus = new CustomFunc();
 // JS;
 
 // $this->registerJs($js);
+?>
+
+<?php
+$script = <<< JS
+    $(document).ready(function() {
+    $('.dynamicform_wrapper').on('afterInsert', function(e, item) {
+        console.log("Event triggered");
+        console.log("Lenght: " + $(this).find('.date-picker').length);
+        $(item).find('.date-picker').each(function() {
+            $(this).kvDatepicker({
+                autoclose: true,
+                format: 'dd-mm-yyyy',
+                todayHighlight: true
+            });
+        });
+    });
+
+    // Initialize date-picker on existing elements
+    $('.date-picker').kvDatepicker({
+            autoclose: true,
+                format: 'dd-mm-yyyy',
+            todayHighlight: true
+    });
+});
+JS;
+
+$this->registerJs($script);
 ?>
