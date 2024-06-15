@@ -43,6 +43,8 @@
 									<li><a class="sub-side-menu__item" href="/taisan/gui-yeu-cau-van-hanh?menu=ts8" data-menu="ts8">Gửi phê duyệt</a></li>
 									<li><a class="sub-side-menu__item" href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=ts9" data-menu="ts9">Phê duyệt</a></li>
 									<li><a class="sub-side-menu__item" href="/taisan/xuat-yeu-cau-van-hanh?menu=ts10" data-menu="ts10">Xuất và vận hành</a></li>
+									<li><a class="sub-side-menu__item" href="/taisan/phieu-tra-thiet-bi?menu=ts11" data-menu="ts11">Phiếu trả thiết bị</a></li>
+									<li><a class="sub-side-menu__item" href="/taisan/phieu-tra-thiet-bi?menu=ts12" data-menu="ts12">Theo dõi thiết bị</a></li>
 								</ul>
 							</li>
 							<!-- <li><a href="/taisan/yeu-cau-van-hanh?menu=ts7" class="slide-item" data-menu="ts7">Tạo phiếu Điều chuyển</a></li> -->
