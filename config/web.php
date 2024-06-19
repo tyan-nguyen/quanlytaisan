@@ -101,7 +101,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '/'=>'/user'
+                '/'=>'/user',
+                'taisan/theo-doi-van-hanh/list-calendar' => 'taisan/theo-doi-van-hanh/list-calendar'
             ],
         ],
         

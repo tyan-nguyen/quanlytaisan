@@ -79,4 +79,9 @@ class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
         $cus = new CustomFunc();
         return $cus->convertYMDToDMY($this->ngay_ket_thuc);
     }
+
+    public function getYeuCauVanHanh()
+    {
+        return $this->hasOne(YeuCauVanHanh::class, ['id' => 'id_yeu_cau_van_hanh']);
+    }
 }

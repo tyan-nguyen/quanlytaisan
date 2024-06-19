@@ -169,8 +169,7 @@ class YeuCauVanHanhController extends Controller
                 Yii::$app->session->setFlash('error', 'Failed.');
             }
 
-        return $this->redirect(['view', 'id' => $model->id]);
-            
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->redirect(['view', 'id' => $model->id]);
@@ -220,6 +219,37 @@ class YeuCauVanHanhController extends Controller
 
         return $models;
     }
+
+    /**
+     * Calendar Event Action
+     */
+
+    public function actionEvents()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $requests = YeuCauVanHanhCt::find()
+        // ->joinWith('YeuCauVanHanh')
+        ->joinWith(['yeuCauVanHanh' => function ($query) {
+            $query->alias('ycvh');
+        }])
+        ->where(['ycvh.hieu_luc' => 'VANHANH'])
+        ->all();
+        
+        $events = [];
+
+        foreach ($requests as $detail) {
+            $events[] = [
+                'id' => $detail->id,
+                'title' => $detail->thietBi->ten_thiet_bi,
+                'start' => $detail->ngay_bat_dau,
+                'end' => $detail->ngay_ket_thuc,
+                'url' => Yii::$app->urlManager->createUrl(['/taisan/yeu-cau-van-hanh/view', 'id' => $detail->id_yeu_cau_van_hanh]),
+            ];
+        }
+        return $events;
+    }
+
+
 
     public function actionCreate()
     {

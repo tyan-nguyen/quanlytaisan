@@ -38,9 +38,9 @@ class ViboonAsset extends AssetBundle
         'assets/plugins/notify/js/jquery.growl.js',
         'assets/plugins/notify/js/notifIt.js',
         
-        //'assets/plugins/fullcalendar/moment.min.js',
-        //'assets/plugins/fullcalendar/fullcalendar.min.js',
-        //'assets/js/fullcalendar.js',
+        'assets/plugins/fullcalendar/moment.min.js',
+        'assets/plugins/fullcalendar/fullcalendar.min.js',
+        'assets/js/fullcalendar.js',
         
         'assets/js/custom.js',
         //'assets/js/custom-switcher.js',
