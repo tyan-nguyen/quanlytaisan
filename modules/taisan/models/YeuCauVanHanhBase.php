@@ -23,6 +23,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     const STATUS_DADUYET = 'DADUYET';
     const STATUS_VANHANH = 'VANHANH';
     const STATUS_DATRA = 'DATRA';
+    const STATUS_NGUNG_QUYTRINH = 'NGUNG_QUYTRINH';
 
     const  SCENARIO_SEND_REQUEST = 'send_request';
 
@@ -43,6 +44,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
             YeuCauVanHanhBase::STATUS_DADUYET => 'Đã duyệt',
             YeuCauVanHanhBase::STATUS_DATRA => 'Đã trả',
             YeuCauVanHanhBase::STATUS_VANHANH => 'Đang vận hành',
+            YeuCauVanHanhBase::STATUS_NGUNG_QUYTRINH => 'Ngưng quy trình',
         ];
     }
 
@@ -74,6 +76,9 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 break;
             case YeuCauVanHanhBase::STATUS_DATRA:
                 $label = "Đã trả";
+                break;
+            case YeuCauVanHanhBase::STATUS_NGUNG_QUYTRINH:
+                $label = "Ngưng quy trình";
                 break;
             default:
                 $label = '';
@@ -118,6 +123,11 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 $label = "Đã trả";
                 $icon = 'fe fe-check';
                 $type = 'primary';
+                break;
+            case "NGUNG_QUYTRINH":
+                $label = "Ngưng quy trình";
+                $icon = 'fe fe-x';
+                $type = 'danger';
                 break;
             default:
                 $label = '';
@@ -228,7 +238,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     // {
     //     return $this->id_nguoi_gui != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_gui']) : NULL;
     // }
-    
+
     public function getNguoiGui()
     {
         return $this->id_nguoi_gui != NULL ? $this->hasOne(User::class, ['id' => 'id_nguoi_gui']) : NULL;

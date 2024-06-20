@@ -102,9 +102,14 @@ class XuatYeuCauVanHanhController extends Controller
         $userList = ArrayHelper::map(User::find()->all(), 'id', 'username');
         $hieuLuc = $model->hieu_luc ?? null;
         $isApproved = true;
+        $isPrint = true;
 
         if ($hieuLuc !== null && $hieuLuc !== 'DADUYET') {
             $isApproved = false;
+        }
+
+        if ($hieuLuc !== null && $hieuLuc !== 'VANHANH') {
+            $isPrint = false;
         }
 
         if ($request->isAjax) {
@@ -125,6 +130,13 @@ class XuatYeuCauVanHanhController extends Controller
                         'type' => 'submit',
                         'form' => 'operate-form',
                         'hidden' => !$isApproved
+                    ])
+                    . Html::button('Print', [
+                        'class' => 'btn btn-primary',
+                        'id' => 'print-button',
+                        'onclick' => 'printRequest(' . $model->id . ')',
+                        'hidden' => !$isPrint
+
                     ]),
                 // .Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
             ];
@@ -148,7 +160,7 @@ class XuatYeuCauVanHanhController extends Controller
 
         if (Yii::$app->request->post('hieu_luc') === 'VANHANH') {
 
-            var_dump(Yii::$app->request->post());   
+            var_dump(Yii::$app->request->post());
 
             $model->hieu_luc = Yii::$app->request->post('hieu_luc');
 
@@ -375,5 +387,19 @@ class XuatYeuCauVanHanhController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /* Print */
+    public function actionPrint($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->hieu_luc !== 'VANHANH') {
+            throw new \yii\web\ForbiddenHttpException('Không thể in.');
+        }
+
+        // Render the print view
+        return $this->renderPartial('print', [
+            'model' => $model,
+        ]);
     }
 }

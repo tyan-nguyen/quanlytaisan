@@ -80,6 +80,7 @@ class PheDuyetYeuCauVanHanhController extends Controller
 
         $hieuLuc = $model->hieu_luc ?? null;
         $isPending = true;
+
         if ($hieuLuc !== null && $hieuLuc !== 'CHODUYET') {
             $isPending = false;
         }
@@ -99,6 +100,17 @@ class PheDuyetYeuCauVanHanhController extends Controller
                         'form' => 'approve-form',
                         'hidden' => !$isPending
                     ])
+                    . Html::button(
+                        'Không duyệt',
+                        [
+                            'class' => 'btn btn-danger',
+                            'type' => 'button',
+                            // 'form' => 'approve-form',
+                            'onClick' => "setStatusAndSubmit('NGUNG_QUYTRINH')",
+                            'hidden' => !$isPending
+
+                        ]
+                    )
             ];
         } else {
             return $this->render('view', [
@@ -115,51 +127,26 @@ class PheDuyetYeuCauVanHanhController extends Controller
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
 
-            if (Yii::$app->request->post('hieu_luc') === 'DADUYET') {
-                $model->hieu_luc = Yii::$app->request->post('hieu_luc');
+            $status = Yii::$app->request->post('hieu_luc');
+
+            if ($status === 'DADUYET' || $status === 'NGUNG_QUYTRINH') {
+
+                $model->hieu_luc = $status;
                 $model->id_nguoi_duyet = Yii::$app->user->identity->id;
                 $model->ngay_duyet = date('Y-m-d H:i:s');
                 $model->noi_dung_duyet = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_duyet'];
 
-                // var_dump($model->hieu_luc);
-                // var_dump(Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_duyet']);
-                // var_dump(Yii::$app->request->post('ngay_duyet'));
-
-                // var_dump($model->validate());
-
-                // if ($model->validate() && $model->save(false)) {
-                //     return [
-                //         'success' => true,
-                //         'message' => 'Successfully approved.',
-                //     ];
-                // } else {
-                //     return [
-                //         'success' => false,
-                //         'errors' => $model->errors,
-                //         'message' => 'Failed to approve.',
-                //     ];
-                // }
-
                 if ($model->save(false)) {
                     Yii::$app->session->setFlash('success', 'Successfully.');
-                    return $this->redirect(['index']);
+                    // return $this->redirect(['index']);
+                    return ['success' => true, 'redirectUrl' => \yii\helpers\Url::to(['index'])];
                 } else {
                     Yii::$app->session->setFlash('error', 'Failed.');
+                    return ['success' => false, 'errors' => $model->errors];
                 }
             }
         }
         return $this->redirect(['index']);
-
-        // return $this->redirect(['view', 'id' => $model->id]);
-
-        // if ($model->hieu_luc === 'CHODUYET') {
-        //     $model->hieu_luc = 'DADUYET';
-        //     if ($model->save(false)) {
-        //         Yii::$app->session->setFlash('success', 'approved.');
-        //     } else {
-        //         Yii::$app->session->setFlash('error', 'Failed.');
-        //     }
-        // }
     }
 
 

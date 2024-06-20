@@ -140,11 +140,14 @@ use yii\helpers\Url;
                                         'phe-duyet-yeu-cau-van-hanh/approve',
                                         'id' => $model->id,
                                     ],
+                                    'options' => ['data' => ['pjax' => true]],
                                 ]); ?>
+
+                                <?= Html::hiddenInput('hieu_luc', 'DADUYET', ['id' => 'hieu-luc-hidden-input']) ?>
+
 
                                 <?= $form->field($model, 'id_nguoi_duyet')->hiddenInput(['value' => Yii::$app->user->identity->id])->label(false) ?>
                                 <?= $form->field($model, 'ngay_duyet')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false) ?>
-                                <?= Html::hiddenInput('hieu_luc', 'DADUYET') ?>
 
                                 <div class="row">
                                     <div class="col-12">
@@ -163,3 +166,34 @@ use yii\helpers\Url;
         </div>
     </div>
 </div>
+
+<script>
+    function setStatusAndSubmit(status) {
+        var statusInput = document.getElementById('hieu-luc-hidden-input');
+        if (statusInput) {
+            statusInput.value = status;
+            var form = document.getElementById('approve-form');
+            var formData = new FormData(form);
+            // Submit the form using AJAX
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = response.redirectUrl;
+                    } else {
+                        console.error('Failed to save data:', response.errors);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX request failed:', textStatus, errorThrown);
+                }
+            });
+        } else {
+            console.error('Status hidden input not found');
+        }
+    }
+</script>
