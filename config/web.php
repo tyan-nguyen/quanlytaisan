@@ -103,7 +103,8 @@ $config = [
             'rules' => [
                 '/'=>'/user',
                 'taisan/theo-doi-van-hanh/list-calendar' => 'taisan/theo-doi-van-hanh/list-calendar',
-                'taisan/xuat-yeu-cau-van-hanh/print' => 'taisan/xuat-yeu-cau-van-hanh/print'
+                'taisan/xuat-yeu-cau-van-hanh/print' => 'taisan/xuat-yeu-cau-van-hanh/print',
+                'taisan/xuat-yeu-cau-van-hanh/print-view' => 'taisan/xuat-yeu-cau-van-hanh/print-view'
 
             ],
         ],

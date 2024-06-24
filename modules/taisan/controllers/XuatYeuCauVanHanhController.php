@@ -134,7 +134,7 @@ class XuatYeuCauVanHanhController extends Controller
                     . Html::button('Print', [
                         'class' => 'btn btn-primary',
                         'id' => 'print-button',
-                        'onclick' => 'printRequest(' . $model->id . ')',
+                        // 'onclick' => 'printRequest(' . $model->id . ')',
                         'hidden' => !$isPrint
 
                     ]),
@@ -390,16 +390,24 @@ class XuatYeuCauVanHanhController extends Controller
     }
 
     /* Print */
-    public function actionPrint($id)
-    {
-        $model = $this->findModel($id);
-        if ($model->hieu_luc !== 'VANHANH') {
-            throw new \yii\web\ForbiddenHttpException('Không thể in.');
-        }
+    // public function actionPrint($id)
+    // {
+    //     $model = $this->findModel($id);
+    //     if ($model->hieu_luc !== 'VANHANH') {
+    //         throw new \yii\web\ForbiddenHttpException('Không thể in.');
+    //     }
 
-        // Render the print view
-        return $this->renderPartial('print', [
-            'model' => $model,
+    //     // Render the print view
+    //     return $this->renderPartial('print', [
+    //         'model' => $model,
+    //     ]);
+    // }
+
+    public function actionPrintView($id)
+    {
+        // Render the view you want to print
+        return $this->renderPartial('print',[
+            'model'=>$this->findModel($id)
         ]);
     }
 }

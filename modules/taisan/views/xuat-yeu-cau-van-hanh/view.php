@@ -297,3 +297,33 @@ use yii\helpers\Url;
         </div>
     </div>
 </div>
+
+<div id="print-yeu-cau-van-hanh-content" class="print-yeu-cau-van-hanh-content">
+</div>
+
+<?php
+
+$js = <<< JS
+$(document).ready(function() {
+    $("#print").click(function(){
+        $('.print-yeu-cau-van-hanh').printThis();
+    });
+    var modelId = '{$model->id}';
+    $('#print-button').on('click', function() {
+        $.ajax({
+            url: '/taisan/xuat-yeu-cau-van-hanh/print-view?id='+ modelId,
+            type: 'GET',
+            success: function(data) {
+                $('#print-yeu-cau-van-hanh-content').html(data);
+                $('.print-yeu-cau-van-hanh').printThis();
+            },
+            error: function() {
+                alert('Đã xảy ra lỗi trong khi tải nội dung.');
+            }
+        });
+    });
+});
+JS;
+$this->registerJs($js, \yii\web\View::POS_READY);
+
+?>
