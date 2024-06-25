@@ -84,7 +84,7 @@ if($model->ngay_dua_vao_su_dung != null)
                         'language' => 'vi',
                         'options' => ['placeholder' => 'Chọn thiết bị...'],
                         'pluginOptions' => [
-                            'allowClear' => true
+                            'allowClear' => true,
                         ],
                     ]);?>
                 </div>

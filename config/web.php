@@ -35,6 +35,9 @@ $config = [
         'suachua' => [
             'class' => 'app\modules\suachua\Module',
         ],
+        'muasam' => [
+            'class' => 'app\modules\muasam\Module',
+        ],
         'user-management' => [
             'class' => 'webvimark\modules\UserManagement\UserManagementModule',
             
