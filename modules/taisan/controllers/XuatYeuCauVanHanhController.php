@@ -3,6 +3,7 @@
 namespace app\modules\taisan\controllers;
 
 use app\modules\bophan\models\NhanVien;
+use app\modules\taisan\models\ThietBi;
 use Yii;
 use app\modules\taisan\models\YeuCauVanHanh;
 use app\modules\taisan\models\XuatYeuCauVanHanhSearch;
@@ -160,7 +161,7 @@ class XuatYeuCauVanHanhController extends Controller
 
         if (Yii::$app->request->post('hieu_luc') === 'VANHANH') {
 
-            var_dump(Yii::$app->request->post());
+            // var_dump(Yii::$app->request->post());
 
             $model->hieu_luc = Yii::$app->request->post('hieu_luc');
 
@@ -173,6 +174,14 @@ class XuatYeuCauVanHanhController extends Controller
             $model->noi_dung_nhan = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_nhan'];
 
             if ($model->save(false)) {
+                foreach ($model->details as $detail) {
+                    $device = ThietBi::findOne($detail->id_thiet_bi);
+                    if ($device) {
+                        $device->trang_thai = 'VANHANH';
+                        $device->save(false);
+                    }
+                }
+
                 Yii::$app->session->setFlash('success', 'Successfully.');
                 return $this->redirect(['index']);
             } else {

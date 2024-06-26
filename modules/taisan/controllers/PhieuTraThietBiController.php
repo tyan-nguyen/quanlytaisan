@@ -6,6 +6,7 @@ use Yii;
 use app\modules\taisan\models\PhieuTraThietBi;
 use app\modules\taisan\models\PhieuTraThietBiCt;
 use app\modules\taisan\models\PhieuTraThietBiSearch;
+use app\modules\taisan\models\YeuCauVanHanhCt;
 use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -93,6 +94,28 @@ class PhieuTraThietBiController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
 
             if (Yii::$app->request->post('hieu_luc') === 'DATRA') {
+                // ngay tra thuc te
+
+                $post = $request->post();
+                foreach($modelsDetail as $returnDetail) {
+                    $requestDetail = YeuCauVanHanhCt::find()
+                    ->joinWith('thietBi')
+                    ->where(['ts_thiet_bi.id' => $returnDetail->id_thiet_bi, 'ts_thiet_bi.trang_thai' => 'VANHANH'])
+                    ->one();
+
+                    if ($requestDetail) {
+                        $requestDetail->ngay_tra_thuc_te = $returnDetail->ngay_tra;
+                        $requestDetail->save(false);
+                    }
+    
+                    $thietBi = $requestDetail->thietBi; // Assuming there's a relation to get the thietBi
+                    if ($thietBi) {
+                        $thietBi->trang_thai = 'HOATDONG';
+                        $thietBi->save(false);
+                    }
+
+                }
+                // /.ngay tra thuc te
                 $model->hieu_luc = Yii::$app->request->post('hieu_luc');
                 if ($model->save(false)) {
                     Yii::$app->session->setFlash('success', 'Successfully.');
