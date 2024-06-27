@@ -52,7 +52,7 @@ use Da\QrCode\Label;
                                 'value'=>$model->loaiBaoTri->ten,
                             ],
                             //'loaiBaoTri.ten',
-                            'ngay_bao_tri_cuoi',
+                            'ngay_bat_dau',
                             'bao_truoc',
                             'can_cu',
                             'so_ky',

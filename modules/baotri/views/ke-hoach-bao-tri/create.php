@@ -10,5 +10,6 @@ use yii\bootstrap5\Html;
 <div class="ke-hoach-bao-tri-create">
     <?= $this->render('_form', [
         'model' => $model,
+        'fromValidate'=>isset($fromValidate)?$fromValidate:false
     ]) ?>
 </div>

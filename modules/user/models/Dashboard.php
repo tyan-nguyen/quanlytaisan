@@ -3,6 +3,8 @@ namespace app\modules\user\models;
 
 use app\modules\taisan\models\ThietBi;
 use app\modules\taisan\models\LoaiThietBi;
+use app\modules\baotri\models\PhieuBaoTri;
+use yii\db\Expression;
 
 class Dashboard{
     /**
@@ -66,5 +68,17 @@ class Dashboard{
         $arr[] = ['label'=>$tsModel->getTenTrangThai(ThietBi::STATUS_HONG), 'sum'=>$tsBroken, 'percent'=>($sum>0?(round($tsBroken/$sum,4)*100):0) . '%', 'color'=>'#01b8ff'];
         
         return $arr;
+    }
+    
+    /**
+     * get danh sách đến hạn bảo trì thêm vào box-baotri (hiển thị 6 item)
+     */
+    public function getPhieuDenHanBaoTri(){
+        $query = PhieuBaoTri::find();
+        $query->andFilterWhere(['>=', new Expression('DATE(thoi_gian_bat_dau)'), new Expression('CURDATE()')]);
+        $query->andFilterWhere([
+            'da_hoan_thanh' => 0,
+        ]);
+        return $query->limit(5)->orderBy(['thoi_gian_bat_dau'=>SORT_ASC])->all();
     }
 }

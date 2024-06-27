@@ -24,6 +24,14 @@ class CustomFunc
     public function convertYMDHISToDMYHID($date_string){
         return $date_string!=null ? date("d/m/Y(H:i:s)", strtotime($date_string)) : '';
     }
+    /**
+     * chuyen doi ngay chuoi Y-m-d H:i:s -> dd/mm/yyyy
+     * @param string $date_string
+     * @return string
+     */
+    public function convertYMDHISToDMY($date_string){
+        return $date_string!=null ? date("d/m/Y", strtotime($date_string)) : '';
+    }
     
     /**
      * chuyen doi ngay chuoi Y-m-d -> dd/mm/yyyy
@@ -44,6 +52,19 @@ class CustomFunc
             $date_string = str_replace('/', '-', $date_string);
             return date("Y-m-d", strtotime($date_string));
         } else 
+            return '';
+    }
+    
+    /**
+     * chuyen doi ngay chuoi dd/mm/yyyy -> Y-m-d h:i:s để lưu CSDL
+     * @param string $date_string
+     * @return string
+     */
+    public function convertDMYToYMDHIS($date_string){
+        if($date_string != null){
+            $date_string = str_replace('/', '-', $date_string);
+            return date("Y-m-d 07:00:00", strtotime($date_string));
+        } else
             return '';
     }
 }

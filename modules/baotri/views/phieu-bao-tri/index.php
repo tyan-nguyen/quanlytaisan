@@ -9,10 +9,10 @@ use yii\widgets\Pjax;
 use app\widgets\FilterFormWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\baotri\models\KeHoachBaoTriSearch */
+/* @var $searchModel app\modules\baotri\models\search\PhieuBaoTriSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Kế hoạch bảo trì';
+$this->title = 'Phieu Bao Tris';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -28,7 +28,7 @@ Yii::$app->params['showExport'] = true;
     'formSelector' => '.myFilterForm'
 ]); ?>
 
-<div class="ke-hoach-bao-tri-index">
+<div class="phieu-bao-tri-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
             'id'=>'crud-datatable',
@@ -39,9 +39,7 @@ Yii::$app->params['showExport'] = true;
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Thêm mới Ke Hoach Bao Tris','class'=>'btn btn-outline-primary']).
-                   /*  Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thống kê', ['thongke'],
-                        ['role'=>'modal-remote','title'=> 'Thống kê bảo trì','class'=>'btn btn-outline-primary']). */
+                    ['role'=>'modal-remote','title'=> 'Thêm mới Phieu Bao Tris','class'=>'btn btn-outline-primary']).
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
                     //'{toggleData}'.
@@ -57,7 +55,7 @@ Yii::$app->params['showExport'] = true;
             'panel' => [
                 //'type' => 'primary', 
                 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Danh sách',
-                'before'=>'<em>* Danh sách Kế hoạch bảo trì</em>',
+                'before'=>'<em>* Danh sách Phieu Bao Tris</em>',
                 'after'=>BulkButtonWidget::widget([
                             'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
                                 ["bulkdelete"] ,
@@ -83,23 +81,14 @@ Yii::$app->params['showExport'] = true;
         'id'=>'ajaxCrudModal',
         'tabindex' => false // important for Select2 to work properly
    ],
-   'dialogOptions'=>['class'=>'modal-xl'],
+   'dialogOptions'=>['class'=>'modal-lg'],
    'closeButton'=>['label'=>'<span aria-hidden=\'true\'>×</span>'],
    'id'=>'ajaxCrudModal',
     'footer'=>'',// always need it for jquery plugin
 ])?>
+
 <?php Modal::end(); ?>
-<?php Modal::begin([
-    'options' => [
-            'id'=>'ajaxCrudModal2',
-            'tabindex' => false // important for Select2 to work properly
-    ],
-    'dialogOptions'=>['class'=>'modal-lg'],
-    'closeButton'=>['label'=>'<span aria-hidden=\'true\'>×</span>'],
-    'id'=>'ajaxCrudModal2',
-    'footer'=>'',// always need it for jquery plugin
-    ]) ?>
-<?php Modal::end(); ?>
+
 <?php
     $searchContent = $this->render("_search", ["model" => $searchModel]);
     echo FilterFormWidget::widget(["content"=>$searchContent, "description"=>"Nhập thông tin tìm kiếm."]) 

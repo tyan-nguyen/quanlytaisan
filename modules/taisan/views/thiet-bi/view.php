@@ -33,6 +33,9 @@ use app\widgets\views\ImageWithButtonWidget;
                 <li><a href="#tab5" data-bs-toggle="tab" aria-selected="true" role="tab">
 					Lịch sử sửa chữa
 				</a></li>
+				 <li><a href="#tab6" data-bs-toggle="tab" aria-selected="true" role="tab">
+					Lịch sử bảo trì
+				</a></li>
 			</ul>
 		</div>
 	</div>
@@ -175,6 +178,12 @@ use app\widgets\views\ImageWithButtonWidget;
                             'searchModel' => $searchModel,
                             'dataProvider' => $dataProvider,
                             //"phieuSuaChua"=>$phieuSuaChua
+                        ]) ?>
+			</div>
+			<div class="tab-pane" id="tab6" role="tabpanel">
+            <?= $this->render('lich-su-bao-tri', [
+                            'searchModel' => $searchModelBaoTri,
+                            'dataProvider' => $dataProviderBaoTri,
                         ]) ?>
 			</div>
 		</div>

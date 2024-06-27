@@ -1,12 +1,113 @@
+<?php 
+use cangak\ajaxcrud\CrudAsset; 
+use yii\bootstrap5\Modal;
+
+CrudAsset::register($this);
+?>
+<style>
+.fc-list-event-title a{
+    cursor: pointer;
+}
+</style>
+
+
+<?php Modal::begin([
+   'options' => [
+        'id'=>'ajaxCrudModal',
+        'tabindex' => false // important for Select2 to work properly
+   ],
+   'dialogOptions'=>['class'=>'modal-xl'],
+   'closeButton'=>['label'=>'<span aria-hidden=\'true\'>×</span>'],
+   'id'=>'ajaxCrudModal',
+    'footer'=>'',// always need it for jquery plugin
+])?>
+<?php Modal::end(); ?>
+
 <div class="row">
-    <div class="col-md-12">
-    	<div class="card custom-card">
-    		<div class="card-header rounded-bottom-0">
-    			<h5 class="mt-3">List Calendar</h5>
-    		</div>
-    		<div class="card-body">
-    			<div id="calendar" class="fc fc-media-screen fc-direction-ltr fc-theme-standard"><div class="fc-header-toolbar fc-toolbar fc-toolbar-ltr"><div class="fc-toolbar-chunk"><div class="fc-button-group"><button type="button" title="Previous day" aria-pressed="false" class="fc-prev-button fc-button fc-button-primary"><span class="fc-icon fc-icon-chevron-left"></span></button><button type="button" title="Next day" aria-pressed="false" class="fc-next-button fc-button fc-button-primary"><span class="fc-icon fc-icon-chevron-right"></span></button></div><button type="button" title="Today" aria-pressed="false" class="fc-today-button fc-button fc-button-primary">today</button></div><div class="fc-toolbar-chunk"><h2 class="fc-toolbar-title" id="fc-dom-86">July 12, 2021</h2></div><div class="fc-toolbar-chunk"><div class="fc-button-group"><button type="button" title="list day view" aria-pressed="true" class="fc-listDay-button fc-button fc-button-primary fc-button-active">list day</button><button type="button" title="list week view" aria-pressed="false" class="fc-listWeek-button fc-button fc-button-primary">list week</button></div></div></div><div aria-labelledby="fc-dom-86" class="fc-view-harness fc-view-harness-passive"><div class="fc-list  fc-list-sticky fc-listDay-view fc-view"><div class="fc-scroller" style="overflow: visible;"><table class="fc-list-table "><thead><tr><th scope="col" id="fc-dom-87">Time</th><th scope="col" aria-hidden="true"></th><th scope="col" id="fc-dom-88">Event</th></tr></thead><tbody><tr class="fc-list-day fc-day fc-day-mon fc-day-past" data-date="2021-07-12"><th scope="colgroup" colspan="3" id="fc-dom-89-2021-07-12" aria-labelledby="fc-dom-91"><div class="fc-list-day-cushion fc-cell-shaded"><a id="fc-dom-91" class="fc-list-day-text" title="Go to July 12, 2021" data-navlink="" tabindex="0">Monday</a></div></th></tr><tr class="fc-list-event  fc-event fc-event-past"><td headers="fc-dom-87 fc-dom-89-2021-07-12" class="fc-list-event-time">all-day</td><td aria-hidden="true" class="fc-list-event-graphic"><span class="fc-list-event-dot"></span></td><td headers="fc-dom-88 fc-dom-89-2021-07-12" class="fc-list-event-title"><a>Conference</a></td></tr><tr class="fc-list-event  fc-event fc-event-past"><td headers="" class="fc-list-event-time"></td><td headers="" class="fc-list-event-graphic" aria-hidden="true"><span class="fc-list-event-dot"></span></td><td headers="fc-dom-88 fc-dom-89-2021-07-12" class="fc-list-event-title"><a>Meeting</a></td></tr></tbody></table></div></div></div></div>
-    		</div>
-    	</div>
-    </div>
+	<div class="col-md-12">
+		<div class="card custom-card">
+			<div class="card-header rounded-bottom-0">
+				<h5 class="mt-3">LỊCH BẢO TRÌ/BÃO DƯỠNG THIẾT BỊ</h5>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-12 col-xl-12">
+						<div id='calendar'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </div>
+			
+
+<?php
+
+$event = json_encode($listPhieuBaoTri);
+$currentDate = date('Y-m-d');
+
+$script = <<< JS
+    
+//LIST FULLCALENDAR
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'vi',
+        height: 'auto',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'listDay,listWeek'
+        },
+     
+        // customize the button names,
+        // otherwise they'd all just say "list"
+        views: {
+            listDay: { buttonText: 'Theo ngày' },
+            listWeek: { buttonText: 'Theo tuần' }
+        },
+        initialView: 'listWeek',
+        initialDate: '$currentDate',
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        // eventLimit: true, // allow "more" link when too many events
+        dayMaxEvents: true, // allow "more" link when too many events
+        events: $event,        
+        eventClick: function(info) {
+		    /*alert('Event: ' + info.event.title);
+		    alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+		    alert('View: ' + info.view.type);		
+		    info.el.style.borderColor = 'red';*/
+		     //var modal = new ModalRemote('#ajaxCrubModal');
+		    var aClick = '<a href="/baotri/phieu-bao-tri/view?id='+ info.event.id +'" role="modal-remote">Click</a>';
+	        // Open modal
+	        modal.open(aClick, null);
+  		}
+  
+    });
+
+    calendar.render();
+});
+
+JS;
+$this->registerJs($script, \yii\web\View::POS_END);
+
+?>
+
+<script>
+/* document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar1');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+       events: [
+            {
+              id: 'a',
+              title: 'my event',
+              start: '2024-06-27'
+            }
+          ]
+    });
+    calendar.render();
+}); */
+</script>

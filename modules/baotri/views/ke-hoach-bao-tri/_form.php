@@ -18,12 +18,14 @@ use app\modules\dungchung\models\CustomFunc;
 /* @var $model app\modules\baotri\models\KeHoachBaoTri */
 /* @var $form yii\widgets\ActiveForm */
 $cus = new CustomFunc();
+if(!isset($fromValidate) || $fromValidate!=true){
 if($model->ngay_thuc_hien != null)
     $model->ngay_thuc_hien = $cus->convertYMDToDMY($model->ngay_thuc_hien);
-if($model->ngay_bao_tri_cuoi != null)
-    $model->ngay_bao_tri_cuoi = $cus->convertYMDToDMY($model->ngay_bao_tri_cuoi);
+if($model->ngay_bat_dau != null)
+    $model->ngay_bat_dau = $cus->convertYMDToDMY($model->ngay_bat_dau);
 if($model->ngay_het_hieu_luc != null)
     $model->ngay_het_hieu_luc = $cus->convertYMDToDMY($model->ngay_het_hieu_luc);
+}
 ?>
 <style>
     .legend{
@@ -78,7 +80,81 @@ if($model->ngay_het_hieu_luc != null)
                                 <?= $form->field($model, 'ten_cong_viec')->textInput(['maxlength' => true]) ?>
                             </div>
                         </div>
-                         <div class="row">
+                         
+                        <div class="row">
+                         	<!-- <div class="col">
+                                   <?= $form->field($model, 'can_cu')->textInput(['maxlength' => true]) ?>
+                            </div> -->
+                            
+                            
+                           
+                        </div>
+                        <div class="row">
+                        	  <div class="col">
+                                   <?= $form->field($model, 'id_don_vi_bao_tri')->widget(Select2::classname(), [
+                                    'data' => ArrayHelper::map(BoPhan::find()->all(), 'id', 'ten_bo_phan'),
+                                    'language' => 'vi',
+                                    'options' => ['placeholder' => 'Chọn đơn vị bảo trì...'],
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                        'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+                                    ],
+                                ]);?>
+                            </div>
+                            
+                            <div class="col">
+                         		<?= $form->field($model, 'id_nguoi_chiu_trach_nhiem')->widget(Select2::classname(), [
+                                    'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
+                                    'language' => 'vi',
+                                    'options' => ['placeholder' => 'Chọn người chịu trách nhiệm ...'],
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                        'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+                                    ],
+                                ]);?>
+                         	
+                         	</div>
+                         	
+                         	<div class="row">
+                        	<div class="col">
+                                 
+                                       <?= $form->field($model, 'muc_do_uu_tien')->widget(Select2::classname(), [
+                                        'data' => ["0"=> "Không ưu tiên", "1"=>"Ưu tiên", "2"=>"Xử lý gấp"],
+                                        'language' => 'vi',
+                                        'options' => ['placeholder' => 'Chọn đơn mức độ ưu tiên...'],
+                                        'pluginOptions' => [
+                                            'allowClear' => true,
+                                            'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+                                        ],
+                                ]);?>
+                                 
+                            </div>
+                        </div>
+                         	
+                            
+                            <!-- 
+                             <div class="col">
+								  <?= $form->field($model, 'ngay_thuc_hien')->widget(DatePicker::classname(), [
+                                            'options' => [
+                                                'placeholder' => 'Chọn ngày...'
+                                            ],
+                                            'pluginOptions' => [
+                                                'autoclose' => true,
+                                                'format' => 'dd/mm/yyyy',
+                                                'todayHighlight' => true
+                                            ]
+                            	   ]);
+                	               ?>
+                            </div>
+                             -->
+                        </div>
+                	</div>
+                	
+                	<div class="col-5">
+                        <fieldset class="border p-2" style="margin:3px;"><!--Thông tin chung -->
+                        <legend class="legend"><p>Thông tin tạo phiếu bảo trì</p></legend>
+                        
+                        <div class="row">
                          	<!-- <div class="col">
                          		 <?= $form->field($model, 'id_chi_tiet')->textInput() ?>
                             </div>  -->
@@ -93,49 +169,15 @@ if($model->ngay_het_hieu_luc != null)
                                     ],
                                 ]);?>
                             </div>
-                        </div>
-                         <div class="row">
-                         	<div class="col">
-                                  <div class="col">
-								  <?= $form->field($model, 'ngay_bao_tri_cuoi')->widget(DatePicker::classname(), [
-                                            'options' => [
-                                                'placeholder' => 'Chọn ngày...'
-                                            ],
-                                            'pluginOptions' => [
-                                                'autoclose' => true,
-                                                'format' => 'dd/mm/yyyy',
-                                                'todayHighlight' => true
-                                            ]
-                            	   ]);
-                	               ?>
-                            </div>
-                            </div>
-                            <div class="col">
-                                   <?= $form->field($model, 'bao_truoc')->textInput() ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                         	<div class="col">
-                                   <?= $form->field($model, 'can_cu')->textInput(['maxlength' => true]) ?>
-                            </div>
                             <div class="col">
                                     <?= $form->field($model, 'so_ky')->textInput() ?>
                             </div>
                         </div>
-                        <div class="row">
-                        	  <div class="col">
-                                   <?= $form->field($model, 'id_don_vi_bao_tri')->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(BoPhan::find()->all(), 'id', 'ten_bo_phan'),
-                                    'language' => 'vi',
-                                    'options' => ['placeholder' => 'Chọn đơn vị bảo trì...'],
-                                    'pluginOptions' => [
-                                        'allowClear' => true,
-                                        'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
-                                    ],
-                                ]);?>
-                            </div>
-                             <div class="col">
-								  <?= $form->field($model, 'ngay_thuc_hien')->widget(DatePicker::classname(), [
+                         <div class="row">
+                         	
+                         
+                              <div class="col">
+								  <?= $form->field($model, 'ngay_bat_dau')->widget(DatePicker::classname(), [
                                             'options' => [
                                                 'placeholder' => 'Chọn ngày...'
                                             ],
@@ -146,14 +188,19 @@ if($model->ngay_het_hieu_luc != null)
                                             ]
                             	   ]);
                 	               ?>
+                        	</div>
+                           
+                            
+                            <div class="col">
+                                   <?= $form->field($model, 'bao_truoc')->textInput() ?>
                             </div>
                         </div>
-                	</div>
-                	
-                	<div class="col-5">
-                        <fieldset class="border p-2" style="margin:3px;"><!--Thông tin chung -->
-                        <legend class="legend"><p>Người và thời gian thực hiện </p></legend>
+                        
+                        
+                        
                          <div class="row">
+                         
+                         	
                          	<div class="col">
                                  <?= $form->field($model, 'ky_bao_tri')->dropDownList(
                                         ['1'=>'Ngày', '2'=>'Tuần', '3'=>'Tháng', '4'=>'Năm'],           // Flat array ('id'=>'label')
@@ -161,25 +208,21 @@ if($model->ngay_het_hieu_luc != null)
                                     );
                                 ?>
                             </div>
-                            	<div class="col">
-                                 
-                                       <?= $form->field($model, 'muc_do_uu_tien')->widget(Select2::classname(), [
-                                        'data' => ["0"=> "Không ưu tiên", "1"=>"Ưu tiên", "2"=>"Xử lý gấp"],
-                                        'language' => 'vi',
-                                        'options' => ['placeholder' => 'Chọn đơn mức độ ưu tiên...'],
-                                        'pluginOptions' => [
-                                            'allowClear' => true,
-                                            'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
-                                        ],
-                                ]);?>
-                                 
+                            
+                            <div class="col">
+                                   <?= $form->field($model, 'tan_suat')->textInput(['maxlength' => true]) ?>
                             </div>
+                            	
                         </div>
+                       
+                        
+                        
                          <div class="row">
-                         
+                         	<!-- 
                             <div class="col">
                                 <?= $form->field($model, 'truc_thuoc')->textInput() ?>                                   
                             </div>
+                             -->
                         </div>
                          <div class="row">
                          	<div class="col">
@@ -227,18 +270,7 @@ if($model->ngay_het_hieu_luc != null)
                             </div>
                         </div>
                          <div class="row">
-                         	<div class="col">
-                         		<?= $form->field($model, 'id_nguoi_chiu_trach_nhiem')->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
-                                    'language' => 'vi',
-                                    'options' => ['placeholder' => 'Chọn người chịu trách nhiệm ...'],
-                                    'pluginOptions' => [
-                                        'allowClear' => true,
-                                        'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
-                                    ],
-                                ]);?>
                          	
-                         	</div>
                          </div>
                          </fieldset>
                 	</div>

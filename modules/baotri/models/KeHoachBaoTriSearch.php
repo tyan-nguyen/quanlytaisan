@@ -22,7 +22,7 @@ class KeHoachBaoTriSearch extends KeHoachBaoTri
     {
         return [
             [['id', 'id_he_thong', 'id_thiet_bi', 'id_chi_tiet', 'id_loai_bao_tri', 'bao_truoc', 'id_don_vi_bao_tri', 'id_nguoi_chiu_trach_nhiem', 'truc_thuoc', 'nguoi_tao'], 'integer'],
-            [['ten_cong_viec', 'denNgay', 'ngay_bao_tri_cuoi', 'can_cu', 'so_ky', 'ky_bao_tri', 'muc_do_uu_tien', 'ngay_thuc_hien', 'don_vi_thoi_gian', 'dung_may', 'thue_ngoai', 'da_het_hieu_luc', 'ngay_het_hieu_luc', 'thoi_gian_tao'], 'safe'],
+            [['ten_cong_viec', 'denNgay', 'ngay_bat_dau', 'can_cu', 'so_ky', 'ky_bao_tri', 'muc_do_uu_tien', 'ngay_thuc_hien', 'don_vi_thoi_gian', 'dung_may', 'thue_ngoai', 'da_het_hieu_luc', 'ngay_het_hieu_luc', 'thoi_gian_tao'], 'safe'],
             [['thoi_gian_thuc_hien'], 'number'],
         ];
     }
@@ -77,7 +77,7 @@ class KeHoachBaoTriSearch extends KeHoachBaoTri
             'id_thiet_bi' => $this->id_thiet_bi,
             'id_chi_tiet' => $this->id_chi_tiet,
             'id_loai_bao_tri' => $this->id_loai_bao_tri,
-            'ngay_bao_tri_cuoi' => $this->ngay_bao_tri_cuoi,
+            'ngay_bat_dau' => $this->ngay_bat_dau,
             'bao_truoc' => $this->bao_truoc,
             'id_don_vi_bao_tri' => $this->id_don_vi_bao_tri,
             'id_nguoi_chiu_trach_nhiem' => $this->id_nguoi_chiu_trach_nhiem,

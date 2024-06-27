@@ -25,7 +25,7 @@ $dash = new Dashboard();
 
 <div class="row">
 	<div class="col-xl-4 col-lg-12 col-md-12">
-		<?= $this->render('_box-1') ?>
+		<?= $this->render('_box-1', compact('dash')) ?>
 	</div>
 	<div class="col-xl-4 col-lg-12 col-md-12">
 		<?= $this->render('_box-2', compact('dash')) ?>

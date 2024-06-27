@@ -25,7 +25,7 @@ class ViboonAsset extends AssetBundle
         'assets/css/icons.css',
         'assets/switcher/css/switcher.css',
         'assets/switcher/demo.css',
-        'css/site.css',
+        'css/site.css?v=1.1',
         'assets/fontawesome-free-6.4.0-web/css/all.min.css',
     ];
     public $js = [
@@ -38,8 +38,10 @@ class ViboonAsset extends AssetBundle
         'assets/plugins/notify/js/jquery.growl.js',
         'assets/plugins/notify/js/notifIt.js',
         
-        //'assets/plugins/fullcalendar/moment.min.js',
-        //'assets/plugins/fullcalendar/fullcalendar.min.js',
+        'assets/plugins/calendar/underscore-min.js',
+        'assets/plugins/fullcalendar/moment.min.js',
+        'assets/plugins/fullcalendar/fullcalendar.min.js',
+        'assets/plugins/fullcalendar/locales/vi.js',
         //'assets/js/fullcalendar.js',
         
         'assets/js/custom.js',

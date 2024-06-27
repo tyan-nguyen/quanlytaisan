@@ -24,6 +24,19 @@ function printQr(){
     });
 }
 
+/**
+ * in html tu 1 div
+ * [them id #print cho div parent]
+ */
+function printPhieu(){
+	$('#print').printThis({
+		 //debug: false,               // show the iframe for debugging
+		 importCSS: false,            // import parent page css
+		 loadCSS: ['/css/print-phieu.css?v=2'],
+		 //printDelay: 333,
+    });
+}
+
 
 /**
  * xu ly user khong co hanh dong nao trong khoang thoi gian

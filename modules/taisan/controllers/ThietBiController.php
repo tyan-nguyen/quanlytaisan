@@ -13,6 +13,7 @@ use yii\web\Response;
 use app\modules\user\models\User;
 use app\modules\taisan\models\HeThong;
 use app\modules\suachua\models\PhieuSuaChuaSearch;
+use app\modules\baotri\models\search\PhieuBaoTriSearch;
 /**
  * ThietBiController implements the CRUD actions for ThietBi model.
  */
@@ -169,6 +170,11 @@ class ThietBiController extends Controller
             $model=$this->findModel($id);
             $searchModel = new PhieuSuaChuaSearch();
             $searchModel->id_thiet_bi=$model->id;
+            
+            $searchModelBaoTri = new PhieuBaoTriSearch();
+            $searchModelBaoTri->idThietBi = $model->id;
+            $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
+            
             if(isset($_POST['search']) && $_POST['search'] != null){
                 $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
             } else if ($searchModel->load(Yii::$app->request->post())) {
@@ -186,7 +192,9 @@ class ThietBiController extends Controller
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider
+                        'dataProvider' => $dataProvider,
+                        'searchModelBaoTri' => $searchModelBaoTri,
+                        'dataProviderBaoTri'=>$dataProviderBaoTri
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote']).
@@ -231,13 +239,20 @@ class ThietBiController extends Controller
                 } else {
                     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 } 
+                
+                $searchModelBaoTri = new PhieuBaoTriSearch();
+                $searchModelBaoTri->idThietBi = $model->id;
+                $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
+                
                 return [
                     'title'=> "Thiết bị/tài sản",
                     'forceReload'=>'#crud-datatable-pjax',
                     'content'=>$this->renderAjax('view', [
                         'model' => $modelCopy,
                         'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider
+                        'dataProvider' => $dataProvider,
+                        'searchModelBaoTri' => $searchModelBaoTri,
+                        'dataProviderBaoTri'=>$dataProviderBaoTri
                     ]),
                     'footer'=> Html::button('Đóng',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                     Html::a('Sửa',['update','id'=>$model2->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -298,6 +313,11 @@ class ThietBiController extends Controller
                     } else {
                         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                     }
+                    
+                    $searchModelBaoTri = new PhieuBaoTriSearch();
+                    $searchModelBaoTri->idThietBi = $model->id;
+                    $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
+                    
                     return [
                         'forceReload'=>'#crud-datatable-pjax',
                         //'title'=> "Thêm mới Nhân viên",
@@ -306,7 +326,9 @@ class ThietBiController extends Controller
                         'content'=>$this->renderAjax( ('view'), [
                             'model' => $model,
                             'searchModel' => $searchModel,
-                            'dataProvider' => $dataProvider
+                            'dataProvider' => $dataProvider,
+                            'searchModelBaoTri' => $searchModelBaoTri,
+                            'dataProviderBaoTri'=>$dataProviderBaoTri
                         ]),
                         'tcontent'=>'Thêm mới thành công!',
                         'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -378,13 +400,20 @@ class ThietBiController extends Controller
                 } else {
                     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 }
+                
+                $searchModelBaoTri = new PhieuBaoTriSearch();
+                $searchModelBaoTri->idThietBi = $model->id;
+                $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
+                
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Tài sản/Thiết bị",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider
+                        'dataProvider' => $dataProvider,
+                        'searchModelBaoTri' => $searchModelBaoTri,
+                        'dataProviderBaoTri'=>$dataProviderBaoTri
                     ]),
                     'footer'=> Html::button('Đóng',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])

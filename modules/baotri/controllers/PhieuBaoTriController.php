@@ -2,22 +2,21 @@
 
 namespace app\modules\baotri\controllers;
 
-use app\modules\baotri\models\KeHoachBaoTri;
-use app\modules\baotri\models\KeHoachBaoTriSearch;
 use Yii;
-use yii\filters\VerbFilter;
-use yii\helpers\Html;
+use app\modules\baotri\models\PhieuBaoTri;
+use app\modules\baotri\models\search\PhieuBaoTriSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
-use app\modules\baotri\models\search\PhieuBaoTriSearch;
+use yii\filters\VerbFilter;
+use \yii\web\Response;
+use yii\helpers\Html;
+use yii\filters\AccessControl;
 
 /**
- * KeHoachBaoTriController implements the CRUD actions for KeHoachBaoTri model.
+ * PhieuBaoTriController implements the CRUD actions for PhieuBaoTri model.
  */
-class KeHoachBaoTriController extends Controller
+class PhieuBaoTriController extends Controller
 {
-    var $dataProvider= null;
     /**
      * @inheritdoc
      */
@@ -35,69 +34,40 @@ class KeHoachBaoTriController extends Controller
 		];
 	}
 	
-	public function beforeAction($action)
-	{
-	    Yii::$app->params['moduleID'] = 'Module Quản lý Bảo trì-Bảo dưỡng';
-	    Yii::$app->params['modelID'] = 'Quản lý Kế hoạch bảo trì';
-	    return parent::beforeAction($action);
-	}
-	
 	/**
-	 * tao phieu bao tri theo ke hoach
+	 * load hoa don in
+	 * @return mixed
 	 */
-	public function actionTaoPhieuBaoTri($id){
+	public function actionGetPhieuBaoTriInAjax($idPhieu)
+	{
 	    Yii::$app->response->format = Response::FORMAT_JSON;
-	    $model = $this->findModel($id);
-	    //tao phieu bao tri tu dong
-	    if($model->ky_bao_tri != null && $model->tan_suat > 0 && $model->so_ky > 0 && $model->ngay_bat_dau !=null){
-    	    if($model->taoPhieuBaoTri()){
-    	        $searchModelBaoTri = new PhieuBaoTriSearch();
-    	        $searchModelBaoTri->id_ke_hoach = $model->id;
-    	        $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
-    	        return [
-    	            'title'=> "Kế hoạch bảo trì",
-    	            'content'=>$this->renderAjax('view', [
-    	                'model' => $model,
-    	                'searchModelBaoTri' => $searchModelBaoTri,
-    	                'dataProviderBaoTri'=>$dataProviderBaoTri
-    	            ]),
-    	            'tcontent'=>'Tạo phiếu bảo trì thành công!',
-    	            'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-    	            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-    	        ];
-    	    } else {
-    	        return [
-    	            'title'=> "Kế hoạch bảo trì",
-    	            'content'=>'Tạo phiếu thất bại!',
-    	            'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-    	            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-    	        ];
-    	    }
-	    }else {
-	        
+	    $model = PhieuBaoTri::findOne($idPhieu);
+	    if($model !=null){
 	        return [
-	            'title'=> "Kế hoạch bảo trì",
-	            'content'=>$this->renderAjax('view', [
-	                'model' => $this->findModel($id),
-	            ]),
-	            'tcontent'=>'Vui lòng cấu hình lại Kế hoạch bảo trì trước khi tạo phiếu!',
-	            'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-	            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+	            'status'=>'success',
+	            'content' => $this->renderAjax('_print_phieu', [
+	                'model' => $model
+	            ])
+	        ];
+	    } else {
+	        return [
+	            'status'=>'failed',
+	            'content' => 'Phiếu bảo trì không tồn tại!'
 	        ];
 	    }
 	}
 
     /**
-     * Lists all KeHoachBaoTri models.
+     * Lists all PhieuBaoTri models.
      * @return mixed
      */
     public function actionIndex()
     {    
-        $searchModel = new KeHoachBaoTriSearch();
+        $searchModel = new PhieuBaoTriSearch();
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModel->load(Yii::$app->request->post())) {
-            $searchModel = new KeHoachBaoTriSearch(); // "reset"
+            $searchModel = new PhieuBaoTriSearch(); // "reset"
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -108,8 +78,9 @@ class KeHoachBaoTriController extends Controller
         ]);
     }
 
+
     /**
-     * Displays a single KeHoachBaoTri model.
+     * Displays a single PhieuBaoTri model.
      * @param integer $id
      * @return mixed
      */
@@ -118,22 +89,13 @@ class KeHoachBaoTriController extends Controller
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
-            $model = $this->findModel($id);
-            
-            $searchModelBaoTri = new PhieuBaoTriSearch();
-            $searchModelBaoTri->id_ke_hoach = $model->id;
-            $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
-            
             return [
-                    'title'=> "Kế hoạch bảo trì",
+                    'title'=> "Phiếu bảo trì",
                     'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                        'searchModelBaoTri' => $searchModelBaoTri,
-                        'dataProviderBaoTri'=>$dataProviderBaoTri
+                        'model' => $this->findModel($id),
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote']).
-                (!$model->checkPhieu ? Html::a('<i class="fe fe-share-2"></i> Tạo phiếu bảo trì',['tao-phieu-bao-tri','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote']) : '' )
+                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -143,7 +105,7 @@ class KeHoachBaoTriController extends Controller
     }
 
     /**
-     * Creates a new KeHoachBaoTri model.
+     * Creates a new PhieuBaoTri model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -151,7 +113,7 @@ class KeHoachBaoTriController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new KeHoachBaoTri();  
+        $model = new PhieuBaoTri();  
 
         if($request->isAjax){
             /*
@@ -160,7 +122,7 @@ class KeHoachBaoTriController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm mới Kế hoạch bảo trì",
+                    'title'=> "Thêm mới Phiếu bảo trì",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -171,7 +133,7 @@ class KeHoachBaoTriController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Thêm mới Kế hoạch bảo trì",
+                    'title'=> "Thêm mới Phiếu bảo trì",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -180,10 +142,9 @@ class KeHoachBaoTriController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới Kế hoạch bảo trì",
+                    'title'=> "Thêm mới Phiếu bảo trì",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'fromValidate'=>true
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                                 Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
@@ -206,7 +167,7 @@ class KeHoachBaoTriController extends Controller
     }
 
     /**
-     * Updates an existing KeHoachBaoTri model.
+     * Updates an existing PhieuBaoTri model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -224,26 +185,19 @@ class KeHoachBaoTriController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật Kế hoạch bảo trì",
+                    'title'=> "Cập nhật Phiếu bảo trì",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                    (!$model->checkPhieu ? Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"]) : '')
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                
-                $searchModelBaoTri = new PhieuBaoTriSearch();
-                $searchModelBaoTri->id_ke_hoach = $model->id;
-                $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
-                
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Kế hoạch bảo trì",
+                    'title'=> "Phiếu bảo trì",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'searchModelBaoTri' => $searchModelBaoTri,
-                        'dataProviderBaoTri'=>$dataProviderBaoTri
                     ]),
                     'tcontent'=>'Cập nhật thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -251,13 +205,12 @@ class KeHoachBaoTriController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật Kế hoạch bảo trì",
+                    'title'=> "Cập nhật Phiếu bảo trì",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'fromValidate'=>true
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                     (!$model->checkPhieu ? Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"]) : '')
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -275,7 +228,7 @@ class KeHoachBaoTriController extends Controller
     }
 
     /**
-     * Delete an existing KeHoachBaoTri model.
+     * Delete an existing PhieuBaoTri model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -303,7 +256,7 @@ class KeHoachBaoTriController extends Controller
     }
 
      /**
-     * Delete multiple existing KeHoachBaoTri model.
+     * Delete multiple existing PhieuBaoTri model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -343,15 +296,15 @@ class KeHoachBaoTriController extends Controller
     }
 
     /**
-     * Finds the KeHoachBaoTri model based on its primary key value.
+     * Finds the PhieuBaoTri model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return KeHoachBaoTri the loaded model
+     * @return PhieuBaoTri the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = KeHoachBaoTri::findOne($id)) !== null) {
+        if (($model = PhieuBaoTri::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

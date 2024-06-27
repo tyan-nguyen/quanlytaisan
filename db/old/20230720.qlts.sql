@@ -513,7 +513,7 @@ CREATE TABLE IF NOT EXISTS `ts_ke_hoach_bao_tri` (
   `id_chi_tiet` int(11) DEFAULT NULL,
   `ten_cong_viec` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `id_loai_bao_tri` int(11) NOT NULL,
-  `ngay_bao_tri_cuoi` date DEFAULT NULL,
+  `ngay_bat_dau` date DEFAULT NULL,
   `bao_truoc` smallint(6) NOT NULL,
   `can_cu` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `so_ky` tinyint(4) DEFAULT NULL,

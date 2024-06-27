@@ -10,6 +10,8 @@ use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use app\modules\baotri\models\PhieuBaoTri;
+use app\modules\baotri\models\search\PhieuBaoTriSearch;
 
 /**
  * KeHoachBaoTriController implements the CRUD actions for KeHoachBaoTri model.
@@ -37,15 +39,16 @@ class LichBaoTriController extends Controller
     public function beforeAction($action)
     {
         Yii::$app->params['moduleID'] = 'Module Quản lý Bảo trì-Bảo dưỡng';
-        Yii::$app->params['modelID'] = 'Quản lý Kế hoạch bảo trì';
+        Yii::$app->params['modelID'] = 'Lịch bảo trì';
         return parent::beforeAction($action);
     }
     
     public function actionIndex(){
-        return $this->render('index');
+        $listPhieuBaoTri = PhieuBaoTri::listPhieuBaoTriArray();
+        return $this->render('index', ['listPhieuBaoTri'=>$listPhieuBaoTri]);
     }
     
-    public function actionBaotri(){
+   /*  public function actionBaotri(){
            
         $searchModel = new KeHoachBaoTriSearch();
         if(isset($_POST['search']) && $_POST['search'] != null){
@@ -64,7 +67,16 @@ class LichBaoTriController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]); 
+    } */
+    public function actionBaotri(){
+        $searchModel = new PhieuBaoTriSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->post(), null, true);
+        return $this->render('dsToiHanBaoTri', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); 
     }
+    
     
     /**
      * Displays a single KeHoachBaoTri model.

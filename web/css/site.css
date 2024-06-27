@@ -226,3 +226,12 @@ a.desc:after {
 /* body{
 	font-size:80%!important;
 } */
+
+.div-500{
+	height:500px;
+	overflow-y: auto;
+}
+.div-600{
+	height:600px;
+	overflow-y: auto;
+}

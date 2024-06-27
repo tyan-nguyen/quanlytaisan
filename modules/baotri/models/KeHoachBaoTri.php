@@ -10,7 +10,15 @@ use Yii;
 
 class KeHoachBaoTri extends KeHoachBaoTriBase
 {
-
+    /**
+     * check đã tạo phiếu bảo trì hay chưa
+     */
+    public function getCheckPhieu(){
+        if($this->phieuBaoTris == null)
+            return false;
+        else 
+            return true;
+    }
     /**
      * Danh muc trang thai label with Badge & Icon
      * @param int $val
@@ -74,5 +82,90 @@ class KeHoachBaoTri extends KeHoachBaoTriBase
             'icon'=>$icon,
             'type'=>$type
         ]) : '';
+    }
+    
+    /**
+     * get ky bao tri label
+     */
+    public function getKyBaoTriLabel($value){
+        if($value == 1){
+            return 'Ngày';
+        } else if($value == 2){
+            return 'Tuần';
+        }else if($value == 3){
+            return 'Tháng';
+        } else if($value == 4){
+            return 'Năm';
+        } else {
+            return '';
+        }
+    }
+    
+    /**
+     * lấy ngày bảo trì dựa trên ngày bảo trì trước và tần suất thực hiện
+     * @param string $ngayBaoTriTruoc
+     * @param string $kyBaoTri
+     * @param int $tanSuat
+     * @return string (date)
+     */
+    public static function tinhNgayBaoTriKeTiep($ngayBaoTriTruoc, $kyBaoTri, $tanSuat){
+        $ngayBaoTri = '';
+        switch ($kyBaoTri){
+            case "1"://Ngày
+                $ngayBaoTri = KeHoachBaoTri::themSoNgay($ngayBaoTriTruoc, $tanSuat);
+                break;
+            case "2"://Tuần
+                $ngayBaoTri = KeHoachBaoTri::themSoTuan($ngayBaoTriTruoc, $tanSuat);
+                break;
+            case "3"://Tháng
+                $ngayBaoTri = KeHoachBaoTri::themSoThang($ngayBaoTriTruoc, $tanSuat);
+                break;
+            case "4"://Năm
+                $ngayBaoTri = KeHoachBaoTri::themSoNam($ngayBaoTriTruoc, $tanSuat);
+                break;
+            default:
+                $ngayBaoTri = '';
+        }
+        return $ngayBaoTri;
+    }
+    
+    /**
+     * Cộng số ngày vào ngày
+     * @param string $ngay
+     * @param int $soNgay
+     * @return string (date)
+     */
+    public static function themSoNgay($ngay, $soNgay){
+        return date('Y-m-d', strtotime($ngay. ' + ' . $soNgay . ' days'));
+    }
+    
+    /**
+     * Cộng số tuần vào ngày
+     * @param string $tuan
+     * @param int $soTuan
+     * @return string
+     */
+    public static function themSoTuan($ngay, $soTuan){
+        return date('Y-m-d', strtotime($ngay. ' + ' . $soTuan . ' weeks'));
+    }
+    
+    /**
+     * Cộng số tháng vào ngày
+     * @param string $thang
+     * @param int $soThang
+     * @return string
+     */
+    public static function themSoThang($ngay, $soThang){
+        return date('Y-m-d', strtotime($ngay. ' + ' . $soThang . ' months'));
+    }
+    
+    /**
+     * Cộng số năm vào ngày
+     * @param string $nam
+     * @param int $soNam
+     * @return string
+     */
+    public static function themSoNam($ngay, $soNam){
+        return date('Y-m-d', strtotime($ngay. ' + ' . $soNam . ' years'));
     }
 }

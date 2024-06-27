@@ -71,7 +71,7 @@ return [
    
     // [
         // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'ngay_bao_tri_cuoi',
+        // 'attribute'=>'ngay_bat_dau',
     // ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',

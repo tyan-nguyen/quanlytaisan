@@ -13,16 +13,16 @@ use Yii;
  * @property int|null $id_chi_tiet
  * @property string $ten_cong_viec
  * @property int $id_loai_bao_tri
- * @property string|null $ngay_bao_tri_cuoi
+ * @property string|null $ngay_bat_dau
  * @property int $bao_truoc
  * @property string|null $can_cu
  * @property int|null $so_ky
  * @property string|null $ky_bao_tri
+ * @property int|null $tan_suat
  * @property int $id_don_vi_bao_tri
  * @property int $id_nguoi_chiu_trach_nhiem
  * @property string $muc_do_uu_tien
  * @property int|null $truc_thuoc
- * @property string|null $ngay_thuc_hien
  * @property float|null $thoi_gian_thuc_hien
  * @property string|null $don_vi_thoi_gian
  * @property int|null $dung_may
@@ -31,11 +31,13 @@ use Yii;
  * @property string|null $ngay_het_hieu_luc
  * @property string|null $thoi_gian_tao
  * @property int|null $nguoi_tao
+ * @property string|null $ngay_thuc_hien
  *
  * @property TsBoPhan $donViBaoTri
  * @property TsLoaiBaoTri $loaiBaoTri
  * @property TsNhanVien $nguoiChiuTrachNhiem
  * @property TsThietBi $thietBi
+ * @property TsPhieuBaoTri[] $tsPhieuBaoTris
  */
 class TsKeHoachBaoTri extends \yii\db\ActiveRecord
 {
@@ -53,9 +55,9 @@ class TsKeHoachBaoTri extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_he_thong', 'id_thiet_bi', 'id_chi_tiet', 'id_loai_bao_tri', 'bao_truoc', 'so_ky', 'id_don_vi_bao_tri', 'id_nguoi_chiu_trach_nhiem', 'truc_thuoc', 'dung_may', 'thue_ngoai', 'da_het_hieu_luc', 'nguoi_tao'], 'integer'],
+            [['id_he_thong', 'id_thiet_bi', 'id_chi_tiet', 'id_loai_bao_tri', 'bao_truoc', 'so_ky', 'tan_suat', 'id_don_vi_bao_tri', 'id_nguoi_chiu_trach_nhiem', 'truc_thuoc', 'dung_may', 'thue_ngoai', 'da_het_hieu_luc', 'nguoi_tao'], 'integer'],
             [['id_thiet_bi', 'ten_cong_viec', 'id_loai_bao_tri', 'bao_truoc', 'id_don_vi_bao_tri', 'id_nguoi_chiu_trach_nhiem', 'muc_do_uu_tien'], 'required'],
-            [['ngay_bao_tri_cuoi', 'ngay_thuc_hien', 'ngay_het_hieu_luc', 'thoi_gian_tao'], 'safe'],
+            [['ngay_bat_dau', 'ngay_het_hieu_luc', 'thoi_gian_tao', 'ngay_thuc_hien'], 'safe'],
             [['thoi_gian_thuc_hien'], 'number'],
             [['ten_cong_viec'], 'string', 'max' => 255],
             [['can_cu', 'ky_bao_tri', 'muc_do_uu_tien', 'don_vi_thoi_gian'], 'string', 'max' => 20],
@@ -78,16 +80,16 @@ class TsKeHoachBaoTri extends \yii\db\ActiveRecord
             'id_chi_tiet' => 'Id Chi Tiet',
             'ten_cong_viec' => 'Ten Cong Viec',
             'id_loai_bao_tri' => 'Id Loai Bao Tri',
-            'ngay_bao_tri_cuoi' => 'Ngay Bao Tri Cuoi',
+            'ngay_bat_dau' => 'Ngay Bao Tri Cuoi',
             'bao_truoc' => 'Bao Truoc',
             'can_cu' => 'Can Cu',
             'so_ky' => 'So Ky',
             'ky_bao_tri' => 'Ky Bao Tri',
+            'tan_suat' => 'Tan Suat',
             'id_don_vi_bao_tri' => 'Id Don Vi Bao Tri',
             'id_nguoi_chiu_trach_nhiem' => 'Id Nguoi Chiu Trach Nhiem',
             'muc_do_uu_tien' => 'Muc Do Uu Tien',
             'truc_thuoc' => 'Truc Thuoc',
-            'ngay_thuc_hien' => 'Ngay Thuc Hien',
             'thoi_gian_thuc_hien' => 'Thoi Gian Thuc Hien',
             'don_vi_thoi_gian' => 'Don Vi Thoi Gian',
             'dung_may' => 'Dung May',
@@ -96,6 +98,7 @@ class TsKeHoachBaoTri extends \yii\db\ActiveRecord
             'ngay_het_hieu_luc' => 'Ngay Het Hieu Luc',
             'thoi_gian_tao' => 'Thoi Gian Tao',
             'nguoi_tao' => 'Nguoi Tao',
+            'ngay_thuc_hien' => 'Ngay Thuc Hien',
         ];
     }
 
@@ -137,5 +140,15 @@ class TsKeHoachBaoTri extends \yii\db\ActiveRecord
     public function getThietBi()
     {
         return $this->hasOne(TsThietBi::class, ['id' => 'id_thiet_bi']);
+    }
+
+    /**
+     * Gets query for [[TsPhieuBaoTris]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTsPhieuBaoTris()
+    {
+        return $this->hasMany(TsPhieuBaoTri::class, ['id_ke_hoach' => 'id']);
     }
 }
