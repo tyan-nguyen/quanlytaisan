@@ -39,6 +39,9 @@ $config = [
         'suachua' => [
             'class' => 'app\modules\suachua\Module',
         ],
+        'muasam' => [
+            'class' => 'app\modules\muasam\Module',
+        ],
     ],
     'components' => [
         'cache' => [

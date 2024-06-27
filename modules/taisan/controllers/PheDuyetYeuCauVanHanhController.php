@@ -78,30 +78,44 @@ class PheDuyetYeuCauVanHanhController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
 
+        $hieuLuc = $model->hieu_luc ?? null;
+        $isPending = true;
+
+        if ($hieuLuc !== null && $hieuLuc !== 'CHODUYET') {
+            $isPending = false;
+        }
+
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-
-            $footerButtons = Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]);
-            // if ($model->hieu_luc === 'CHODUYET') {
-            //     $footerButtons .= Html::a('Phê duyệt', ['approve', 'id' => $id], ['class' => 'btn btn-success', 'role' => 'modal-remote']);
-            // }
-
             return [
-                'title' => "Yêu cầu vận hành",
+                'title' => "Phê duyệt yêu cầu",
                 'content' => $this->renderAjax('view', [
                     'model' => $this->findModel($id),
                     'modelsDetail' => $modelsDetail,
                 ]),
-                'footer' => $footerButtons
-                //'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) 
-                // .Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
+                    . Html::button('Phê duyệt', [
+                        'class' => 'btn btn-primary',
+                        'type' => 'submit',
+                        'form' => 'approve-form',
+                        'hidden' => !$isPending
+                    ])
+                    . Html::button(
+                        'Không duyệt',
+                        [
+                            'class' => 'btn btn-danger',
+                            'type' => 'button',
+                            // 'form' => 'approve-form',
+                            'onClick' => "setStatusAndSubmit('NGUNG_QUYTRINH')",
+                            'hidden' => !$isPending
 
+                        ]
+                    )
             ];
         } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
                 'modelsDetail' => $modelsDetail,
-
             ]);
         }
     }
@@ -110,34 +124,29 @@ class PheDuyetYeuCauVanHanhController extends Controller
     {
         $model = $this->findModel($id);
 
-        if (Yii::$app->request->post('hieu_luc') === 'DADUYET') {
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
 
-            $model->hieu_luc = Yii::$app->request->post('hieu_luc');
-            $model->id_nguoi_duyet = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_duyet'];
-            $model->ngay_duyet = Yii::$app->request->post('YeuCauVanHanh')['ngay_duyet'];
-            $model->noi_dung_duyet = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_duyet'];
+            $status = Yii::$app->request->post('hieu_luc');
 
-            // var_dump($model->hieu_luc);
-            // var_dump(Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_duyet']);
-            // var_dump(Yii::$app->request->post('ngay_duyet'));
+            if ($status === 'DADUYET' || $status === 'NGUNG_QUYTRINH') {
 
-            if ($model->save(false)) {
-                Yii::$app->session->setFlash('success', 'Successfully.');
-                return $this->redirect(['index']);
-            } else {
-                Yii::$app->session->setFlash('error', 'Failed.');
+                $model->hieu_luc = $status;
+                $model->id_nguoi_duyet = Yii::$app->user->identity->id;
+                $model->ngay_duyet = date('Y-m-d H:i:s');
+                $model->noi_dung_duyet = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_duyet'];
+
+                if ($model->save(false)) {
+                    Yii::$app->session->setFlash('success', 'Successfully.');
+                    // return $this->redirect(['index']);
+                    return ['success' => true, 'redirectUrl' => \yii\helpers\Url::to(['index'])];
+                } else {
+                    Yii::$app->session->setFlash('error', 'Failed.');
+                    return ['success' => false, 'errors' => $model->errors];
+                }
             }
         }
-        return $this->redirect(['view', 'id' => $model->id]);
-
-        // if ($model->hieu_luc === 'CHODUYET') {
-        //     $model->hieu_luc = 'DADUYET';
-        //     if ($model->save(false)) {
-        //         Yii::$app->session->setFlash('success', 'approved.');
-        //     } else {
-        //         Yii::$app->session->setFlash('error', 'Failed.');
-        //     }
-        // }
+        return $this->redirect(['index']);
     }
 
 
@@ -164,7 +173,7 @@ class PheDuyetYeuCauVanHanhController extends Controller
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Lưu lại', ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             } else if ($model->load($request->post()) && $model->save()) {
@@ -175,7 +184,7 @@ class PheDuyetYeuCauVanHanhController extends Controller
                         'model' => $model,
                     ]),
                     'tcontent' => 'Cập nhật thành công!',
-                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
                 ];
             } else {
@@ -184,7 +193,7 @@ class PheDuyetYeuCauVanHanhController extends Controller
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Lưu lại', ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             }

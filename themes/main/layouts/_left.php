@@ -40,7 +40,7 @@
 				
 				<?= $this->render('menus/bao-tri') ?>
 				<?= $this->render('menus/sua-chua') ?>
-				
+				<?= $this->render('menus/mua-sam') ?>
 				<?= $this->render('menus/tai-khoan') ?>				
 				
 				<li class="side-item side-item-category">Tùy chỉnh</li>

@@ -7,6 +7,7 @@ use app\modules\bophan\models\NhanVien;
 use app\modules\dungchung\models\DungChung;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\bophan\models\BoPhan;
+use app\modules\user\models\User;
 use app\widgets\views\StatusWithIconWidget;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -22,6 +23,9 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     const STATUS_DADUYET = 'DADUYET';
     const STATUS_VANHANH = 'VANHANH';
     const STATUS_DATRA = 'DATRA';
+    const STATUS_NGUNG_QUYTRINH = 'NGUNG_QUYTRINH';
+
+    const  SCENARIO_SEND_REQUEST = 'send_request';
 
     // public $idNguoiDuyet;
     // public $ngayDuyet;
@@ -40,6 +44,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
             YeuCauVanHanhBase::STATUS_DADUYET => 'Đã duyệt',
             YeuCauVanHanhBase::STATUS_DATRA => 'Đã trả',
             YeuCauVanHanhBase::STATUS_VANHANH => 'Đang vận hành',
+            YeuCauVanHanhBase::STATUS_NGUNG_QUYTRINH => 'Ngưng quy trình',
         ];
     }
 
@@ -71,6 +76,9 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 break;
             case YeuCauVanHanhBase::STATUS_DATRA:
                 $label = "Đã trả";
+                break;
+            case YeuCauVanHanhBase::STATUS_NGUNG_QUYTRINH:
+                $label = "Ngưng quy trình";
                 break;
             default:
                 $label = '';
@@ -116,6 +124,11 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 $icon = 'fe fe-check';
                 $type = 'primary';
                 break;
+            case "NGUNG_QUYTRINH":
+                $label = "Ngưng quy trình";
+                $icon = 'fe fe-x';
+                $type = 'danger';
+                break;
             default:
                 $label = '';
         }
@@ -132,10 +145,8 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     public function rules()
     {
         return [
-            [
-                ['id_nguoi_lap'],
-                'required'
-            ],
+            [['id_nguoi_lap'], 'required'],
+            // [['id_nguoi_gui' ,'ngay_gui'], 'required', 'on' => self::SCENARIO_SEND_REQUEST],
             [
                 ['id_nguoi_lap', 'id_nguoi_yeu_cau', 'id_nguoi_gui', 'id_nguoi_duyet', 'id_nguoi_xuat', 'id_nguoi_nhan', 'id_bo_phan_quan_ly'],
                 'integer'
@@ -158,13 +169,20 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
 
             [['id_bo_phan_quan_ly'], 'exist', 'skipOnError' => true, 'targetClass' => BoPhan::class, 'targetAttribute' => ['id_bo_phan_quan_ly' => 'id']],
             [['id_nguoi_lap'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_lap' => 'id']],
-            [['id_nguoi_gui'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_gui' => 'id']],
-            [['id_nguoi_duyet'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_duyet' => 'id']],
+            [['id_nguoi_gui'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_gui' => 'id']],
+            [['id_nguoi_duyet'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_duyet' => 'id']],
             [['id_nguoi_xuat'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_xuat' => 'id']],
             [['id_nguoi_nhan'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_nhan' => 'id']],
             [['id_nguoi_yeu_cau'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_yeu_cau' => 'id']],
         ];
     }
+
+    // public function scenarios()
+    // {
+    //     $scenarios = parent::scenarios();
+    //     $scenarios[self::SCENARIO_SEND_REQUEST] = ['id_nguoi_gui', 'ngay_gui'];
+    //     return $scenarios;
+    // }
 
     /**
      * {@inheritdoc}
@@ -216,19 +234,24 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
         return $this->id_nguoi_lap != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_lap']) : NULL;
     }
 
+    // public function getNguoiGui()
+    // {
+    //     return $this->id_nguoi_gui != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_gui']) : NULL;
+    // }
+
     public function getNguoiGui()
     {
-        return $this->id_nguoi_gui != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_gui']) : NULL;
+        return $this->id_nguoi_gui != NULL ? $this->hasOne(User::class, ['id' => 'id_nguoi_gui']) : NULL;
     }
 
     public function getNguoiDuyet()
     {
-        return $this->id_nguoi_duyet != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_duyet']) : NULL;
+        return $this->id_nguoi_duyet != NULL ? $this->hasOne(User::class, ['id' => 'id_nguoi_duyet']) : NULL;
     }
 
     public function getNguoiXuat()
     {
-        return $this->id_nguoi_xuat != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_xuat']) : NULL;
+        return $this->id_nguoi_xuat != NULL ? $this->hasOne(User::class, ['id' => 'id_nguoi_xuat']) : NULL;
     }
 
     public function getNguoiNhan()
@@ -247,6 +270,23 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
         return $this->hasMany(YeuCauVanHanhCt::className(), ['id_yeu_cau_van_hanh' => 'id']);
     }
 
+    public function getCreatedAt()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->created_at);
+    }
+
+    public function getNgayLap()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_lap);
+    }
+
+    public function getUpdatedAt()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->updated_at);
+    }
     // public function getHeThong()
     // {
     //     return $this->id_he_thong != NULL ? $this->hasOne(HeThong::class, ['id' => 'id_he_thong']) : NULL;

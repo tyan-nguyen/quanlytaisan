@@ -35,6 +35,9 @@ $config = [
         'suachua' => [
             'class' => 'app\modules\suachua\Module',
         ],
+        'muasam' => [
+            'class' => 'app\modules\muasam\Module',
+        ],
         'user-management' => [
             'class' => 'webvimark\modules\UserManagement\UserManagementModule',
             
@@ -101,7 +104,11 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '/'=>'/user'
+                '/'=>'/user',
+                'taisan/theo-doi-van-hanh/list-calendar' => 'taisan/theo-doi-van-hanh/list-calendar',
+                'taisan/xuat-yeu-cau-van-hanh/print' => 'taisan/xuat-yeu-cau-van-hanh/print',
+                'taisan/xuat-yeu-cau-van-hanh/print-view' => 'taisan/xuat-yeu-cau-van-hanh/print-view'
+
             ],
         ],
         

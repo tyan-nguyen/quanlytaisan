@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\filters\AccessControl;
 use yii\base\Model;
+use yii\base\Request;
 use yii\db\ActiveRecord;
 
 use yii\helpers\Html;
@@ -83,6 +84,12 @@ class YeuCauVanHanhController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
 
+        $hieuLuc = $model->hieu_luc ?? null;
+        $isDraft = true;
+        if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
+            $isDraft = false;
+        }
+
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
@@ -92,7 +99,17 @@ class YeuCauVanHanhController extends Controller
                     'modelsDetail' => $modelsDetail,
                 ]),
                 'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                    Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    Html::a('Sửa', ['update', 'id' => $id], [
+                        'class' => 'btn btn-primary',
+                        'role' => 'modal-remote',
+                        'hidden' => !$isDraft
+                    ]) .
+                    Html::button('<span class="fe fe-external-link"></span>Gửi phê duyệt', [
+                        'class' => 'btn btn-warning',
+                        'id' => 'send-request-button',
+                        'data-id' => $model->id,
+                        'hidden' => !$isDraft
+                    ])
             ];
         } else {
             return $this->render('view', [
@@ -102,6 +119,73 @@ class YeuCauVanHanhController extends Controller
             ]);
         }
     }
+
+
+    public function actionViewSendRequest($id)
+    {
+
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);
+        $modelsDetail = $model->details;
+        // $model->scenario = YeuCauVanHanh::SCENARIO_SEND_REQUEST;
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                'title' => 'Gửi yêu cầu phê duyệt',
+                'content' => $this->renderAjax('view-send-request', [
+                    // 'model' => $model,
+                    'model' => $this->findModel($id),
+                    'modelsDetail' => $modelsDetail,
+                ]),
+                'footer' => Html::button('Đóng', [
+                    'class' => 'btn btn-default pull-left',
+                    'data-bs-dismiss' => 'modal'
+
+                ]) . Html::button('Gửi yêu cầu', [
+                    'class' => 'btn btn-primary',
+                    'type' => 'submit',
+                    'form' => 'send-request-form'
+                ])
+            ];
+        }
+
+        if (Yii::$app->request->post('hieu_luc') === 'CHODUYET') {
+
+            $model->hieu_luc = Yii::$app->request->post('hieu_luc');
+            // $model->id_nguoi_gui = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_gui'];
+            // $model->ngay_gui = Yii::$app->request->post('YeuCauVanHanh')['ngay_gui'];
+            $model->id_nguoi_gui = Yii::$app->user->identity->id;
+            $model->ngay_gui = date('Y-m-d H:i:s');
+            $model->noi_dung_gui = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_gui'];
+
+            // var_dump($model->validate());
+
+            // if ($model->validate() && $model->save(false)) {
+            if ($model->save(false)) {
+                Yii::$app->session->setFlash('success', 'Successfully.');
+                return $this->redirect(['index']);
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed.');
+            }
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->redirect(['view', 'id' => $model->id]);
+    }
+
+    // public function actionValidateSendRequest($id)
+    // {
+    //     $model = $this->findModel($id);
+    //     $model->scenario = YeuCauVanHanh::SCENARIO_SEND_REQUEST;
+
+    //     if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+    //         Yii::$app->response->format = Response::FORMAT_JSON;
+    //         return ActiveForm::validate($model);
+    //     }
+    // }
+
 
     /**
      * Creates a new YeuCauVanHanh model.
@@ -136,6 +220,37 @@ class YeuCauVanHanhController extends Controller
         return $models;
     }
 
+    /**
+     * Calendar Event Action
+     */
+
+    public function actionEvents()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $requests = YeuCauVanHanhCt::find()
+        // ->joinWith('YeuCauVanHanh')
+        ->joinWith(['yeuCauVanHanh' => function ($query) {
+            $query->alias('ycvh');
+        }])
+        ->where(['ycvh.hieu_luc' => 'VANHANH'])
+        ->all();
+        
+        $events = [];
+
+        foreach ($requests as $detail) {
+            $events[] = [
+                'id' => $detail->id,
+                'title' => $detail->thietBi->ten_thiet_bi,
+                'start' => $detail->ngay_bat_dau,
+                'end' => $detail->ngay_ket_thuc,
+                'url' => Yii::$app->urlManager->createUrl(['/taisan/yeu-cau-van-hanh/view', 'id' => $detail->id_yeu_cau_van_hanh]),
+            ];
+        }
+        return $events;
+    }
+
+
+
     public function actionCreate()
     {
         $request = Yii::$app->request;
@@ -153,8 +268,8 @@ class YeuCauVanHanhController extends Controller
                         'model' => $model,
                         'modelsDetail' => $modelsDetail,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                        Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                        Html::button('Lưu Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             } else if ($model->load($request->post())) {
                 $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname());
@@ -266,6 +381,12 @@ class YeuCauVanHanhController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
 
+        $hieuLuc = $model->hieu_luc ?? null;
+        $isDraft = true;
+        if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
+            $isDraft = false;
+        }
+
         if ($request->isAjax) {
             /*
             *   Process for ajax request
@@ -279,8 +400,15 @@ class YeuCauVanHanhController extends Controller
                         'model' => $model,
                         'modelsDetail' => $modelsDetail,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
-                        . Html::button('Lưu nháp', ['class' => 'btn btn-primary', 'type' => "submit", 'id' => 'draft-button']),
+                    'footer' => Html::button('Đóng', [
+                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                    ])
+                        . Html::button('Lưu nháp', [
+                            'class' => 'btn btn-primary', 'type' => "submit", 'id' => 'draft-button',
+                            'disabled' => !$isDraft,
+                            'hidden' => !$isDraft
+
+                        ]),
                 ];
             } else if ($model->load($request->post())) {
 
@@ -322,8 +450,14 @@ class YeuCauVanHanhController extends Controller
 
                                 ]),
                                 'tcontent' => 'Dữ liệu đã cập nhật!',
-                                'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                                    Html::a('Update', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']),
+                                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                                    Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                                    . Html::button('Gửi phê duyệt', [
+                                        'class' => 'btn btn-warning',
+                                        'id' => 'send-request-button',
+                                        'data-id' => $model->id,
+                                        'hidden' => !$isDraft
+                                    ]),
                             ];
                         }
                     } catch (Exception $e) {
@@ -338,8 +472,14 @@ class YeuCauVanHanhController extends Controller
                         'model' => $model,
                         'modelsDetail' => $modelsDetail,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                        Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                        Html::button('Sửa', ['class' => 'btn btn-primary', 'type' => "submit"])
+                        . Html::button('Gửi phê duyệt', [
+                            'class' => 'btn btn-warning',
+                            'id' => 'send-request-button',
+                            'data-id' => $model->id,
+                            'hidden' => !$isDraft
+                        ]),
                 ];
             }
         } else {
@@ -412,6 +552,32 @@ class YeuCauVanHanhController extends Controller
 
         return $this->redirect(['view', 'id' => $model->id]);
     } */
+
+    // public function actionSendRequest($id)
+    // {
+    //     $model = $this->findModel($id);
+
+    //     if (Yii::$app->request->post('hieu_luc') === 'CHODUYET') {
+
+    //         $model->hieu_luc = Yii::$app->request->post('hieu_luc');
+    //         $model->id_nguoi_gui = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_gui'];
+    //         $model->ngay_gui = Yii::$app->request->post('YeuCauVanHanh')['ngay_gui'];
+    //         $model->noi_dung_gui = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_gui'];
+
+    //         if ($model->save(false)) {
+    //             Yii::$app->session->setFlash('success', 'Successfully.');
+    //             return $this->redirect(['index']);
+    //         } else {
+    //             Yii::$app->session->setFlash('error', 'Failed.');
+    //         }
+    //     }
+
+    //     return $this->renderAjax('send-request', [
+    //         'model' => $model,
+    //     ]);
+
+    //     // return $this->redirect(['view', 'id' => $model->id]);
+    // }
 
 
 

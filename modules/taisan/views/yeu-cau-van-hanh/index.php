@@ -101,28 +101,28 @@ Yii::$app->params['showExport'] = true;
 // $('#draft-button').on('click', function() {
 //     var requestId = $('#dynamic-form').data('request-id');
 //     console.log('Submit button clicked. Request ID:', requestId);
-//     // if (requestId) {
-//     //     $.ajax({
-//     //         url: '" . \yii\helpers\Url::to(['controller/submit', 'id' => '']) . "' + requestId,
-//     //         type: 'POST',
-//     //         success: function(response) {
-//     //             console.log('Server response:', response);
-//     //             if(response === 'success') {
-//     //                 $('#dynamic-form :input').prop('disabled', true);
-//     //                 $('#submit-button').prop('disabled', true);
-//     //                 $('#update-button').hide();
-//     //             } else {
-//     //                 alert('Error: ' + response);
-//     //             }
-//     //         },
-//     //         error: function(xhr, status, error) {
-//     //             console.log('AJAX error:', status, error);
-//     //             alert('Error: ' + error);
-//     //         }
-//     //     });
-//     // } else {
-//     //     alert('Request ID is not set. Cannot submit the form.');
-//     // }
+// if (requestId) {
+//     $.ajax({
+//         url: '" . \yii\helpers\Url::to(['controller/submit', 'id' => '']) . "' + requestId,
+//         type: 'POST',
+//         success: function(response) {
+//             console.log('Server response:', response);
+//             if(response === 'success') {
+//                 $('#dynamic-form :input').prop('disabled', true);
+//                 $('#submit-button').prop('disabled', true);
+//                 $('#update-button').hide();
+//             } else {
+//                 alert('Error: ' + response);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.log('AJAX error:', status, error);
+//             alert('Error: ' + error);
+//         }
+//     });
+// } else {
+//     alert('Request ID is not set. Cannot submit the form.');
+// }
 // });
 // ", \yii\web\View::POS_END);
 ?>
@@ -154,3 +154,28 @@ echo FilterFormWidget::widget(["content" => $searchContent, "description" => "Nh
 
 
 ?>
+
+<?php
+$sendRequestUrl = Url::to(['yeu-cau-van-hanh/view-send-request']);
+
+$script = <<< JS
+$(document).on('click', '#send-request-button', function() {
+    var requestId = $(this).data('id');
+    console.log(requestId);
+// 
+    $.ajax({
+        url:'$sendRequestUrl',
+        type:'get',
+        data: {id: requestId},
+        success: function(data) {
+            $('#ajaxCrudModal .modal-title').html(data.title);
+            $('#ajaxCrudModal .modal-body').html(data.content);
+            $('#ajaxCrudModal .modal-footer').html(data.footer);
+            $('#ajaxCrudModal').modal('show');
+        } 
+    });
+ });
+JS;
+$this->registerJs($script);
+?>
+

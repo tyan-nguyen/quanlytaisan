@@ -20,31 +20,36 @@ class ThietBiBase extends \app\models\TsThietBi
     const STATUS_HONG = 'HONG';
     const STATUS_MAT = 'MAT';
     const STATUS_THANHLY = 'THANHLY';
-    
+    const STATUS_VANHANH = 'VANHANH';
+
     /**
      * Danh muc trang thai
      * @return string[]
      */
-    public static function getDmTrangThai(){
+    public static function getDmTrangThai()
+    {
         return [
-            ThietBiBase::STATUS_HOATDONG=>'Đang hoạt động',
-            ThietBiBase::STATUS_SUACHUA=>'Đang sửa chữa',
-            ThietBiBase::STATUS_HONG=>'Đã hỏng',
-            ThietBiBase::STATUS_MAT=>'Đã mất/Thất lạc',
-            ThietBiBase::STATUS_THANHLY=>'Đã thanh lý'
+            ThietBiBase::STATUS_HOATDONG => 'Đang hoạt động',
+            ThietBiBase::STATUS_SUACHUA => 'Đang sửa chữa',
+            ThietBiBase::STATUS_HONG => 'Đã hỏng',
+            ThietBiBase::STATUS_MAT => 'Đã mất/Thất lạc',
+            ThietBiBase::STATUS_THANHLY => 'Đã thanh lý',
+            ThietBiBase::STATUS_VANHANH => 'Đang vận hành'
+
         ];
     }
-    
+
     /**
      * Danh muc trang thai label
      * @param int $val
      * @return string
      */
-    public function getTenTrangThai($val=NULL){
-        if($val==NULL){
+    public function getTenTrangThai($val = NULL)
+    {
+        if ($val == NULL) {
             $val = $this->trang_thai;
         }
-        switch ($val){
+        switch ($val) {
             case ThietBiBase::STATUS_HOATDONG:
                 $label = "Đang hoạt động";
                 break;
@@ -60,12 +65,16 @@ class ThietBiBase extends \app\models\TsThietBi
             case ThietBiBase::STATUS_THANHLY:
                 $label = "Đã thanh lý";
                 break;
+            case ThietBiBase::STATUS_VANHANH:
+                $label = "Đang vận hành";
+                break;
+
             default:
                 $label = '';
         }
         return $label;
     }
-    
+
     public function rules()
     {
         return [
@@ -90,32 +99,32 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return [
             'id' => 'ID',
-            'autoid'=>'Mã tự động',
-            'ma_thiet_bi' => 'Mã thiết bị',//*
-            'id_vi_tri' => 'Vị trí',//*
-            'id_he_thong' => 'Hệ thống',//*
-            'id_loai_thiet_bi' => 'Loại thiết bị',//*
-            'id_bo_phan_quan_ly' => 'Bộ phận quản lý',//*
-            'ten_thiet_bi' => 'Tên thiết bị',//*
-            'id_thiet_bi_cha' => 'Thiết bị cha',//*
+            'autoid' => 'Mã tự động',
+            'ma_thiet_bi' => 'Mã thiết bị', //*
+            'id_vi_tri' => 'Vị trí', //*
+            'id_he_thong' => 'Hệ thống', //*
+            'id_loai_thiet_bi' => 'Loại thiết bị', //*
+            'id_bo_phan_quan_ly' => 'Bộ phận quản lý', //*
+            'ten_thiet_bi' => 'Tên thiết bị', //*
+            'id_thiet_bi_cha' => 'Thiết bị cha', //*
             'id_layout' => 'Layout',
-            'nam_san_xuat' => 'Năm sản xuất',//*
-            'serial' => 'Serial',//*
-            'model' => 'Model',//*
-            'xuat_xu' => 'Xuất xứ',//*
-            'id_hang_bao_hanh' => 'Bảo hành',//*
+            'nam_san_xuat' => 'Năm sản xuất', //*
+            'serial' => 'Serial', //*
+            'model' => 'Model', //*
+            'xuat_xu' => 'Xuất xứ', //*
+            'id_hang_bao_hanh' => 'Bảo hành', //*
             'id_nhien_lieu' => 'Nhiên liệu',
-            'dac_tinh_ky_thuat' => 'Đặc tính kỹ thuật',//*
+            'dac_tinh_ky_thuat' => 'Đặc tính kỹ thuật', //*
             'id_lop_hu_hong' => 'Lớp hư hõng',
             'id_trung_tam_chi_phi' => 'Trung tâm chi phí',
-            'id_don_vi_bao_tri' => 'Đơn vị bảo trì',//*
-            'id_nguoi_quan_ly' => 'Người quản lý',//*
-            'ngay_mua' => 'Ngày mua',//*
-            'han_bao_hanh' => 'Hạn bảo hành',//*
-            'ngay_dua_vao_su_dung' => 'Ngày đưa vào sử dụng',//*
-            'trang_thai' => 'Trạng thái',//*
-            'ngay_ngung_hoat_dong' => 'Ngày ngưng hoạt động',//*
-            'ghi_chu' => 'Ghi chú',//*
+            'id_don_vi_bao_tri' => 'Đơn vị bảo trì', //*
+            'id_nguoi_quan_ly' => 'Người quản lý', //*
+            'ngay_mua' => 'Ngày mua', //*
+            'han_bao_hanh' => 'Hạn bảo hành', //*
+            'ngay_dua_vao_su_dung' => 'Ngày đưa vào sử dụng', //*
+            'trang_thai' => 'Trạng thái', //*
+            'ngay_ngung_hoat_dong' => 'Ngày ngưng hoạt động', //*
+            'ghi_chu' => 'Ghi chú', //*
             'thoi_gian_tao' => 'Thời gian tạo',
             'nguoi_tao' => 'Người tạo',
         ];
@@ -128,9 +137,9 @@ class ThietBiBase extends \app\models\TsThietBi
      */
     public function getBoPhanQuanLy()
     {
-        return $this->id_bo_phan_quan_ly !=NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_bo_phan_quan_ly']) : '';
+        return $this->id_bo_phan_quan_ly != NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_bo_phan_quan_ly']) : '';
     }
-    
+
     /**
      * Gets query for [[BoPhanBaoTri]].
      *
@@ -138,9 +147,9 @@ class ThietBiBase extends \app\models\TsThietBi
      */
     public function getBoPhanBaoTri()
     {
-        return $this->id_don_vi_bao_tri !=NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_don_vi_bao_tri']) : '';
+        return $this->id_don_vi_bao_tri != NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_don_vi_bao_tri']) : '';
     }
-    
+
     /**
      * Gets query for [[TrungTamChiPhi]].
      *
@@ -148,10 +157,10 @@ class ThietBiBase extends \app\models\TsThietBi
      */
     public function getTrungTamChiPhi()
     {
-        return $this->id_trung_tam_chi_phi !=NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_trung_tam_chi_phi']) : '';
+        return $this->id_trung_tam_chi_phi != NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_trung_tam_chi_phi']) : '';
     }
 
-     /**
+    /**
      * Gets query for [[LoaiThietBi]].
      *
      * @return \yii\db\ActiveQuery
@@ -171,7 +180,7 @@ class ThietBiBase extends \app\models\TsThietBi
         return $this->hasOne(LoaiThietBi::class, ['id' => 'id_loai_thiet_bi']);
         //return $this->id_loai_thiet_bi != NULL ? $this->hasOne(LoaiThietBi::class, ['id' => 'id_loai_thiet_bi']) : NULL;
     }
-    
+
     /**
      * Gets query for [[HangBaoHanh]].
      *
@@ -181,14 +190,14 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return $this->id_hang_bao_hanh != NULL ? $this->hasOne(DoiTac::class, ['id' => 'id_hang_bao_hanh']) : NULL;
     }
-     /**
+    /**
      * Gets query for [[ViTri]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getViTri()
     {
-        return $this->id_vi_tri !=NULL ? $this->hasOne(ViTri::class, ['id' => 'id_vi_tri']) : NULL;
+        return $this->id_vi_tri != NULL ? $this->hasOne(ViTri::class, ['id' => 'id_vi_tri']) : NULL;
     }
 
     /**
@@ -198,7 +207,7 @@ class ThietBiBase extends \app\models\TsThietBi
      */
     public function getNguoiQuanLy()
     {
-        return $this->id_nguoi_quan_ly !=NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_quan_ly']) : NULL;
+        return $this->id_nguoi_quan_ly != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_quan_ly']) : NULL;
     }
 
     /**
@@ -210,7 +219,7 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return $this->hasMany(KeHoachBaoTri::class, ['id_thiet_bi' => 'id']);
     }
-    
+
     public function getThietBiCha()
     {
         return $this->id_thiet_bi_cha != NULL ? $this->hasOne(ThietBi::class, ['id' => 'id_thiet_bi_cha']) : '';
@@ -219,51 +228,54 @@ class ThietBiBase extends \app\models\TsThietBi
     /**
      * {@inheritdoc}
      */
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if ($this->isNewRecord) {
             $this->thoi_gian_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
         }
         //neu la record moi hoac du lieu cu chua co autoid
-        if($this->autoid == null){
+        if ($this->autoid == null) {
             //$this->autoid = md5(Yii::$app->user->id . date('Y-m-d H:i:s'));
-            $this->autoid = chr(rand(97,122)) . Yii::$app->user->id . strtotime(date('Y-m-d H:i:s'));
+            $this->autoid = chr(rand(97, 122)) . Yii::$app->user->id . strtotime(date('Y-m-d H:i:s'));
         }
         //ngaythangnam
         $cus = new CustomFunc();
-        if($this->ngay_ngung_hoat_dong != null)
+        if ($this->ngay_ngung_hoat_dong != null)
             $this->ngay_ngung_hoat_dong = $cus->convertDMYToYMD($this->ngay_ngung_hoat_dong);
-        if($this->han_bao_hanh != null)
+        if ($this->han_bao_hanh != null)
             $this->han_bao_hanh = $cus->convertDMYToYMD($this->han_bao_hanh);
-        if($this->ngay_mua != null)
+        if ($this->ngay_mua != null)
             $this->ngay_mua = $cus->convertDMYToYMD($this->ngay_mua);
-        if($this->ngay_dua_vao_su_dung != null)
+        if ($this->ngay_dua_vao_su_dung != null)
             $this->ngay_dua_vao_su_dung = $cus->convertDMYToYMD($this->ngay_dua_vao_su_dung);
-        
+
         return parent::beforeSave($insert);
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function afterSave( $insert, $changedAttributes ){
+    public function afterSave($insert, $changedAttributes)
+    {
         parent::afterSave($insert, $changedAttributes);
         //create qr code
         DungChung::createQRcode($this::QR_FOLDER, $this->autoid);
         //create history
         History::addHistory($this::MODEL_ID, $changedAttributes, $this, $insert);
     }
-    
+
     /**
      * xoa file QR code
      */
-    private function deleleQr(){
+    private function deleleQr()
+    {
         $filePath = Yii::getAlias('@webroot') . $this::QR_FOLDER . $this->autoid . '.png';
-        if(file_exists($filePath)){
+        if (file_exists($filePath)) {
             unlink($filePath);
         }
     }
-     /**
+    /**
      * {@inheritdoc}
      * xoa file anh, tai lieu, lich su sau khi xoa du lieu
      */
@@ -273,7 +285,7 @@ class ThietBiBase extends \app\models\TsThietBi
         DungChung::xoaThamChieu($this::MODEL_ID, $this->id);
         //xoa qr
         $this->deleleQr();
-        
+
         return parent::afterDelete();
     }
 }

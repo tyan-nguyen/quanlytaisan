@@ -1,9 +1,10 @@
 <?php
+
 use yii\helpers\Url;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Modal;
 use kartik\grid\GridView;
-use cangak\ajaxcrud\CrudAsset; 
+use cangak\ajaxcrud\CrudAsset;
 use cangak\ajaxcrud\BulkButtonWidget;
 use yii\widgets\Pjax;
 use app\widgets\FilterFormWidget;
@@ -23,73 +24,86 @@ Yii::$app->params['showExport'] = true;
 ?>
 
 <?php Pjax::begin([
-    'id'=>'myGrid',
+    'id' => 'myGrid',
     'timeout' => 10000,
     'formSelector' => '.myFilterForm'
 ]); ?>
 
 <div class="ts-yeu-cau-van-hanh-index">
     <div id="ajaxCrudDatatable">
-        <?=GridView::widget([
-            'id'=>'crud-datatable',
+        <?= GridView::widget([
+            'id' => 'crud-datatable',
             'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
-            'pjax'=>true,
-            'columns' => require(__DIR__.'/_columns.php'),
-            'toolbar'=> [
-                ['content'=>
+            'pjax' => true,
+            'columns' => require(__DIR__ . '/_columns.php'),
+            'toolbar' => [
+                [
+                    'content' =>
                     // Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['create'],
                     // ['role'=>'modal-remote','title'=> 'Thêm mới Ts Yeu Cau Van Hanhs','class'=>'btn btn-outline-primary']).
-                    Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [''],
-                    ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
-                    //'{toggleData}'.
-                    '{export}'
+                    Html::a(
+                        '<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại',
+                        [''],
+                        ['data-pjax' => 1, 'class' => 'btn btn-outline-primary', 'title' => 'Tải lại']
+                    ) .
+                        //'{toggleData}'.
+                        '{export}'
                 ],
-            ],          
+            ],
             'striped' => false,
             'condensed' => true,
             'responsive' => true,
-            'panelHeadingTemplate'=>'{title}',
-            'panelFooterTemplate'=>'{summary}',
-            'summary'=>'Hiển thị dữ liệu {count}/{totalCount}, Trang {page}/{pageCount}',          
+            'panelHeadingTemplate' => '{title}',
+            'panelFooterTemplate' => '{summary}',
+            'summary' => 'Hiển thị dữ liệu {count}/{totalCount}, Trang {page}/{pageCount}',
             'panel' => [
                 //'type' => 'primary', 
                 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Danh sách',
                 'before' => 'Danh sách Phiếu yêu cầu',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
-                                ["bulkdelete"] ,
-                                [
-                                    'class'=>'btn ripple btn-secondary',
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Xác nhận xóa?',
-                                    'data-confirm-message'=>'Bạn có chắc muốn xóa?'
-                                ]),
-                        ]).                        
-                        '<div class="clearfix"></div>',
+                'after' => BulkButtonWidget::widget([
+                    'buttons' => Html::a(
+                        '<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
+                        ["bulkdelete"],
+                        [
+                            'class' => 'btn ripple btn-secondary',
+                            'role' => 'modal-remote-bulk',
+                            'data-confirm' => false, 'data-method' => false, // for overide yii data api
+                            'data-request-method' => 'post',
+                            'data-confirm-title' => 'Xác nhận xóa?',
+                            'data-confirm-message' => 'Bạn có chắc muốn xóa?'
+                        ]
+                    ),
+                ]) . '<div class="clearfix"></div>',
             ]
-        ])?>
+        ]) ?>
     </div>
 </div>
+
+
 
 <?php Pjax::end(); ?>
 
 <?php Modal::begin([
-   'options' => [
-        'id'=>'ajaxCrudModal',
+    'options' => [
+        'id' => 'ajaxCrudModal',
         'tabindex' => false // important for Select2 to work properly
-   ],
-   'dialogOptions'=>['class'=>'modal-xl'],
-   'closeButton'=>['label'=>'<span aria-hidden=\'true\'>×</span>'],
-   'id'=>'ajaxCrudModal',
-    'footer'=>'',// always need it for jquery plugin
-])?>
+    ],
+    'dialogOptions' => ['class' => 'modal-xl'],
+    'closeButton' => ['label' => '<span aria-hidden=\'true\'>×</span>'],
+    'id' => 'ajaxCrudModal',
+    'footer' => '', // always need it for jquery plugin
+]) ?>
 
 <?php Modal::end(); ?>
 
 <?php
-    $searchContent = $this->render("_search", ["model" => $searchModel]);
-    echo FilterFormWidget::widget(["content"=>$searchContent, "description"=>"Nhập thông tin tìm kiếm."]) 
+$searchContent = $this->render("_search", ["model" => $searchModel]);
+echo FilterFormWidget::widget(["content" => $searchContent, "description" => "Nhập thông tin tìm kiếm."])
 ?>
+
+<script>
+    function printRequest(id) {
+        window.open('<?= \yii\helpers\Url::to(['/taisan/xuat-yeu-cau-van-hanh/print', 'id' => '']) ?>' +  id, '_blank');
+    }
+</script>
