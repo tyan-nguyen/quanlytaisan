@@ -10,7 +10,7 @@ $cus = new CustomFunc();
 if ($model->ngay_nhap_hang != null) {
     $model->ngay_nhap_hang = $cus->convertYMDToDMY($model->ngay_nhap_hang);
 }
-$model->chuyenThietBi();
+
 ?>
 
 <div class="phieu-nhap-hang-form">

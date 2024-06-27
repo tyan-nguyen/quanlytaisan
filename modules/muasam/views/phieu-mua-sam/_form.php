@@ -9,6 +9,9 @@ use yii\helpers\ArrayHelper;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
 use app\modules\bophan\models\NhanVien;
+use app\modules\user\models\User;
+
+
 /* @var $this yii\web\View */
 /* @var $model app\modules\muasam\models\PhieuMuaSam */
 /* @var $form yii\widgets\ActiveForm */
@@ -30,6 +33,8 @@ if($model->isNewRecord){
         }
     }
 }
+
+$permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
 ?>
 
 <div class="phieu-mua-sam-form">
@@ -118,7 +123,7 @@ if($model->isNewRecord){
 					]
 				]) : '';
 			?>
-        <?= $model->trang_thai==='submited' ? Html::a('Duyệt yêu cầu', null, [
+        <?= $permissionCheck && $model->trang_thai==='submited' ? Html::a('Duyệt yêu cầu', null, [
 					'class' => 'btn btn-primary',
 					'style'=>"margin-left:5px",
 					'data' => [
@@ -127,7 +132,7 @@ if($model->isNewRecord){
 					]
 				]) : '';
 			?>
-        <?= $model->trang_thai==='submited' ? Html::a('Từ chối', null, [
+        <?= $permissionCheck && $model->trang_thai==='submited' ? Html::a('Từ chối', null, [
 					'class' => 'btn btn-danger',
 					'style'=>"margin-left:5px",
 					'data' => [

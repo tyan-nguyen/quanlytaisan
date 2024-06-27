@@ -89,6 +89,20 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
         }
+        else{
+            if($this->getOldAttribute('trang_thai')!=$this->trang_thai && $this->trang_thai === "completed")
+            {
+                
+                $isSuccess=$this->chuyenThietBi();
+                if(!$isSuccess)
+                $this->trang_thai="draft";
+                else{
+                    $phieuMuaSam=$this->phieuMuaSam;
+                    $phieuMuaSam->trang_thai="completed";
+                    $phieuMuaSam->save();
+                }
+            }
+        }
         $cus = new CustomFunc();
         if($this->ngay_nhap_hang != null)
             $this->ngay_nhap_hang = $cus->convertDMYToYMD($this->ngay_nhap_hang);
@@ -96,19 +110,7 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
             
         $this->ngay_cap_nhat = date('Y-m-d H:i:s');
         $this->nguoi_cap_nhat = Yii::$app->user->id;
-        if($this->trang_thai=="completed")
-        {
-            
-            $isSuccess=$this->chuyenThietBi();
-            var_dump(12312);
-            if(!$isSuccess)
-            $this->trang_thai="draft";
-            else{
-                $phieuMuaSam=$this->phieuMuaSam;
-                $phieuMuaSam->trang_thai="completed";
-                $phieuMuaSam->save();
-            }
-        }
+        
         return parent::beforeSave($insert);
     }
     public function afterSave($insert,$changedAttributes) {
@@ -179,6 +181,7 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
         ->where(['id_phieu_mua_sam' => $this->id_phieu_mua_sam])
         ->andWhere('id_thiet_bi is null')
         ->count();
+        
         if($checkNhapHang>0)
         return false;
         else return true;

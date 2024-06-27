@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use app\modules\dungchung\models\CustomFunc;
 use kartik\grid\GridView;
+use yii\bootstrap5\Html;
 
 $isUpdated=$model->trang_thai != 'completed';
 
@@ -146,7 +147,10 @@ return [
         },
         'buttons'=>[
             'update' => function ($url, $model, $key) {
-                return !$model->id_thiet_bi;
+                return !$model->id_thiet_bi ? Html::a('<i class="fas fa-pencil-alt" aria-hidden="true"></i>', [$url],['role'=>'modal-remote-2','title'=>'Cập nhật dữ liệu', 
+                'class'=>'btn ripple btn-info btn-sm',
+                'data-bs-placement'=>'top',
+                'data-bs-toggle'=>'tooltip-info']) : "";
             },
         ],
         'viewOptions'=>['role'=>'modal-remote-2','title'=>'View','title'=>'Xem thông tin',

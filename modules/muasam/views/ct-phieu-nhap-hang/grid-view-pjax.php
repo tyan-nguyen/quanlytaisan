@@ -34,8 +34,7 @@ CrudAsset::register($this);
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    //Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['/muasam/phieu-nhap-hang/create'],
-                    //['role'=>'modal-remote-2','title'=> 'Thêm mới Ct Phieu Nhap Hangs','class'=>'btn btn-outline-primary']).
+                    
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', ['','id_phieu_mua_sam'=>$model->id],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
                     //'{toggleData}'.
