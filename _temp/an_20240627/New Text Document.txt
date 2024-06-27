@@ -1,0 +1,3 @@
+- copy ModalRemote.js vào vendor\cangak\yii-ajaxbs5\src\assets
+- copy logo_500.png vào \web\assets\images\brand
+- copy thư mục "locales" vào web\assets\plugins\fullcalendar
