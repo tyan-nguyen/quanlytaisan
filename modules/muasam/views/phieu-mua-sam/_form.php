@@ -83,7 +83,38 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
                         ]);
                    ?>
         </div>
+        
+        <?php if(!$model->isNewRecord) { ?>
         <div class='col'>
+            <label class="control-label">Trạng thái</label>
+            <br />
+            <span
+                class="badge rounded-pill bg-<?= $model->getColorTrangThai()[$model->trang_thai] ?>"><?= $model->getDmTrangThai()[$model->trang_thai] ?></span>
+        </div>
+        <?php } ?>
+        
+
+
+
+    </div>
+    <div class='row'>
+
+        <div class="col">
+            <?=$form->field($model, 'id_tt_mua_sam')->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map(BoPhan::find()->where(['la_dv_mua_hang'=>1])->all(), 'id', 'ten_bo_phan'),
+                                    'language' => 'vi',
+                                    'options' => [
+                                        'placeholder' => 'Chọn trung tâm sửa chữa...'
+                                        
+                                    ],
+                                    'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '100%',
+                    'dropdownParent' => Yii::$app->request->isAjax ? new yii\web\JsExpression('$("#ajaxCrudModal")') : null,
+                ],
+            ]);?>
+        </div>
+        <div class="col">
             <?=$form->field($model, 'ngay_yeu_cau')->widget(DatePicker::classname(), [
             'options' => [
                 'placeholder' => 'Chọn ngày...',
@@ -93,18 +124,10 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
                 'format' => 'dd/mm/yyyy',
             ],
         ]);?>
+
         </div>
 
-        <?php if(!$model->isNewRecord) { ?>
-        <div class='col'>
-            <label class="control-label">Trạng thái</label>
-            <br />
-            <span
-                class="badge rounded-pill bg-<?= $model->getColorTrangThai()[$model->trang_thai] ?>"><?= $model->getDmTrangThai()[$model->trang_thai] ?></span>
-        </div>
-        <?php } ?>
     </div>
-
     <div class='row'>
 
         <div class='col-12'><?= $form->field($model, 'ghi_chu')->textarea(['rows' => 4]) ?></div>

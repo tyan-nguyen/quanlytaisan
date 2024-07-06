@@ -12,12 +12,12 @@ if ($model->ngay_sua_chua != null) {
 }
 ?>
 <style>
-.print-phieu-sua-chua {
+.print-phieu-xuat-kho {
     display: none;
 }
 </style>
 
-<div class="print-phieu-sua-chua">
+<div class="print-phieu-xuat-kho">
 <table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
@@ -36,52 +36,15 @@ if ($model->ngay_sua_chua != null) {
         </tr>
     </tbody>
 </table>
-<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;'><strong><span style='font-size:20px;line-height:107%;font-family:"Times New Roman",serif;'>PHIẾU YÊU CẦU SỬA CHỮA</span></strong></p>
+<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;'><strong><span style='font-size:20px;line-height:107%;font-family:"Times New Roman",serif;'>PHIẾU XUẤT KHO</span></strong></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Tên hệ thống, thiết bị: <?= $thietBi->ten_thiet_bi ?></span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Địa điểm:<?= $model->dia_chi ?></span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Bộ phận yêu cầu: <?= $thietBi->boPhanQuanLy ? $thietBi->boPhanQuanLy->ten_bo_phan : "" ?></span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Người chịu trách nhiệm:<?= $thietBi->nguoiQuanLy ? $thietBi->nguoiQuanLy->ten_nhan_vien : "" ?>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Ngày yêu cầu: <?= $ngaySuaChua ?></span></p>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Lý do: <?= $model->ghi_chu1 ?></span></p>
-<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Nội dung sửa chữa:</span></p>
-<table style="width:100%;border-collapse:collapse;border:none;">
-    <tbody>
-        <tr>
-            <td style="width: 35.2pt;border: 1pt solid windowtext;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;line-height:normal;'><strong><span style='font-size:16px;font-family:"Times New Roman",serif;'>STT</span></strong></p>
-            </td>
-            <td style="width: 4cm;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;line-height:normal;'><strong><span style='font-size:16px;font-family:"Times New Roman",serif;'>Tên danh mục</span></strong></p>
-            </td>
-            <td style="width: 106.3pt;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;line-height:normal;'><strong><span style='font-size:16px;font-family:"Times New Roman",serif;'>Đơn vị tính</span></strong></p>
-            </td>
-            <td style="width: 63.8pt;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;line-height:normal;'><strong><span style='font-size:16px;font-family:"Times New Roman",serif;'>Số lượng</span></strong></p>
-            </td>
-            <td style="width: 3cm;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;line-height:normal;'><strong><span style='font-size:16px;font-family:"Times New Roman",serif;'>Đơn giá</span></strong></p>
-            </td>
-            <td style="width: 3cm;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;line-height:normal;'><strong><span style='font-size:16px;font-family:"Times New Roman",serif;'>Thành tiền</span></strong></p>
-            </td>
-        </tr>
-        
-        <?php foreach ($baoGia->ctBaoGiaSuaChuas as $stt => $item): ?>
-            <tr>
-                <td style="width: 35.2pt;border: 1pt solid windowtext;padding: 0cm 5.4pt;vertical-align: top;"><?= $stt+1 ?></td>
-                <td style="width: 4cm;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;"><?= $item->ten_danh_muc ?></td>
-                <td style="width: 106.3pt;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;"><?= $item->so_luong ?></td>
-                <td style="width: 63.8pt;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;"><?= $item->don_vi_tinh ?></td>
-                <td style="width: 3cm;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;"><?= number_format($item->don_gia) ?></td>
-                <td style="width: 3cm;border-top: 1pt solid windowtext;border-right: 1pt solid windowtext;border-bottom: 1pt solid windowtext;border-image: initial;border-left: none;padding: 0cm 5.4pt;vertical-align: top;"><?= number_format($item->thanh_tien) ?></td>
-            </tr>
-        <?php endforeach; ?>
-        
-        
-    </tbody>
-</table>
-<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Vật tư đề nghị (nếu có):</span></p>
+
+<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>Danh sách vật tư:</span></p>
 <table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
@@ -118,18 +81,18 @@ if ($model->ngay_sua_chua != null) {
     </tbody>
 </table>
 <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>&nbsp;</span></p>
-<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;  text-align:right;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>.........Ngày .... tháng .... Năm.......</span></p>
+<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif; text-align:right;'><span style='font-size:17px;line-height:107%;font-family:"Times New Roman",serif;'>.........Ngày … tháng …. Năm............</span></p>
 <table style="width:100%;border-collapse:collapse;border:none;">
     <tbody>
         <tr>
             <td style="width: 155.8pt;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;line-height:normal;'><strong><span style='font-size:17px;font-family:"Times New Roman",serif;'>NGƯỜI YÊU CẦU</span></strong></p>
+                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;line-height:normal;'><strong><span style='font-size:17px;font-family:"Times New Roman",serif;'>THỦ KHO</span></strong></p>
             </td>
             <td style="width: 155.85pt;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;line-height:normal;'><strong><span style='font-size:17px;font-family:"Times New Roman",serif;'>BỘ PHẬN YÊU CẦU</span></strong></p>
+                
             </td>
             <td style="width: 177.15pt;padding: 0cm 5.4pt;vertical-align: top;">
-                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;line-height:normal;'><strong><span style='font-size:17px;font-family:"Times New Roman",serif;'>DUYỆT PHIẾU</span></strong></p>
+                <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:11.0pt;font-family:"Aptos",sans-serif;text-align:center;line-height:normal;'><strong><span style='font-size:17px;font-family:"Times New Roman",serif;'>TRUNG TÂM SỬA CHỮA</span></strong></p>
             </td>
         </tr>
     </tbody>

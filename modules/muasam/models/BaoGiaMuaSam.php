@@ -4,6 +4,7 @@ namespace app\modules\muasam\models;
 
 use Yii;
 use app\modules\user\models\User;
+use app\modules\bophan\models\DoiTac;
 /**
  * This is the model class for table "ts_bao_gia_mua_sam".
  *
@@ -44,8 +45,8 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_phieu_mua_sam'], 'required'],
-            [['id_phieu_mua_sam', 'flag_index', 'nguoi_tao', 'nguoi_cap_nhat', 'nguoi_duyet_bg'], 'integer'],
+            [['id_phieu_mua_sam','id_dv_bao_gia'], 'required'],
+            [['id_phieu_mua_sam', 'flag_index', 'nguoi_tao', 'nguoi_cap_nhat', 'nguoi_duyet_bg','id_dv_bao_gia'], 'integer'],
             [['ngay_bao_gia', 'ngay_ket_thuc', 'ngay_gui_bg', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
             [['tong_tien','so_bao_gia'], 'number'],
             [['ghi_chu_bg1', 'ghi_chu_bg2'], 'string'],
@@ -62,6 +63,7 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'id_phieu_mua_sam' => 'Số phiếu',
+            'id_dv_bao_gia'=> 'Đơn vị báo giá',
             'so_bao_gia' => 'Lần báo giá',
             'flag_index' => 'Flag Index',
             'ngay_bao_gia' => 'Ngày báo giá',
@@ -88,7 +90,10 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PhieuMuaSam::class, ['id' => 'id_phieu_mua_sam']);
     }
-
+    public function getDvBaoGia()
+    {
+        return $this->hasOne(DoiTac::class, ['id' => 'id_dv_bao_gia']);
+    }
     /**
      * Gets query for [[TsCtBaoGiaMuaSams]].
      *
@@ -145,6 +150,17 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
                 $this->flag_index = 0;
                 if($this->trang_thai=="rejected")
                 $this->flag_index = -1;
+                else{
+                    //xử lý duyệt báo giá. là từ chối tất cả các báo giá còn lại
+                    $baoGia=BaoGiaMuaSam::find()->where(['id_phieu_mua_sam'=>$this->id_phieu_mua_sam])
+                    ->where(['flag_index'=>0])
+                    ->where(['<>','id',$this->id])->all();
+                    foreach($baoGia as $key=>$bg)
+                    {
+                        $bg->trang_thai="rejected";
+                        $bg->save();
+                    }
+                }
                 
             }
             if($this->trang_thai=="submited")

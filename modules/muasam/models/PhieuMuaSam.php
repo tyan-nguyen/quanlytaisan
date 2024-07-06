@@ -43,9 +43,9 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
     {
         return [
             [['ngay_yeu_cau', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
-            [['id_nguoi_duyet', 'nguoi_tao', 'nguoi_cap_nhat','id_nguoi_quan_ly','id_bo_phan_quan_ly'], 'integer'],
-            [['tong_phi'], 'number'],
-            [['ghi_chu'], 'string'],
+            [['id_nguoi_duyet', 'nguoi_tao', 'nguoi_cap_nhat','id_nguoi_quan_ly','id_bo_phan_quan_ly','id_tt_mua_sam'], 'integer'],
+            [['tong_phi','danh_gia_ms','danh_gia_bg'], 'number'],
+            [['ghi_chu','ghi_chu2'], 'string'],
             [['trang_thai'], 'string', 'max' => 255],
             [['id_nguoi_duyet'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_duyet' => 'id']],
         ];
@@ -58,6 +58,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Số phiếu',
+            'id_tt_mua_sam' => 'Trung tâm mua sắm',
             'ngay_yeu_cau' => 'Ngày yêu cầu',
             'id_nguoi_duyet' => 'Người duyệt',
             'tong_phi' => 'Tổng phí',
@@ -68,6 +69,9 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             'id_bo_phan_quan_ly' => 'Bộ phận',
             'nguoi_cap_nhat' => 'Người cập nhật',
             'ngay_cap_nhat' => 'Ngày cập nhật',
+            'danh_gia_ms'=>'Đánh giá TT mua sắm',
+            'danh_gia_bg'=>'Đánh giá dv báo giá',
+            'ghi_chu2'=>'ghi chú 2'
         ];
     }
 
@@ -90,7 +94,10 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
     {
         return $this->hasOne(BaoGiaMuaSam::class, ['id_phieu_mua_sam' => 'id'])->where(['flag_index'=>0]);
     }
-
+    public function getBaoGiaMuaSams()
+    {
+        return $this->hasMany(BaoGiaMuaSam::class, ['id_phieu_mua_sam' => 'id'])->where(['flag_index'=>0]);
+    }
     /**
      * Gets query for [[TsCtPhieuMuaSams]].
      *
@@ -152,6 +159,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             "submited"=>'Chờ duyệt',
             "rejected"=>"Từ chối",
             "approved"=>'Đã duyệt',
+            "quote_sent"=>'Chờ duyệt báo giá',
             "processing"=>"Đang nhập hàng",
             "completed"=>"Hoàn thành"       ];
     }
@@ -205,6 +213,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             "submited"=>'warning',
             "rejected"=>"danger",
             "approved"=>'primary',
+            "quote_sent"=>'warning',
             "processing"=>'secondary',
             "completed"=>'success',
         ];

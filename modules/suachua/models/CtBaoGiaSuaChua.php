@@ -86,7 +86,7 @@ class CtBaoGiaSuaChua extends \yii\db\ActiveRecord
         $baoGia->phi_linh_kien=$this->sumDmBaoGia(1);
         $baoGia->phi_khac=$this->sumDmBaoGia(2);
         $baoGia->tong_tien=$baoGia->phi_linh_kien + $baoGia->phi_khac;
-        $baoGia->save();
+        $baoGia->save(false);
         return parent::afterSave($insert, $changedAttributes);
     }
     public function afterDelete(){

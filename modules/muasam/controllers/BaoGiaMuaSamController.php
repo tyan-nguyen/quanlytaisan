@@ -67,8 +67,10 @@ class BaoGiaMuaSamController extends Controller
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $model=$this->findModel($id);
+            $dvBaoGia=$model->dvBaoGia;
             return [
-                    'title'=> "BaoGiaMuaSam",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
@@ -88,11 +90,11 @@ class BaoGiaMuaSamController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_phieu_mua_sam)
     {
         $request = Yii::$app->request;
         $model = new BaoGiaMuaSam();  
-
+        $model->id_phieu_mua_sam=$id_phieu_mua_sam;
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -100,7 +102,7 @@ class BaoGiaMuaSamController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm mới BaoGiaMuaSam",
+                    'title'=> "Thêm mới báo giá mua sắm",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -110,8 +112,8 @@ class BaoGiaMuaSamController extends Controller
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Thêm mới BaoGiaMuaSam",
+                    'forceReload'=>'#crud-datatable-pjax-bao-gia',
+                    'title'=> "Thêm mới báo giá",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -120,7 +122,7 @@ class BaoGiaMuaSamController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới BaoGiaMuaSam",
+                    'title'=> "Thêm mới báo giá",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -172,6 +174,8 @@ class BaoGiaMuaSamController extends Controller
             'value'=>'rejected'
 
         ]);
+
+        $dvBaoGia=$model->dvBaoGia;
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -179,7 +183,7 @@ class BaoGiaMuaSamController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật BaoGiaMuaSam",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('_update_duyet', [
                         'model' => $model,
                     ]),
@@ -189,7 +193,7 @@ class BaoGiaMuaSamController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "BaoGiaMuaSam",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -199,7 +203,7 @@ class BaoGiaMuaSamController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật BaoGiaMuaSam",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('_update_duyet', [
                         'model' => $model,
                     ]),
@@ -238,7 +242,7 @@ class BaoGiaMuaSamController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax-bao-gia'];
         }else{
             /*
             *   Process for non-ajax request
@@ -288,6 +292,7 @@ class BaoGiaMuaSamController extends Controller
         }
        
     }
+    
 
     /**
      * Finds the BaoGiaMuaSam model based on its primary key value.

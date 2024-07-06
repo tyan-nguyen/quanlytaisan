@@ -7,6 +7,7 @@ use app\modules\taisan\models\ThietBiBase;
 use app\modules\suachua\models\DmTTSuaChua;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\user\models\User;
+use app\modules\bophan\models\BoPhan;
 
 /**
  * This is the model class for table "ts_phieu_sua_chua".
@@ -51,13 +52,13 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return [
             [['id_thiet_bi', 'id_tt_sua_chua'], 'required'],
-            [['id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc'], 'integer'],
+            [['id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc','danh_gia_bg'], 'integer'],
             [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
             [['phi_linh_kien', 'phi_khac', 'tong_tien'], 'number'],
             [['ghi_chu1', 'ghi_chu2','dia_chi'], 'string'],
             [['trang_thai'], 'string', 'max' => 255],
             [['id_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => ThietBiBase::class, 'targetAttribute' => ['id_thiet_bi' => 'id']],
-            [['id_tt_sua_chua'], 'exist', 'skipOnError' => true, 'targetClass' => DmTTSuaChua::class, 'targetAttribute' => ['id_tt_sua_chua' => 'id']],
+            [['id_tt_sua_chua'], 'exist', 'skipOnError' => true, 'targetClass' => BoPhan::class, 'targetAttribute' => ['id_tt_sua_chua' => 'id']],
         ];
     }
 
@@ -84,7 +85,8 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             'nguoi_cap_nhat' => 'Người cập nhật',
             'ghi_chu1' => 'Tình trạng hư hỏng',
             'ghi_chu2' => 'Ghi chú 2',
-            'danh_gia_sc' => 'Đánh giá',
+            'danh_gia_sc' => 'Đánh giá sửa chữa',
+            'danh_gia_bg' => 'Đánh giá đv báo giá'
         ];
     }
 
@@ -130,7 +132,7 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
      */
     public function getTtSuaChua()
     {
-        return $this->hasOne(DmTTSuaChua::class, ['id' => 'id_tt_sua_chua']);
+        return $this->hasOne(BoPhan::class, ['id' => 'id_tt_sua_chua']);
     }
     public function beforeSave($insert) {
         //ngaythangnam
@@ -175,13 +177,13 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
             $thietBi->save();
         }
-        if(isset($changedAttributes['danh_gia_sc']))
-        {
-            $avg=PhieuSuaChua::find()->where(['id_tt_sua_chua'=>$this->id_tt_sua_chua])->average('danh_gia_sc');
-            $this->ttSuaChua->danh_gia=(int) $avg;
-            $this->ttSuaChua->save();
+        // if(isset($changedAttributes['danh_gia_sc']))
+        // {
+        //     $avg=PhieuSuaChua::find()->where(['id_tt_sua_chua'=>$this->id_tt_sua_chua])->average('danh_gia_sc');
+        //     $this->ttSuaChua->danh_gia=(int) $avg;
+        //     $this->ttSuaChua->save();
             
-        }
+        // }
         
         return parent::afterSave($insert,$changedAttributes);
     }

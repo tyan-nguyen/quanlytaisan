@@ -68,10 +68,12 @@ class BaoGiaSuaChuaController extends Controller
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $model=$this->findModel($id);
+            $dvBaoGia=$model->dvBaoGia;
             return [
-                    'title'=> "BaoGiaSuaChua",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
+                        'model' => $model,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -173,15 +175,16 @@ class BaoGiaSuaChuaController extends Controller
             'value'=>'rejected'
 
         ]);
-        
+        $dvBaoGia=$model->dvBaoGia;
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
+
             if($request->isGet){
                 return [
-                    'title'=> "Thông tin báo giá",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -192,7 +195,7 @@ class BaoGiaSuaChuaController extends Controller
                 
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Thông tin báo giá",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -202,7 +205,7 @@ class BaoGiaSuaChuaController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Thông tin báo giá",
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),

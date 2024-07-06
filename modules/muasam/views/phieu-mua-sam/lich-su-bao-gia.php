@@ -7,7 +7,7 @@ $cus = new CustomFunc();
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Lần BG</th>
+            <th>Đơn vị báo giá</th>
             <th>Ngày gửi BG</th>
             <th>Trạng thái</th>
             <th>Tổng tiền</th>
@@ -18,7 +18,9 @@ $cus = new CustomFunc();
     <tbody>
         <?php foreach ($model->lichSuBaoGiaMuaSams as $item): ?>
             <tr>
-                <td><?= $item->so_bao_gia ?></td>
+                <td><?php  $dv=$item->dvBaoGia;
+                            echo $dv ? $dv->ten_doi_tac : '';
+                 ?></td>
                 <td><?= $item->ngay_gui_bg ? $cus->convertYMDHISToDMYHID($item->ngay_gui_bg): "-" ?></td>
                 <td><?= $item->getDmTrangThai()[$item->trang_thai] ?></td>
                 <td><?= number_format($item->tong_tien) ?></td>

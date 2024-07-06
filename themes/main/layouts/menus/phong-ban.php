@@ -29,6 +29,8 @@
 							<li class=""><a href="<?= Yii::getAlias('@web/bophan/nhan-vien?menu=pbbp2') ?>" class="slide-item" data-menu="pbbp2">Danh sách nhân viên</a>
 							<li class=""><a href="<?= Yii::getAlias('@web/bophan/doi-tac?menu=pbbp3') ?>" class="slide-item" data-menu="pbbp3">Danh sách Đối tác</a>
 							</li>
+							<li class=""><a href="<?= Yii::getAlias('@web/bophan/dm-dv-bao-gia?menu=pbbp5') ?>" class="slide-item" data-menu="pbbp5">Đơn vị báo giá</a>
+							</li>
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/bophan/nhom-doi-tac?menu=pbbp4') ?>" class="slide-item" data-menu="pbbp4">Nhóm Đối tác</a>
 							</li>

@@ -8,7 +8,7 @@ use yii\bootstrap5\Html;
 
 ?>
 <div class="bao-gia-mua-sam-create">
-    <?= $this->render('_form', [
+    <?= $this->render('_form_add', [
         'model' => $model,
     ]) ?>
 </div>

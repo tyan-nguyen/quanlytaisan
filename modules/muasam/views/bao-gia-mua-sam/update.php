@@ -7,14 +7,16 @@ use yii\bootstrap5\Html;
 ?>
 <div class="bao-gia-mua-sam-update">
 
-    <?= $this->render('_form-gui-bao-gia', [
+    <?php /*$this->render('_form-gui-bao-gia', [
         'model' => $baoGia,
-    ]) ?>
+    ])*/  ?>
+    
     <?= $this->render('../ct-bao-gia-mua-sam/grid-view-pjax', [
         'model' => $baoGia,
         'phieuMuaSam'=>$model,
         'searchModel' => $searchModel,
-        'dataProvider' => $dataProvider
+        'dataProvider' => $dataProvider,
+        'dataProviderBgms'=>$dataProviderBgms
     ]) ?>
 
 </div>

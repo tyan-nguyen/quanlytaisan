@@ -18,7 +18,7 @@ $cus = new CustomFunc();
     <tbody>
         <?php foreach ($model->lichSuSuaChuas as $item): ?>
             <tr>
-                <td><?= $item->ttSuaChua->ten_tt_sua_chua ?></td>
+                <td><?= $item->ttSuaChua->ten_bo_phan ?></td>
                 <td><?= $item->ngay_sua_chua ? $cus->convertYMDHISToDMYHID($item->ngay_sua_chua): "-" ?></td>
                 <td><?= $item->ngay_hoan_thanh ? $cus->convertYMDHISToDMYHID($item->ngay_hoan_thanh): "-" ?></td>
                 <td><?= $item->getDmTrangThai()[$item->trang_thai] ?></td>

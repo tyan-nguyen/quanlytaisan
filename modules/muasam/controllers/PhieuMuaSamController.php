@@ -9,6 +9,7 @@ use app\modules\muasam\models\CtPhieuMuaSamSearch;
 use app\modules\muasam\models\CtBaoGiaMuaSamSearch;
 use app\modules\muasam\models\CtPhieuNhapHangSearch;
 use app\modules\muasam\models\BaoGiaMuaSam;
+use app\modules\muasam\models\BaoGiaMuaSamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -58,7 +59,24 @@ class PhieuMuaSamController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    public function actionDuyetPhieuMuaSam()
+    {    
+        $searchModel = new PhieuMuaSamSearch();
+        $searchModel->trang_thai='submited';
+  		if(isset($_POST['search']) && $_POST['search'] != null){
+            $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
+        } else if ($searchModel->load(Yii::$app->request->post())) {
+            $searchModel = new PhieuMuaSamSearch(); // "reset"
+            $dataProvider = $searchModel->search(Yii::$app->request->post());
+        } else {
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        }   
+        
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Displays a single PhieuMuaSam model.
@@ -275,6 +293,46 @@ class PhieuMuaSamController extends Controller
         }
        
     }
+    public function actionGuiBaoGia($id_phieu_mua_sam)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id_phieu_mua_sam);
+        $sendOk = false;
+        $fList = array();
+        foreach ( $model->baoGiaMuaSams as $baoGia ) {
+            
+            try{
+            	$baoGia->trang_thai='submited';
+                $baoGia->save();
+                $sendOk = true;
+            }catch(\Exception $e) {
+            	$sendOk = false;
+            	$fList[] = $baoGia->id;
+            }
+            
+        }
+        if($sendOk)
+        {
+            $model->trang_thai="quote_sent";
+            $model->save();
+        }
+        
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax-bao-gia',
+            			'tcontent'=>$sendOk==true?'Gửi báo giá thành công!':('Không thể gửi báo giá:'.implode('</br>', $fList)),
+            ];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            $refererUrl = Yii::$app->request->referrer;
+            return $this->redirect($refererUrl);
+        }
+    }
 
     /**
      * Finds the PhieuMuaSam model based on its primary key value.
@@ -309,9 +367,28 @@ class PhieuMuaSamController extends Controller
 
         //báo giá mua sắm
         
-        $baoGia=BaoGiaMuaSam::getBaoGiaByPhieuMuaSam($id_phieu_mua_sam);
+        
+        $searchModelBgms = new BaoGiaMuaSamSearch();
+        $searchModelBgms->id_phieu_mua_sam=$id_phieu_mua_sam;
+  		if(isset($_POST['search']) && $_POST['search'] != null){
+            $dataProviderBgms = $searchModelBgms->searchAll(Yii::$app->request->post(), $_POST['search']);
+        } else if ($searchModelBgms->load(Yii::$app->request->post())) {
+            $searchModelBgms = new BaoGiaMuaSamSearch(); // "reset"
+            $dataProviderBgms = $searchModelBgms->searchAll(Yii::$app->request->post());
+        } else {
+            $dataProviderBgms = $searchModelBgms->searchAll(Yii::$app->request->queryParams);
+        }
+
+        //chi tiết báo giá mua sắm
+        
+        $id_bao_gia=Yii::$app->request->get('id_bao_gia');
+        if($id_bao_gia)
+            $baoGia=BaoGiaMuaSam::findOne($id_bao_gia);
+        else
+            $baoGia=null;
+
         $searchModelBg = new CtBaoGiaMuaSamSearch();
-        $searchModelBg->id_bao_gia=$baoGia->id;
+        $searchModelBg->id_bao_gia=$baoGia->id ?? 0;
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProviderBg = $searchModelBg->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModelBg->load(Yii::$app->request->post())) {
@@ -341,6 +418,7 @@ class PhieuMuaSamController extends Controller
             'dataProviderBg' => $dataProviderBg,
             'searchModelPn' => $searchModelPn,
             'dataProviderPn' => $dataProviderPn,
+            'dataProviderBgms'=>$dataProviderBgms
         ]);
     }
 }

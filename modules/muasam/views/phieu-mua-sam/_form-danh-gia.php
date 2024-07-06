@@ -34,15 +34,15 @@ $cus = new CustomFunc();
   
 }
 </style>
-<div class="phieu-sua-chua-form">
+<div class="phieu-mua-sam-form">
 
     <?php $form = ActiveForm::begin([
-        'action' => $model->isNewRecord ? ['/suachua/phieu-sua-chua/create'] : ['/suachua/phieu-sua-chua/update','id'=>$model->id]
+        'action' => $model->isNewRecord ? ['/muasam/phieu-mua-sam/create'] : ['/muasam/phieu-mua-sam/update','id'=>$model->id]
     ]);?>
     
     <div class="row">
         <div class="col-6">
-    <?=$form->field($model, 'danh_gia_sc')->textInput([
+    <?=$form->field($model, 'danh_gia_ms')->textInput([
         'data-filled' => "fa-solid fa-star",
         'data-empty'=>'fa-regular fa-star',
         'class'=>'rating',

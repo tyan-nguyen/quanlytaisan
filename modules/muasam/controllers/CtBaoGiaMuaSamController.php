@@ -67,7 +67,7 @@ class CtBaoGiaMuaSamController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "CtBaoGiaMuaSam",
+                    'title'=> "Thông tin chi tiết thiết bị",
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
@@ -114,7 +114,7 @@ class CtBaoGiaMuaSamController extends Controller
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Tiếp tục thêm',['create'],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
+                            Html::a('Tiếp tục thêm',['create',"id_bao_gia"=>$id_bao_gia],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
         
                 ];         
             }else{           
@@ -162,7 +162,7 @@ class CtBaoGiaMuaSamController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật CtBaoGiaMuaSam",
+                    'title'=> "Cập nhật chi tiết thiết bị",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -171,8 +171,8 @@ class CtBaoGiaMuaSamController extends Controller
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "CtBaoGiaMuaSam",
+                    'forceReload'=>'#crud-datatable-pjax-bao-gia',
+                    'title'=> "Thông tin chi tiết thiết bị",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -182,7 +182,7 @@ class CtBaoGiaMuaSamController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật CtBaoGiaMuaSam",
+                    'title'=> "Cập nhật chi tiết thiết bị",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),

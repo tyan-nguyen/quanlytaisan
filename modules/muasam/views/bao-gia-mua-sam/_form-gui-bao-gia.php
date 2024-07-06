@@ -4,6 +4,9 @@ use yii\widgets\ActiveForm;
 use app\modules\muasam\models\BaoGiaMuaSam;
 use app\widgets\forms\DocumentWidget;
 use app\widgets\forms\ImageWidget;
+use kartik\select2\Select2;
+use app\modules\bophan\models\DmDvBaoGia;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\modules\muasam\models\BaoGiaMuaSam */
 /* @var $form yii\widgets\ActiveForm */
@@ -24,10 +27,28 @@ use app\widgets\forms\ImageWidget;
         'action' => ['/muasam/bao-gia-mua-sam/update','id'=>$model->id]
     ]); ?>
 
-
-
-                <?= $form->field($model, 'ghi_chu_bg1')->textarea(['rows' => 6]) ?>
-
+                <div class="row">
+                    <div class="col-12">
+                        <?=$form->field($model, 'id_dv_bao_gia')->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map(DmDvBaoGia::find()->all(), 'id', 'ten_don_vi'),
+                        'language' => 'vi',
+                        'options' => [
+                            'placeholder' => 'Chọn đơn vị báo giá...'
+                            
+                        ],
+                        'pluginOptions' => [
+        'allowClear' => true,
+        'width' => '100%',
+        'dropdownParent' => Yii::$app->request->isAjax ? new yii\web\JsExpression('$("#ajaxCrudModal")') : null,
+    ],
+]);?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <?= $form->field($model, 'ghi_chu_bg1')->textarea(['rows' => 6]) ?>
+                    </div>
+                </div>
 
 
 

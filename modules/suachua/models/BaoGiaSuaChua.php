@@ -4,7 +4,7 @@ namespace app\modules\suachua\models;
 
 use Yii;
 use app\modules\user\models\User;
-
+use app\modules\bophan\models\DoiTac;
 /**
  * This is the model class for table "ts_bao_gia_sua_chua".
  *
@@ -47,8 +47,8 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_phieu_sua_chua'], 'required'],
-            [['so_bao_gia', 'id_phieu_sua_chua', 'flag_index', 'nguoi_tao', 'nguoi_cap_nhat', 'nguoi_duyet_bg'], 'integer'],
+            [['id_phieu_sua_chua','id_dv_bao_gia'], 'required'],
+            [['so_bao_gia', 'id_phieu_sua_chua', 'flag_index', 'nguoi_tao', 'nguoi_cap_nhat', 'nguoi_duyet_bg','id_dv_bao_gia'], 'integer'],
             [['ngay_bao_gia', 'ngay_ket_thuc', 'ngay_gui_bg', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
             [['phi_linh_kien', 'phi_khac', 'tong_tien'], 'number'],
             [['ghi_chu_bg1', 'ghi_chu_bg2'], 'string'],
@@ -81,6 +81,7 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             'ngay_cap_nhat' => 'Ngày cập nhật',
             'nguoi_cap_nhat' => 'Người cập nhật',
             'nguoi_duyet_bg' => 'Người duyệt',
+            'id_dv_bao_gia' => 'Đơn vị báo giá'
         ];
     }
 
@@ -179,7 +180,7 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
 
             ];
             $baoGiaSuaChua=new BaoGiaSuaChua($data);
-            $baoGiaSuaChua->save();
+            $baoGiaSuaChua->save(false);
             
             //echo json_encode($baoGiaSuaChua->getErrors());
             return $baoGiaSuaChua;
@@ -193,6 +194,10 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             "rejected"=>"Từ chối",
             "approved"=>'Đã duyệt',
         ];
+    }
+    public function getDvBaoGia()
+    {
+        return $this->hasOne(DoiTac::class, ['id' => 'id_dv_bao_gia']);
     }
     public static function getColorTrangThai(){
         return [

@@ -162,7 +162,7 @@ class PhieuSuaChuaController extends Controller
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Tiếp tục thêm',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    Html::a('Xem thông tin phiếu sửa chữa',['/suachua/phieu-sua-chua/chi-tiet-phieu-sua-chua','id_phieu_sua_chua'=>$model->id],['class'=>'btn btn-primary'])
         
                 ];         
             }else{           
@@ -339,6 +339,13 @@ class PhieuSuaChuaController extends Controller
     {
         // Render the view you want to print
         return $this->renderPartial('print',[
+            'model'=>$this->findModel($id)
+        ]);
+    }
+    public function actionPrintPhieuXuatKhoView($id)
+    {
+        // Render the view you want to print
+        return $this->renderPartial('print-phieu-xuat-kho',[
             'model'=>$this->findModel($id)
         ]);
     }

@@ -9,10 +9,10 @@ use yii\widgets\Pjax;
 use app\widgets\FilterFormWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\muasam\models\PhieuMuaSamSearch */
+/* @var $searchModel app\modules\bophan\models\DmDvBaoGiaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Phiếu mua sắm';
+$this->title = 'Danh sách đơn vị báo giá';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -28,7 +28,7 @@ Yii::$app->params['showExport'] = true;
     'formSelector' => '.myFilterForm'
 ]); ?>
 
-<div class="phieu-mua-sam-index">
+<div class="dm-dv-bao-gia-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
             'id'=>'crud-datatable',
@@ -39,7 +39,7 @@ Yii::$app->params['showExport'] = true;
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Thêm mới phiếu mua sắm','class'=>'btn btn-outline-primary']).
+                    ['role'=>'modal-remote','title'=> 'Thêm mới đơn vị báo giá','class'=>'btn btn-outline-primary']).
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
                     //'{toggleData}'.
@@ -54,21 +54,21 @@ Yii::$app->params['showExport'] = true;
             'summary'=>'Hiển thị dữ liệu {count}/{totalCount}, Trang {page}/{pageCount}',          
             'panel' => [
                 //'type' => 'primary', 
-                'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Danh sách',
-                'before'=>'<em>* Danh sách phiếu mua sắm</em>',
-                // 'after'=>BulkButtonWidget::widget([
-                //             'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
-                //                 ["bulkdelete"] ,
-                //                 [
-                //                     'class'=>'btn ripple btn-secondary',
-                //                     'role'=>'modal-remote-bulk',
-                //                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                //                     'data-request-method'=>'post',
-                //                     'data-confirm-title'=>'Xác nhận xóa?',
-                //                     'data-confirm-message'=>'Bạn có chắc muốn xóa?'
-                //                 ]),
-                //         ]).                        
-                //         '<div class="clearfix"></div>',
+                'heading' => false,
+                //'before'=>'<em>* Danh sách Dm Dv Bao Gias</em>',
+                'after'=>BulkButtonWidget::widget([
+                            'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
+                                ["bulkdelete"] ,
+                                [
+                                    'class'=>'btn ripple btn-secondary',
+                                    'role'=>'modal-remote-bulk',
+                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                                    'data-request-method'=>'post',
+                                    'data-confirm-title'=>'Xác nhận xóa?',
+                                    'data-confirm-message'=>'Bạn có chắc muốn xóa?'
+                                ]),
+                        ]).                        
+                        '<div class="clearfix"></div>',
             ]
         ])?>
     </div>

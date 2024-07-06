@@ -24,10 +24,15 @@ return [
             return $html;
         }
     ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'so_bao_gia',
-    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_dv_bao_gia',
+        'value'=>function($model){
+            $dv=$model->dvBaoGia;
+            $tenDv=$dv ? $dv->ten_doi_tac : '';
+            return $tenDv;
+        }
+    ],
     // [
     //     'class'=>'\kartik\grid\DataColumn',
     //     'attribute'=>'flag_index',

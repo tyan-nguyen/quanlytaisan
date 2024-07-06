@@ -8,7 +8,7 @@ use app\modules\dungchung\models\CustomFunc;
 ?>
 <div class="row bao-gia-sua-chua-view">
 
-    <div class="card-body">
+    
         <div class="panel panel-primary">
             <div class="tab-menu-heading">
                 <div class="tabs-menu1">
@@ -152,7 +152,7 @@ use app\modules\dungchung\models\CustomFunc;
                 </div>
             </div>
         </div>
-    </div>
+
 
 
 

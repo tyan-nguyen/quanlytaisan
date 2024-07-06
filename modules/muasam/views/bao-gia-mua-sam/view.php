@@ -6,48 +6,25 @@ use app\modules\dungchung\models\CustomFunc;
 /* @var $model app\modules\muasam\models\BaoGiaMuaSam */
 ?>
 <div class="bao-gia-mua-sam-view">
- 
-    <?php  /*DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'id_phieu_mua_sam',
-            'so_bao_gia',
-            'flag_index',
-            'ngay_bao_gia',
-            'ngay_ket_thuc',
-            'ngay_gui_bg',
-            'trang_thai',
-            'tong_tien',
-            'ghi_chu_bg1:ntext',
-            'ghi_chu_bg2:ntext',
-            'nguoi_tao',
-            'ngay_tao',
-            'nguoi_cap_nhat',
-            'ngay_cap_nhat',
-            'nguoi_duyet_bg',
-        ],
-    ])*/ ?>
-<div class="card-body">
-        <div class="panel panel-primary">
-            <div class="tab-menu-heading">
-                <div class="tabs-menu1">
-                    <!-- Tabs -->
-                    <ul class="nav panel-tabs" role="tablist">
+    <div class="panel panel-primary">
+        <div class="tab-menu-heading">
+            <div class="tabs-menu1">
+                <!-- Tabs -->
+                <ul class="nav panel-tabs" role="tablist">
 
-                        <li><a href="#tab25" class="active" data-bs-toggle="tab" aria-selected="true" role="tab">
-                                Thông tin vật tư
-                            </a></li>
-                        <li><a href="#tab26" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
-                                tabindex="-1">Lịch sử báo giá</a></li>
+                    <li><a href="#tab25" class="active" data-bs-toggle="tab" aria-selected="true" role="tab">
+                            Thông tin vật tư
+                        </a></li>
+                    <li><a href="#tab26" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
+                            tabindex="-1">Lịch sử báo giá</a></li>
 
 
-                    </ul>
-                </div>
+                </ul>
             </div>
-            <div class="panel-body tabs-menu-body ps">
-                <div class="tab-content">
-                    <div class="tab-pane active show" id="tab25" role="tabpanel">
+        </div>
+        <div class="panel-body tabs-menu-body ps">
+            <div class="tab-content">
+                <div class="tab-pane active show" id="tab25" role="tabpanel">
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
@@ -151,22 +128,22 @@ use app\modules\dungchung\models\CustomFunc;
                         ],
                     ]) ?>
 
-                    </div>
-                    <div class="tab-pane" id="tab26" role="tabpanel">
+                </div>
+                <div class="tab-pane" id="tab26" role="tabpanel">
                     <?= $this->render('./../phieu-mua-sam/lich-su-bao-gia', [
                             'model' => $model->phieuMuaSam
                         ]) ?>
-                    </div>
+                </div>
 
 
-                </div>
-                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                </div>
-                <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                </div>
+            </div>
+            <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+            </div>
+            <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
             </div>
         </div>
     </div>
+
 </div>

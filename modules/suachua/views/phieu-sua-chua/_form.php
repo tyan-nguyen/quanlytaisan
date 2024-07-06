@@ -8,6 +8,7 @@ use yii\bootstrap5\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\widgets\forms\RadioWidget;
+use app\modules\bophan\models\BoPhan;
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\PhieuSuaChua */
 /* @var $form yii\widgets\ActiveForm */
@@ -53,19 +54,19 @@ if(!$model->isNewRecord){
         </div>
         </div>
         <div class="col-6">
-            <?=$form->field($model, 'id_tt_sua_chua')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(DmTTSuaChua::find()->all(), 'id', 'ten_tt_sua_chua'),
-    'language' => 'vi',
-    'options' => [
-        'placeholder' => 'Chọn trung tâm sửa chữa...'
-        
-    ],
-    'pluginOptions' => [
-        'allowClear' => true,
-        'width' => '100%',
-        'dropdownParent' => Yii::$app->request->isAjax ? new yii\web\JsExpression('$("#ajaxCrudModal")') : null,
-    ],
-]);?>
+        <?=$form->field($model, 'id_tt_sua_chua')->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map(BoPhan::find()->where(['la_dv_sua_chua'=>1])->all(), 'id', 'ten_bo_phan'),
+                                    'language' => 'vi',
+                                    'options' => [
+                                        'placeholder' => 'Chọn trung tâm sửa chữa...'
+                                        
+                                    ],
+                                    'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '100%',
+                    'dropdownParent' => Yii::$app->request->isAjax ? new yii\web\JsExpression('$("#ajaxCrudModal")') : null,
+                ],
+            ]);?>
         </div>
         
     </div>
@@ -143,8 +144,9 @@ if(!$model->isNewRecord){
 
 
 
-    <?php if (!Yii::$app->request->isAjax && $model->trang_thai !== 'completed') {?>
+    
     <div class="form-group">
+    <?php if (!Yii::$app->request->isAjax && $model->trang_thai !== 'completed') {?>
     <?= Html::a('Hoàn thành sửa chữa', null, [
                 'class' => 'btn btn-success',
                 'style'=>"margin-left:5px",
@@ -155,23 +157,31 @@ if(!$model->isNewRecord){
             ]);
     ?>
         <?=Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
-        <?= Html::a('Print', null, [
+        <?php } ?>
+        <?= Html::a('Print phiếu sửa chữa', null, [
                 'class' => 'btn btn-info',
                 'id'=>"print-button",
                 'style'=>"margin-left:5px"
             ]);
-    ?>
-        
+        ?>
+        <?= Html::a('Print phiếu xuất kho', null, [
+                'class' => 'btn btn-info',
+                'id'=>"print-button-phieu-xuat-kho",
+                'style'=>"margin-left:5px"
+            ]);
+        ?>
         
     </div>
     
-    <?php }?>
+    
     
     <?php ActiveForm::end();?>
     
     
 </div>
 <div id="print-phieu-sua-chua-content" class="print-phieu-sua-chua-content">
+</div>
+<div id="print-phieu-xuat-kho-content" class="print-phieu-sua-chua-content">
 </div>
 <?php
 
@@ -189,6 +199,19 @@ $(document).ready(function() {
             success: function(data) {
                 $('#print-phieu-sua-chua-content').html(data);
                 $('.print-phieu-sua-chua').printThis();
+            },
+            error: function() {
+                alert('Đã xảy ra lỗi trong khi tải nội dung.');
+            }
+        });
+    });
+    $('#print-button-phieu-xuat-kho').on('click', function() {
+        $.ajax({
+            url: '/suachua/phieu-sua-chua/print-phieu-xuat-kho-view?id='+ modelId,
+            type: 'GET',
+            success: function(data) {
+                $('#print-phieu-xuat-kho-content').html(data);
+                $('.print-phieu-xuat-kho').printThis();
             },
             error: function() {
                 alert('Đã xảy ra lỗi trong khi tải nội dung.');

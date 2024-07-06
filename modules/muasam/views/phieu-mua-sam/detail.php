@@ -7,6 +7,8 @@ use kartik\select2\Select2;
 use yii\widgets\ActiveForm;
 use app\modules\taisan\models\ThietBiBase;  
 use yii\helpers\ArrayHelper;
+use app\modules\user\models\User;
+
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\PhieuSuaChua */
 
@@ -17,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;
-
+$permissionCheck=User::hasPermission("qSuaPhieuMuaSam");
 ?>
 
 <style>
@@ -40,15 +42,19 @@ body .select2-container {
                         <li><a href="#tab25" class="active" data-bs-toggle="tab" aria-selected="true" role="tab">
                                 Thông tin phiếu mua sắm
                             </a></li>
-                            <?php if(!in_array($model->trang_thai,['draft','rejected','submited'] )){ ?>
+                            <?php if($permissionCheck && !in_array($model->trang_thai,['draft','rejected','submited'] )){ ?>
                         <li><a href="#tab26" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Báo giá</a></li>
                                 <li><a href="#tab28" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Lịch sử báo giá</a></li>
                                 <?php } ?>
-                        <?php if($baoGia->trang_thai=='approved'){ ?>
+                        <?php if(in_array($model->trang_thai,['processing','completed'])){ ?>
                         <li><a href="#tab27" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Phiếu nhập hàng</a></li>
+                        <?php } ?>
+                        <?php if(in_array($model->trang_thai,['processing','completed'])){ ?>
+                        <li><a href="#tab29" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
+                                tabindex="-1">Đánh giá</a></li>
                         <?php } ?>
                         
                         
@@ -66,11 +72,12 @@ body .select2-container {
 
                     </div>
                     <div class="tab-pane" id="tab26" role="tabpanel">
-                        
+                    
                         <?= $this->render('../bao-gia-mua-sam/update', [
                             'model' => $model,
                             'baoGia'=>$baoGia,
                             'searchModel' => $searchModelBg,
+                            'dataProviderBgms'=>$dataProviderBgms,
                             'dataProvider' => $dataProviderBg
                         ]) ?>
                     </div>
@@ -83,6 +90,11 @@ body .select2-container {
                     </div>
                     <div class="tab-pane" id="tab28" role="tabpanel">
                         <?= $this->render('./lich-su-bao-gia', [
+                            "model"=>$model
+                        ]) ?>
+                    </div>
+                    <div class="tab-pane" id="tab29" role="tabpanel">
+                        <?= $this->render('./_form-danh-gia', [
                             "model"=>$model
                         ]) ?>
                     </div>
@@ -153,3 +165,4 @@ $this->registerCssFile('@web/css/bootstrap-rating.css', [
 ])?>
 
 <?php Modal::end(); ?>
+

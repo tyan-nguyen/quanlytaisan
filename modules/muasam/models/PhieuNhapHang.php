@@ -24,6 +24,7 @@ use app\modules\dungchung\models\CustomFunc;
  */
 class PhieuNhapHang extends \yii\db\ActiveRecord
 {
+    const MODEL_ID = 'phieu-nhap-hang';
     /**
      * {@inheritdoc}
      */

@@ -26,6 +26,8 @@
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam?menu=pms1') ?>" class="slide-item" data-menu="pms1">Phiếu mua sắm</a>
 							</li>
+							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam/duyet-phieu-mua-sam?menu=pms3') ?>" class="slide-item" data-menu="pms3">Duyệt phiếu mua sắm</a>
+							</li>
                             <li class=""><a href="<?= Yii::getAlias('@web/muasam/bao-gia-mua-sam?menu=pms2') ?>" class="slide-item" data-menu="pms2">Báo giá mua sắm</a>
 							</li>
 							
