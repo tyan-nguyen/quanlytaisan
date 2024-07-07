@@ -18,57 +18,62 @@ return [
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id_nguoi_lap',
+        "format" => 'raw',
         'value' => function ($model) {
-            return ($model->nguoiLap->ten_nhan_vien) ?? "-";
+            return ($model->nguoiLap->ten_nhan_vien)
+                . "<br>"
+                . '<span class="badge bg-light text-dark">'
+                . $model->ngayLap . "</span>"
+                ?? "-";
         }
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id_nguoi_yeu_cau',
+        "format" => 'raw',
         'value' => function ($model) {
-            return ($model->nguoiYeuCau->ten_nhan_vien) ?? "-";
+            return ($model->nguoiYeuCau->ten_nhan_vien)
+                . "<br>"
+                . '<span class="badge bg-light text-dark">'
+                . $model->ngayLap . "</span>"
+                ?? "-";
+        }
+    ],
+
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'id_nguoi_duyet',
+        "format" => 'raw',
+        'value' => function ($model) {
+            $ngayDuyet =  '<br><span class="badge bg-light text-dark">' . $model->ngayDuyet . "</span>" ?? "";
+            return $model->nguoiDuyet ? ($model->nguoiDuyet->username) . $ngayDuyet : "-";
         }
     ],
     [
         'class' => '\kartik\grid\DataColumn',
-        'attribute' => 'id_nguoi_gui',
+        'attribute' => 'id_nguoi_xuat',
+        "format" => 'raw',
         'value' => function ($model) {
-            return ($model->nguoiGui->username) ?? "-";
+            $ngayXuat =  '<br><span class="badge bg-light text-dark">' . $model->ngayXuat . "</span>" ?? "";
+            return $model->nguoiXuat ? ($model->nguoiXuat->username) . $ngayXuat : "-";
+            return ($model->nguoiXuat->ten_nhan_vien) ?? "-";
+        }
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'id_nguoi_nhan',
+        "format" => 'raw',
+        'value' => function ($model) {
+            $ngayNhan =  '<br><span class="badge bg-light text-dark">' . $model->ngayNhan . "</span>" ?? "";
+            return $model->nguoiNhan ? ($model->nguoiNhan->ten_nhan_vien) . $ngayNhan : "-";
         }
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'hieu_luc',
-        // 'value' => function($model) {
-        //     return ($model->tenHieuLucWithBadge) ?? "-";
-
-        // }
         'format' => 'raw',
         'value' => 'tenHieuLucWithBadge'
     ],
-
-    // [
-    //     'class' => '\kartik\grid\DataColumn',
-    //     'attribute' => 'id_nguoi_duyet',
-    //     'value' => function ($model) {
-    //         return ($model->nguoiDuyet->ten_nhan_vien) ?? "-";
-    //     }
-    // ],
-    // [
-    //     'class' => '\kartik\grid\DataColumn',
-    //     'attribute' => 'id_nguoi_xuat',
-    //     'value' => function ($model) {
-    //         return ($model->nguoiXuat->ten_nhan_vien) ?? "-";
-    //     }
-    // ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'id_nguoi_nhan',
-    //     'value' => function ($model) {
-    //         return ($model->nguoiNhan->ten_nhan_vien) ?? "-";
-    //     }
-    // ],
-
     // [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'id_bo_phan',
@@ -78,20 +83,32 @@ return [
     // 'attribute'=>'id_cong_trinh',
     // ],
     // [
-    // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'ngay_lap',
+    //     'class' => '\kartik\grid\DataColumn',
+    //     'attribute' => 'ngay_lap',
+    //     'value' => function ($model) {
+    //         return $model->ngayLap;
+    //     }
     // ],
     // [
-    // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'ngay_duyet',
+    //     'class' => '\kartik\grid\DataColumn',
+    //     'attribute' => 'ngay_duyet',
+    //     'value' => function ($model) {
+    //         return $model->ngayDuyet;
+    //     }
     // ],
     // [
-    // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'ngay_xuat',
+    //     'class' => '\kartik\grid\DataColumn',
+    //     'attribute' => 'ngay_xuat',
+    //     'value' => function ($model) {
+    //         return $model->ngayXuat;
+    //     }
     // ],
     // [
-    // 'class'=>'\kartik\grid\DataColumn',
-    // 'attribute'=>'ngay_nhan',
+    //     'class' => '\kartik\grid\DataColumn',
+    //     'attribute' => 'ngay_nhan',
+    //     'value' => function ($model) {
+    //         return $model->ngayNhan;
+    //     }
     // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
@@ -129,13 +146,13 @@ return [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'dia_diem',
     // ],
-    [
-        'class' => '\kartik\grid\DataColumn',
-        'attribute' => 'created_at',
-        'value' => function ($model) {
-            return $model->createdAt;
-        }
-    ],
+    // [
+    //     'class' => '\kartik\grid\DataColumn',
+    //     'attribute' => 'created_at',
+    //     'value' => function ($model) {
+    //         return $model->createdAt;
+    //     }
+    // ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'updated_at',

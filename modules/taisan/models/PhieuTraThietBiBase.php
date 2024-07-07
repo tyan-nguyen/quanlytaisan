@@ -68,6 +68,7 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
         return [
             [['id_nguoi_tra'], 'required'],
             [['id_nguoi_tra'], 'integer'],
+            [['id_nguoi_nhan'], 'integer'],
             [
                 ['created_at', 'updated_at', 'deleted_at', 'noi_dung_tra'],
                 'safe'
@@ -85,6 +86,7 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
         return [
             'id' => 'ID',
             'id_nguoi_tra' => 'Người trả',
+            'id_nguoi_nhan' => 'Người nhận',
             'noi_dung_tra' => 'Nội dung trả',
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
@@ -101,6 +103,19 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
     {
         return $this->id_nguoi_tra != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_tra']) : NULL;
     }
+
+    public function getNguoiNhan()
+    {
+        return $this->id_nguoi_nhan != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_nhan']) : NULL;
+    }
+
+    public function getCreatedAt()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->created_at);
+    }
+
+  
 
     public function getDetails()
     {

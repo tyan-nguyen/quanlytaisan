@@ -3,8 +3,9 @@
 namespace app\modules\taisan\controllers;
 
 use Yii;
-use app\models\TsYeuCauVanHanh;
+use app\modules\taisan\models\YeuCauVanHanh;
 use app\modules\taisan\models\TheoDoiVanHanhSearch;
+use app\modules\taisan\models\YeuCauVanHanhCt;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,7 +14,7 @@ use yii\helpers\Html;
 use yii\filters\AccessControl;
 
 /**
- * TheoDoiVanHanhController implements the CRUD actions for TsYeuCauVanHanh model.
+ * TheoDoiVanHanhController implements the CRUD actions for YeuCauVanHanh model.
  */
 class TheoDoiVanHanhController extends Controller
 {
@@ -44,11 +45,12 @@ class TheoDoiVanHanhController extends Controller
     }
 
     /**
-     * Lists all TsYeuCauVanHanh models.
+     * Lists all YeuCauVanHanh models.
      * @return mixed
      */
     public function actionIndex()
     {
+
         $searchModel = new TheoDoiVanHanhSearch();
         if (isset($_POST['search']) && $_POST['search'] != null) {
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
@@ -64,39 +66,68 @@ class TheoDoiVanHanhController extends Controller
         ]);
     }
 
-    public function actionListCalendar()
+    public function actionEvents()
     {
-        return $this->render('list-calendar');
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $requests = YeuCauVanHanhCt::find()
+            // ->joinWith('YeuCauVanHanh')
+            ->joinWith(['yeuCauVanHanh' => function ($query) {
+                $query->alias('ycvh');
+            }])
+            ->where(['ycvh.hieu_luc' => 'VANHANH'])
+            ->all();
+
+        $events = [];
+
+        foreach ($requests as $detail) {
+            $events[] = [
+                'id' => $detail->id_yeu_cau_van_hanh,
+                'title' => $detail->thietBi->ten_thiet_bi,
+                'start' => $detail->ngay_bat_dau,
+                'end' => $detail->ngay_ket_thuc,
+                'url' => Yii::$app->urlManager->createUrl(['/taisan/theo-doi-van-hanh/view', 'id' => $detail->id_yeu_cau_van_hanh]),
+            ];
+        }
+        return $events;
     }
+
+    // public function actionListCalendar()
+    // {
+    //     return $this->render('list-calendar');
+    // }
 
 
     /**
-     * Displays a single TsYeuCauVanHanh model.
+     * Displays a single YeuCauVanHanh model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
         $request = Yii::$app->request;
+        $model = $this->findModel($id);
+
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                'title' => "TsYeuCauVanHanh",
+                'title' => "Theo dõi vận hành",
                 'content' => $this->renderAjax('view', [
                     'model' => $this->findModel($id),
+                    'modelsDetail' => $model->details,
                 ]),
-                'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                    Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) 
+                // .Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
             ];
         } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
+                'modelsDetail' => $model->details,
             ]);
         }
     }
 
     /**
-     * Creates a new TsYeuCauVanHanh model.
+     * Creates a new YeuCauVanHanh model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -104,7 +135,7 @@ class TheoDoiVanHanhController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new TsYeuCauVanHanh();
+        $model = new YeuCauVanHanh();
 
         if ($request->isAjax) {
             /*
@@ -113,7 +144,7 @@ class TheoDoiVanHanhController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => "Thêm mới TsYeuCauVanHanh",
+                    'title' => "Thêm mới YeuCauVanHanh",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -124,7 +155,7 @@ class TheoDoiVanHanhController extends Controller
             } else if ($model->load($request->post()) && $model->save()) {
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => "Thêm mới TsYeuCauVanHanh",
+                    'title' => "Thêm mới YeuCauVanHanh",
                     'content' => '<span class="text-success">Thêm mới thành công</span>',
                     'tcontent' => 'Thêm mới thành công!',
                     'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
@@ -133,7 +164,7 @@ class TheoDoiVanHanhController extends Controller
                 ];
             } else {
                 return [
-                    'title' => "Thêm mới TsYeuCauVanHanh",
+                    'title' => "Thêm mới YeuCauVanHanh",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -157,7 +188,7 @@ class TheoDoiVanHanhController extends Controller
     }
 
     /**
-     * Updates an existing TsYeuCauVanHanh model.
+     * Updates an existing YeuCauVanHanh model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -175,7 +206,7 @@ class TheoDoiVanHanhController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => "Cập nhật TsYeuCauVanHanh",
+                    'title' => "Cập nhật YeuCauVanHanh",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -185,7 +216,7 @@ class TheoDoiVanHanhController extends Controller
             } else if ($model->load($request->post()) && $model->save()) {
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => "TsYeuCauVanHanh",
+                    'title' => "YeuCauVanHanh",
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -195,7 +226,7 @@ class TheoDoiVanHanhController extends Controller
                 ];
             } else {
                 return [
-                    'title' => "Cập nhật TsYeuCauVanHanh",
+                    'title' => "Cập nhật YeuCauVanHanh",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -218,7 +249,7 @@ class TheoDoiVanHanhController extends Controller
     }
 
     /**
-     * Delete an existing TsYeuCauVanHanh model.
+     * Delete an existing YeuCauVanHanh model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -244,7 +275,7 @@ class TheoDoiVanHanhController extends Controller
     }
 
     /**
-     * Delete multiple existing TsYeuCauVanHanh model.
+     * Delete multiple existing YeuCauVanHanh model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -284,15 +315,15 @@ class TheoDoiVanHanhController extends Controller
     }
 
     /**
-     * Finds the TsYeuCauVanHanh model based on its primary key value.
+     * Finds the YeuCauVanHanh model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TsYeuCauVanHanh the loaded model
+     * @return YeuCauVanHanh the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TsYeuCauVanHanh::findOne($id)) !== null) {
+        if (($model = YeuCauVanHanh::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

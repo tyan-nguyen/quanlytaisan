@@ -51,7 +51,7 @@ $cus = new CustomFunc();
                 <p>Thông tin phiếu trả</p>
             </legend>
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     <?= $form->field($model, 'id_nguoi_tra')->widget(Select2::classname(), [
                         'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
                         'language' => 'vi',
@@ -61,7 +61,17 @@ $cus = new CustomFunc();
                         ],
                     ]); ?>
                 </div>
-                <div class="col-8">
+                <div class="col-3">
+                    <?= $form->field($model, 'id_nguoi_nhan')->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
+                        'language' => 'vi',
+                        'options' => ['placeholder' => 'Chọn...'],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                    ]); ?>
+                </div>
+                <div class="col-6">
                     <?= $form->field($model, 'noi_dung_tra')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
@@ -93,7 +103,7 @@ $cus = new CustomFunc();
                 <div class="panel-heading text-primary bg-transparent">
                     <h3 class="panel-title pull-left m-2">Chi tiết thiết bị</h3>
                     <div class="pull-right">
-                        <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
+                        <button type="button" class="add-item btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
                         <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
                     </div>
                     <div class="clearfix"></div>

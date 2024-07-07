@@ -264,7 +264,6 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
         return $this->id_nguoi_yeu_cau != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_yeu_cau']) : NULL;
     }
 
-
     public function getDetails()
     {
         return $this->hasMany(YeuCauVanHanhCt::className(), ['id_yeu_cau_van_hanh' => 'id']);
@@ -280,6 +279,30 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     {
         $cus = new CustomFunc();
         return $cus->convertYMDToDMY($this->ngay_lap);
+    }
+
+    public function getNgayGui()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_gui);
+    }
+
+    public function getNgayDuyet()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_duyet);
+    }
+
+    public function getNgayXuat()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_xuat);
+    }
+
+    public function getNgayNhan()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_nhan);
     }
 
     public function getUpdatedAt()

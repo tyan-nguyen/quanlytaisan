@@ -54,7 +54,6 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
     }
 </style>
 
-
 <div class="ts-yeu-cau-van-hanh-form container-fluid formInput">
 
     <?php $form = ActiveForm::begin(
@@ -74,7 +73,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
         <div class="col">
             <?php if ($model->hieu_luc === 'NHAP') { ?>
                 <div class="form-group">
-                    <?php 
+                    <?php
                     // Html::a('Gửi phê duyệt', ['yeu-cau-van-hanh/submit', 'id' => $model->id], [
                     //     'class' => 'btn btn-success text-right',
                     //     'style' => "margin-left:5px",
@@ -106,6 +105,8 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
+                                'width' => '100%',
+
                             ],
                         ]); ?>
                     </div>
@@ -118,6 +119,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                             ],
                             'pluginOptions' => [
                                 'autoclose' => true,
+                                'width' => '100%',
                                 'format' => 'dd/mm/yyyy',
                                 'todayHighlight' => true
                             ]
@@ -155,6 +157,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
 
                             ],
                             'pluginOptions' => [
+                                'width' => '100%',
                                 'allowClear' => true,
                                 'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
                             ],
@@ -177,12 +180,14 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                             'type' => DepDrop::TYPE_SELECT2,
                             'select2Options' => [
                                 'pluginOptions' => [
+                                    'width' => '100%',
                                     'allowClear' => true,
                                     'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
                                 ],
                             ],
                             'pluginOptions' => [
                                 'depends' => ['id-bo-phan'],
+                                'width' => '100%',
                                 //'initialize' => true,
                                 'url' => Url::to(['/kholuutru/depdrop/get-nhan-vien']),
                             ],
@@ -256,7 +261,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                     <h3 class="panel-title pull-left m-2">Chi tiết thiết bị</h3>
                     <div class="pull-right">
                         <?php if ($isDraft) : ?>
-                            <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
+                            <button type="button" class="add-item btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
                             <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
                         <?php endif; ?>
                     </div>
@@ -286,6 +291,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
 
                                 ],
                                 'pluginOptions' => [
+                                    'width' => '100%',
                                     'autoclose' => true,
                                     'format' => 'dd/mm/yyyy',
                                     'todayHighlight' => true
@@ -299,6 +305,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                                     'class' => 'date-picker'
                                 ],
                                 'pluginOptions' => [
+                                    'width' => '100%',
                                     'autoclose' => true,
                                     'format' => 'dd/mm/yyyy',
                                     'todayHighlight' => true

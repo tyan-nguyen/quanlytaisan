@@ -2,6 +2,7 @@
 
 namespace app\modules\taisan\models;
 
+use app\modules\dungchung\models\CustomFunc;
 use app\modules\taisan\models\PhieuTraThietBi;
 use app\modules\taisan\models\ThietBi;
 use Yii;
@@ -55,5 +56,11 @@ class PhieuTraThietBiCtBase extends \app\models\TsPhieuTraThietBiCt
     public function getThietBi()
     {
         return $this->hasOne(ThietBi::class, ['id' => 'id_thiet_bi']);
+    }
+    
+    public function getNgayTra()
+    {
+        $cus = new CustomFunc();
+        return $cus->convertYMDToDMY($this->ngay_tra);
     }
 }

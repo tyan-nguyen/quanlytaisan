@@ -23,6 +23,13 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_nguoi_nhan',
+        'value' => function ($model) {
+            return ($model->nguoiNhan->ten_nhan_vien) ?? "-";
+        }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'noi_dung_tra',
     ],
     [
@@ -31,9 +38,12 @@ return [
         'format' => 'raw',
         'value' => 'tenHieuLucWithBadge'
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'created_at',
+   [
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'created_at',
+        'value' => function ($model) {
+            return $model->createdAt;
+        }
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',

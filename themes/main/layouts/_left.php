@@ -33,6 +33,8 @@
 				<li class="side-item side-item-category">Module</li>
 
 				<?= $this->render('menus/tai-san') ?>
+
+				<?= $this->render('menus/dieu-chuyen')?>
 				
 				<?= $this->render('menus/phong-ban') ?>
 				

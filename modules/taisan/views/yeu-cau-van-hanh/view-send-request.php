@@ -25,6 +25,8 @@ use yii\helpers\Url;
 <div class="ts-yeu-cau-van-hanh-view">
     <div class="container-fluid">
         <div class="row">
+
+        <!-- Left Col -->
             <div class="col-md-5">
                 <?= DetailView::widget([
                     'model' => $model,
@@ -69,6 +71,7 @@ use yii\helpers\Url;
                 ]) ?>
             </div>
 
+            <!-- Right Col -->
             <div class="col-md-7">
                 <div class="row">
                     <div class="col">
@@ -107,6 +110,7 @@ use yii\helpers\Url;
 
                 <hr>
 
+                <!-- thong tin gui phieu -->
                 <div class="row">
                     <div class="col">
                         <div class="row mt-4">

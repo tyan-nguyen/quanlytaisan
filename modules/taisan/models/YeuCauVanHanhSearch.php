@@ -2,6 +2,7 @@
 
 namespace app\modules\taisan\models;
 
+use app\modules\dungchung\models\CustomFunc;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -49,6 +50,7 @@ class YeuCauVanHanhSearch extends YeuCauVanHanh
      */
     public function search($params, $cusomSearch = NULL)
     {
+        $cus = new CustomFunc();
         $query = YeuCauVanHanh::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -83,17 +85,16 @@ class YeuCauVanHanhSearch extends YeuCauVanHanh
             $query->andFilterWhere([
                 'id' => $this->id,
                 'id_nguoi_lap' => $this->id_nguoi_lap,
-                'id_nguoi_gui' => $this->id_nguoi_lap,
+                'id_nguoi_gui' => $this->id_nguoi_gui,
                 'id_nguoi_duyet' => $this->id_nguoi_duyet,
                 'id_nguoi_xuat' => $this->id_nguoi_xuat,
                 'id_nguoi_nhan' => $this->id_nguoi_nhan,
                 'id_nguoi_yeu_cau' => $this->id_nguoi_yeu_cau,
                 'id_bo_phan_quan_ly' => $this->id_bo_phan_quan_ly,
-                'ngay_lap' => $this->ngay_lap,
-                'ngay_gui' => $this->ngay_lap,
-                'ngay_duyet' => $this->ngay_duyet,
-                'ngay_xuat' => $this->ngay_xuat,
-                'ngay_nhan' => $this->ngay_nhan,
+                'ngay_lap' => $this->ngay_lap != null ? $cus->convertDMYToYMD($this->ngay_lap) : $this->ngay_lap,
+                'ngay_duyet' => $this->ngay_duyet != null ? $cus->convertDMYToYMD($this->ngay_duyet) : $this->ngay_duyet,
+                'ngay_xuat' => $this->ngay_xuat != null ? $cus->convertDMYToYMD($this->ngay_xuat) : $this->ngay_xuat,
+                'ngay_nhan' => $this->ngay_nhan != null ? $cus->convertDMYToYMD($this->ngay_nhan) : $this->ngay_nhan,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
                 'deleted_at' => $this->deleted_at,

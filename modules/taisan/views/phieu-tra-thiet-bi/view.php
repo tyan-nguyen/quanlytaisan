@@ -18,11 +18,19 @@ use yii\widgets\ActiveForm;
             [
                 'attribute' => 'id_nguoi_tra',
                 'value' => $model->nguoiTra ? $model->nguoiTra->ten_nhan_vien : '-',
-                'label' => 'Người Trả',
+                'label' => 'Người trả',
+            ],
+            [
+                'attribute' => 'id_nguoi_nhan',
+                'value' => $model->nguoiNhan ? $model->nguoiNhan->ten_nhan_vien : '-',
+                'label' => 'Người nhận',
             ],
             'noi_dung_tra',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'value' => $model->createdAt ? $model->createdAt : '-',
+                'label' => 'Ngày tạo',
+            ],
         ],
     ]) ?>
 
@@ -44,8 +52,12 @@ use yii\widgets\ActiveForm;
                 }
 
             ],
-            'ngay_tra',
-
+            [
+                'attribute' => 'ngay_tra',
+                'value' => function ($model) {
+                    return $model->ngayTra ? $model->ngayTra : "";
+                }
+            ],
         ],
     ]) ?>
 
@@ -72,7 +84,7 @@ use yii\widgets\ActiveForm;
 // $(document).on('beforeSubmit', '#confirm-form', function (e) {
 //     e.preventDefault();
 //     var form = $(this);
-    
+
 //     $.ajax({
 //         type: form.attr('method'),
 //         url: form.attr('action'),
@@ -89,11 +101,10 @@ use yii\widgets\ActiveForm;
 //             alert('An error occurred. Please try again.');
 //         }
 //     });
-    
+
 //     return false; // Prevent default form submission
 // });
 
 // JS;
 // $this->registerJs($script);
 ?>
-

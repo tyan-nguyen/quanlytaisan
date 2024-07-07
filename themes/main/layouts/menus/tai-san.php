@@ -33,7 +33,7 @@
 							<li><a href="/taisan/lop-hu-hong?menu=ts5" class="slide-item" data-menu="ts5">Lớp hư hỏng</a></li>
 							 -->
 
-							<li class="sub-slide">
+							<!-- <li class="sub-slide">
 								<a class="slide-item side-menu__item-sub" data-bs-toggle="sub-slide" href="javascript:void(0)">
 									<span class="sub-side-menu__label">Điều chuyển thiết bị</span>
 									<i class="sub-angle fe fe-chevron-right"></i>
@@ -47,7 +47,8 @@
 									<li><a class="sub-side-menu__item" href="/taisan/theo-doi-van-hanh?menu=ts12" data-menu="ts12">Theo dõi thiết bị</a></li>
 									<li><a class="sub-side-menu__item" href="/taisan/theo-doi-van-hanh/list-calendar/?menu=ts13" data-menu="ts13">Theo dõi thiết bị (List)</a></li>
 								</ul>
-							</li>
+							</li> -->
+							
 							<!-- <li><a href="/taisan/yeu-cau-van-hanh?menu=ts7" class="slide-item" data-menu="ts7">Tạo phiếu Điều chuyển</a></li> -->
 							<!-- <li><a href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=ts8" class="slide-item" data-menu="ts8">Phê duyệt phiếu Điều chuyển</a></li> -->
 							<!-- <li><a href="/taisan/duyet-yeu-cau-van-hanh?menu=ts9" class="slide-item" data-menu="ts8">Phê duyệt Điều chuyển</a></li> -->
