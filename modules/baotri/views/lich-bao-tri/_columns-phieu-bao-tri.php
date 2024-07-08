@@ -16,6 +16,15 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'keHoach.thietBi.ten_thiet_bi',
+        'format'=>'raw',
+        'value'=>function($model){
+        return ($model->keHoach != NULL && $model->keHoach->thietBi != NULL) ? Html::a($model->keHoach->thietBi->ten_thiet_bi, ['/taisan/thiet-bi/view','id'=>$model->keHoach->id_thiet_bi],
+                ['data-pjax'=>0,'title'=> 'Chi tiết thiết bị', 'class'=>"text-primary", 'role'=>'modal-remote']) : '';
+        }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id',
         'label'=>'Phiếu bảo trì',
         'format'=>'raw',

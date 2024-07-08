@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 return [
     [
@@ -24,8 +25,13 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_thiet_bi',
-        'value'=> 'thietBi.ten_thiet_bi',
+        //'value'=> 'thietBi.ten_thiet_bi',
         'width' => '150px',
+        'format'=>'raw',
+        'value'=>function($model){
+        return $model->thietBi != NULL ? Html::a($model->thietBi->ten_thiet_bi, ['/taisan/thiet-bi/view','id'=>$model->id_thiet_bi],
+            ['data-pjax'=>0,'title'=> 'Chi tiết thiết bị', 'class'=>"text-primary", 'role'=>'modal-remote']) : '';
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',

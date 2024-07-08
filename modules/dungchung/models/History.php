@@ -216,4 +216,13 @@ class History extends HistoryBase
         return $cus->convertYMDHISToDMYHID($this->thoi_gian_tao);
     }
     
+    /**
+     * hien thi ten nguoi thuc hien
+     * @return string
+     */
+    public function getNguoiTao(){
+        $cus = new CustomFunc();
+        return $cus->getTenTaiKhoan($this->nguoi_tao);
+    }
+    
 }

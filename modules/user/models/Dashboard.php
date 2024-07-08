@@ -5,6 +5,7 @@ use app\modules\taisan\models\ThietBi;
 use app\modules\taisan\models\LoaiThietBi;
 use app\modules\baotri\models\PhieuBaoTri;
 use yii\db\Expression;
+use app\modules\dungchung\models\History;
 
 class Dashboard{
     /**
@@ -80,5 +81,13 @@ class Dashboard{
             'da_hoan_thanh' => 0,
         ]);
         return $query->limit(5)->orderBy(['thoi_gian_bat_dau'=>SORT_ASC])->all();
+    }
+    
+    /**
+     * lấy danh sách lịch sử hoạt động hiển thị trên dashboard
+     */
+    public function getLichSuHoatDong(){
+        $query = History::find()->limit(7)->orderBy(['id'=>SORT_DESC])->all();
+        return $query;
     }
 }
