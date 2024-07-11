@@ -67,6 +67,7 @@ class PhieuSuaChuaController extends Controller
         } else {
             //grid view vật tư
             $searchModelVatTu = new PhieuSuaChuaVatTuSearch();
+            $searchModelVatTu->trang_thai="new";
             $searchModelVatTu->id_phieu_sua_chua=$id_phieu_sua_chua;
             if(isset($_POST['search']) && $_POST['search'] != null){
                 $dataProviderVatTu = $searchModelVatTu->search(Yii::$app->request->post(), $_POST['search']);
@@ -75,6 +76,20 @@ class PhieuSuaChuaController extends Controller
                 $dataProviderVatTu = $searchModelVatTu->search(Yii::$app->request->post());
             } else {
                 $dataProviderVatTu = $searchModelVatTu->search(Yii::$app->request->queryParams);
+            }    
+            //end grid view vật tư
+
+            //grid view vật tư
+            $searchModelVatTuHH = new PhieuSuaChuaVatTuSearch();
+            $searchModelVatTuHH->id_phieu_sua_chua=$id_phieu_sua_chua;
+            $searchModelVatTuHH->trang_thai="damaged";
+            if(isset($_POST['search']) && $_POST['search'] != null){
+                $dataProviderVatTuHH = $searchModelVatTuHH->search(Yii::$app->request->post(), $_POST['search']);
+            } else if ($searchModelVatTuHH->load(Yii::$app->request->post())) {
+                //$searchModelVatTuHH = new PhieuSuaChuaVatTuSearch(); // "reset"
+                $dataProviderVatTuHH = $searchModelVatTuHH->search(Yii::$app->request->post());
+            } else {
+                $dataProviderVatTuHH = $searchModelVatTuHH->search(Yii::$app->request->queryParams);
             }    
             //end grid view vật tư
 
@@ -96,6 +111,8 @@ class PhieuSuaChuaController extends Controller
             return $this->render('detail', [
                 'searchModelVatTu' => $searchModelVatTu,
                 'dataProviderVatTu' => $dataProviderVatTu,
+                'searchModelVatTuHH' => $searchModelVatTuHH,
+                'dataProviderVatTuHH' => $dataProviderVatTuHH,
                 'searchModelBaoGia' => $searchModelBaoGia,
                 'dataProviderBaoGia' => $dataProviderBaoGia,
                 'baoGiaSuaChua'=>$baoGiaSuaChua,

@@ -44,6 +44,8 @@ body .select2-container {
                                 tabindex="-1">Báo giá</a></li>
                         <li><a href="#tab27" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Vật tư từ kho</a></li>
+                        <li><a href="#tab31" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
+                                tabindex="-1">Vật tư hư hỏng</a></li>        
                         <li><a href="#tab28" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Lịch sử báo giá</a></li>
                         <li><a href="#tab29" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
@@ -82,6 +84,13 @@ body .select2-container {
                         <?= $this->render('../phieu-sua-chua-vat-tu/grid-view-pjax', [
                             'searchModel' => $searchModelVatTu,
                             'dataProvider' => $dataProviderVatTu,
+                            "phieuSuaChua"=>$phieuSuaChua
+                        ]) ?>
+                    </div>
+                    <div class="tab-pane" id="tab31" role="tabpanel">
+                        <?= $this->render('../phieu-sua-chua-vat-tu/grid-view-pjax-2', [
+                            'searchModel' => $searchModelVatTuHH,
+                            'dataProvider' => $dataProviderVatTuHH,
                             "phieuSuaChua"=>$phieuSuaChua
                         ]) ?>
                     </div>

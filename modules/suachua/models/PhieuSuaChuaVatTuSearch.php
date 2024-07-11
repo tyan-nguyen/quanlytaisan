@@ -20,6 +20,7 @@ class PhieuSuaChuaVatTuSearch extends PhieuSuaChuaVatTu
         return [
             [['id', 'id_phieu_sua_chua', 'id_vat_tu', 'so_luong', 'nguoi_tao', 'nguoi_cap_nhat'], 'integer'],
             [['ghi_chu', 'don_vi_tinh', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
+            [['trang_thai','ten_vat_tu'], 'string'],
         ];
     }
 
@@ -73,6 +74,7 @@ class PhieuSuaChuaVatTuSearch extends PhieuSuaChuaVatTu
             'nguoi_tao' => $this->nguoi_tao,
             'ngay_cap_nhat' => $this->ngay_cap_nhat,
             'nguoi_cap_nhat' => $this->nguoi_cap_nhat,
+            'trang_thai' => $this->trang_thai,
         ]);
 
         $query->andFilterWhere(['like', 'ghi_chu', $this->ghi_chu])

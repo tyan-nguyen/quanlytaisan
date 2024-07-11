@@ -103,7 +103,7 @@ class PhieuSuaChuaVatTuController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm mới PhieuSuaChuaVatTu",
+                    'title'=> "Thêm vật tư lấy từ kho",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -114,7 +114,7 @@ class PhieuSuaChuaVatTuController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax-vat-tu',
-                    'title'=> "Thêm mới PhieuSuaChuaVatTu",
+                    'title'=> "Thêm vật tư lấy từ kho",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -123,7 +123,7 @@ class PhieuSuaChuaVatTuController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới PhieuSuaChuaVatTu",
+                    'title'=> "Thêm vật tư lấy từ kho",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -146,7 +146,62 @@ class PhieuSuaChuaVatTuController extends Controller
         }
        
     }
-
+    public function actionCreate2($phieu_sua_chua)
+    {
+        $request = Yii::$app->request;
+        $model = new PhieuSuaChuaVatTu();  
+        $model->trang_thai='damaged';
+        $model->id_phieu_sua_chua=$phieu_sua_chua;
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Thêm vật tư lấy từ kho",
+                    'content'=>$this->renderAjax('create2', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+        
+                ];         
+            }else if($model->load($request->post()) && $model->save()){
+                return [
+                    'forceReload'=>'#crud-datatable-pjax-vat-tu-2',
+                    'title'=> "Thêm vật tư lấy từ kho",
+                    'content'=>'<span class="text-success">Thêm mới thành công</span>',
+                    'tcontent'=>'Thêm mới thành công!',
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                            Html::a('Tiếp tục thêm',['create',"phieu_sua_chua"=>$phieu_sua_chua],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
+        
+                ];         
+            }else{           
+                return [
+                    'title'=> "Thêm vật tư lấy từ kho",
+                    'content'=>$this->renderAjax('create2', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+        
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
+       
+    }
     /**
      * Updates an existing PhieuSuaChuaVatTu model.
      * For ajax request will return json object
@@ -166,7 +221,7 @@ class PhieuSuaChuaVatTuController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật PhieuSuaChuaVatTu",
+                    'title'=> "Cập nhật vật tư lấy từ kho",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -176,7 +231,7 @@ class PhieuSuaChuaVatTuController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax-vat-tu',
-                    'title'=> "PhieuSuaChuaVatTu",
+                    'title'=> "Vật tư lấy từ kho",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -186,7 +241,7 @@ class PhieuSuaChuaVatTuController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Cập nhật PhieuSuaChuaVatTu",
+                    'title'=> "Cập nhật vật tư lấy từ kho",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -207,7 +262,59 @@ class PhieuSuaChuaVatTuController extends Controller
             }
         }
     }
+    public function actionUpdate2($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);       
 
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Cập nhật vật tư lấy từ kho",
+                    'content'=>$this->renderAjax('update2', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                ];         
+            }else if($model->load($request->post()) && $model->save()){
+                return [
+                    'forceReload'=>'#crud-datatable-pjax-vat-tu-2',
+                    'title'=> "Vật tư lấy từ kho",
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $model,
+                    ]),
+                    'tcontent'=>'Cập nhật thành công!',
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                            Html::a('Sửa',['/suachua/phieu-sua-chua-vat-tu/update2','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
+                ];    
+            }else{
+                 return [
+                    'title'=> "Cập nhật vật tư lấy từ kho",
+                    'content'=>$this->renderAjax('update2', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                ];        
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }
+    }
     /**
      * Delete an existing PhieuSuaChuaVatTu model.
      * For ajax request will return json object

@@ -8,6 +8,7 @@ use app\modules\suachua\models\DmTTSuaChua;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\user\models\User;
 use app\modules\bophan\models\BoPhan;
+use app\modules\kholuutru\models\DmVatTu;
 
 /**
  * This is the model class for table "ts_phieu_sua_chua".
@@ -111,7 +112,11 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     }
     public function getVatTus()
     {
-        return $this->hasMany(PhieuSuaChuaVatTu::class, ['id_phieu_sua_chua' => 'id']);
+        return $this->hasMany(PhieuSuaChuaVatTu::class, ['id_phieu_sua_chua' => 'id'])->where(['trang_thai'=>'new']);
+    }
+    public function getVatTuHHs()
+    {
+        return $this->hasMany(PhieuSuaChuaVatTu::class, ['id_phieu_sua_chua' => 'id'])->where(['trang_thai'=>'damaged']);
     }
     public function getBaoGiaSuaChua()
     {
@@ -172,6 +177,19 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
                 $phieuSuaChuaVatTu->vatTu->so_luong=$phieuSuaChuaVatTu->vatTu->so_luong - $phieuSuaChuaVatTu->so_luong;
                 $phieuSuaChuaVatTu->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$phieuSuaChuaVatTu->phieuSuaChua->thietBi->ten_thiet_bi;
                 $phieuSuaChuaVatTu->vatTu->save();
+            }
+            foreach($this->vatTuHHs as $key=>$phieuSuaChuaVatTu){
+                $vatTu=new DmVatTu([
+                    "ten_vat_tu"=>$phieuSuaChuaVatTu->ten_vat_tu,
+                    "so_luong"=>$phieuSuaChuaVatTu->so_luong,
+                    "don_vi_tinh"=>$phieuSuaChuaVatTu->don_vi_tinh,
+                    "id_kho"=>$phieuSuaChuaVatTu->id_kho_luu_tru,
+                    "hang_san_xuat"=>$phieuSuaChuaVatTu->hang_san_xuat,
+                    "trang_thai"=>$phieuSuaChuaVatTu->trang_thai
+                ]);
+                $vatTu->save();
+                $phieuSuaChuaVatTu->id_vat_tu=$vatTu->id;
+                $phieuSuaChuaVatTu->save();
             }
             $thietBi=$this->thietBi;
             $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;

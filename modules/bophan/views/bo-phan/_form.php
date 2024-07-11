@@ -142,6 +142,10 @@ use app\modules\kholuutru\models\KhoLuuTru;
                         	    'model'=>$model,
                         	    'attr'=>'la_trung_tam_chi_phi'
                         	]) ?>
+							<?= SwitchWidget::widget([
+                        	    'model'=>$model,
+                        	    'attr'=>'la_dv_sua_chua'
+                        	]) ?>
                         </div>
                 	</div>
             	</div>

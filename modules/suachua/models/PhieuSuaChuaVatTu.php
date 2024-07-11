@@ -37,11 +37,14 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_phieu_sua_chua', 'id_vat_tu'], 'required'],
-            [['id_phieu_sua_chua', 'id_vat_tu', 'so_luong', 'nguoi_tao', 'nguoi_cap_nhat'], 'integer'],
-            [['ghi_chu'], 'string'],
+            [['id_phieu_sua_chua'], 'required'],
+            [['id_vat_tu'], 'required', 'when' => function ($model) {
+                return $model->trang_thai === 'new';
+            }],
+            [['id_phieu_sua_chua', 'id_vat_tu', 'so_luong', 'nguoi_tao', 'nguoi_cap_nhat','id_kho_luu_tru'], 'integer'],
+            [['ghi_chu','trang_thai'], 'string'],
             [['ngay_tao', 'ngay_cap_nhat'], 'safe'],
-            [['don_vi_tinh'], 'string', 'max' => 255],
+            [['don_vi_tinh','ten_vat_tu','trang_thai','hang_san_xuat'], 'string', 'max' => 255],
             [['id_phieu_sua_chua'], 'exist', 'skipOnError' => true, 'targetClass' => PhieuSuaChua::class, 'targetAttribute' => ['id_phieu_sua_chua' => 'id']],
             [['id_vat_tu'], 'exist', 'skipOnError' => true, 'targetClass' => DmVatTu::class, 'targetAttribute' => ['id_vat_tu' => 'id']],
         ];
@@ -56,9 +59,14 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_phieu_sua_chua' => 'Id Phieu Sua Chua',
             'id_vat_tu' => 'Vật tư',
+            'id_kho_luu_tru' => 'Kho lưu trữ',
+            'trang_thai' => 'Trạng thái',
+            'hang_san_xuat'=>'hãng sản xuất',
             'so_luong' => 'Số lượng',
             'ghi_chu' => 'Ghi chú',
             'don_vi_tinh' => 'Đơn vị tính',
+            'ten_vat_tu' => 'Tên vật tư',
+            'ten_vat_tu' => 'Tên vật tư',
             'ngay_tao' => 'Ngày tạo',
             'nguoi_tao' => 'Người tạo',
             'ngay_cap_nhat' => 'Ngày cập nhật',
@@ -100,7 +108,14 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
         // $this->vatTu->save();
         $this->ngay_cap_nhat = date('Y-m-d H:i:s');
         $this->nguoi_cap_nhat = Yii::$app->user->id;
-        $this->don_vi_tinh=$this->vatTu->don_vi_tinh;
+        if($this->id_vat_tu)
+        {
+            $vatTu=$this->vatTu;
+            $this->don_vi_tinh=$vatTu->don_vi_tinh;
+            $this->ten_vat_tu=$vatTu->ten_vat_tu;
+            $this->hang_san_xuat=$vatTu->hang_san_xuat;
+        }
+        
         
         return parent::beforeSave($insert);
     }
@@ -118,6 +133,7 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
         return \app\modules\kholuutru\models\DmVatTu::find()
             ->select(['ten_vat_tu','id'])
             ->where(['id_kho' => $this->vatTu->id_kho])
+            ->where(['trang_thai' => "new"])
             ->indexBy('id')
             ->column();
         return [];

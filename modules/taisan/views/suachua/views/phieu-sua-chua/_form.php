@@ -1,6 +1,6 @@
 <?php
 use app\modules\dungchung\models\CustomFunc;
-use app\modules\suachua\models\DmTTSuaChua;
+use app\modules\bophan\models\BoPhanBase;
 use app\modules\taisan\models\ThietBiBase;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
@@ -50,7 +50,7 @@ if ($model->ngay_hoan_thanh != null) {
         </div>
         <div class="col-6">
             <?=$form->field($model, 'id_tt_sua_chua')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(DmTTSuaChua::find()->all(), 'id', 'ten_tt_sua_chua'),
+    'data' => ArrayHelper::map(BoPhanBase::find()->where(['la_dv_sua_chua'=>1])->all(), 'id', 'ten_bo_phan'),
     'language' => 'vi',
     'options' => [
         'placeholder' => 'Chọn trung tâm sửa chữa...'

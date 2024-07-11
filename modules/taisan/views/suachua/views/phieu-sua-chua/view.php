@@ -17,7 +17,7 @@ use app\modules\dungchung\models\CustomFunc;
             ],
             [
                 'attribute'=>'id_tt_sua_chua',
-                'value'=>$model->ttSuaChua->ten_tt_sua_chua
+                'value'=>$model->ttSuaChua->ten_bo_phan
             ],
             [
                 'attribute'=>'ngay_sua_chua',

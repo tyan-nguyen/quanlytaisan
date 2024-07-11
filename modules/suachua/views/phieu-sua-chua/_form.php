@@ -158,6 +158,7 @@ if(!$model->isNewRecord){
     ?>
         <?=Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
         <?php } ?>
+        <?php if (!Yii::$app->request->isAjax) {?>
         <?= Html::a('Print phiếu sửa chữa', null, [
                 'class' => 'btn btn-info',
                 'id'=>"print-button",
@@ -170,7 +171,7 @@ if(!$model->isNewRecord){
                 'style'=>"margin-left:5px"
             ]);
         ?>
-        
+        <?php } ?>
     </div>
     
     

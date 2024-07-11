@@ -29,7 +29,7 @@ return [
         'attribute'=>'id_tt_sua_chua',
         'value'=>function($model){
             $ttSuaChua=$model->ttSuaChua;
-            return $ttSuaChua ? $ttSuaChua->ten_tt_sua_chua : "";
+            return $ttSuaChua ? $ttSuaChua->ten_bo_phan : "";
         }
     ],
     [
