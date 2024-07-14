@@ -6,8 +6,11 @@ use Yii;
 use app\modules\muasam\models\PhieuMuaSam;
 use app\modules\muasam\models\PhieuMuaSamSearch;
 use app\modules\muasam\models\CtPhieuMuaSamSearch;
+use app\modules\muasam\models\CtPhieuMuaSamVtSearch;
 use app\modules\muasam\models\CtBaoGiaMuaSamSearch;
+use app\modules\muasam\models\CtBaoGiaMuaSamVtSearch;
 use app\modules\muasam\models\CtPhieuNhapHangSearch;
+use app\modules\muasam\models\CtPhieuNhapHangVtSearch;
 use app\modules\muasam\models\BaoGiaMuaSam;
 use app\modules\muasam\models\BaoGiaMuaSamSearch;
 use yii\web\Controller;
@@ -55,6 +58,23 @@ class PhieuMuaSamController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         }    
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionListMuaSamVatTu()
+    {    
+        $searchModel = new PhieuMuaSamSearch();
+        $searchModel->dm_mua_sam='vat_tu';
+  		if(isset($_POST['search']) && $_POST['search'] != null){
+            $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
+        } else if ($searchModel->load(Yii::$app->request->post())) {
+            $searchModel = new PhieuMuaSamSearch(); // "reset"
+            $dataProvider = $searchModel->search(Yii::$app->request->post());
+        } else {
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        }    
+        return $this->render('list-mua-sam-vat-tu', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -109,11 +129,11 @@ class PhieuMuaSamController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($dm_mua_sam='thiet_bi')
     {
         $request = Yii::$app->request;
         $model = new PhieuMuaSam();  
-
+        $model->dm_mua_sam=$dm_mua_sam;
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -164,7 +184,10 @@ class PhieuMuaSamController extends Controller
         }
        
     }
-
+    public function actionCreateVt()
+    {
+        return $this->actionCreate('vat_tu');
+    }
     /**
      * Updates an existing PhieuMuaSam model.
      * For ajax request will return json object
@@ -303,7 +326,8 @@ class PhieuMuaSamController extends Controller
             
             try{
             	$baoGia->trang_thai='submited';
-                $baoGia->save();
+                //$baoGia->save();
+                if($baoGia->save())
                 $sendOk = true;
             }catch(\Exception $e) {
             	$sendOk = false;
@@ -355,11 +379,16 @@ class PhieuMuaSamController extends Controller
 
         //chi tiết phiếu mua sắm
         $searchModelCt = new CtPhieuMuaSamSearch();
+        if($model->dm_mua_sam=="vat_tu")
+        $searchModelCt = new CtPhieuMuaSamVtSearch();
+
         $searchModelCt->id_phieu_mua_sam=$id_phieu_mua_sam;
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProviderCt = $searchModelCt->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModelCt->load(Yii::$app->request->post())) {
             $searchModelCt = new CtPhieuMuaSamSearch(); // "reset"
+            if($model->dm_mua_sam=="vat_tu")
+            $searchModelCt = new CtPhieuMuaSamVtSearch();
             $dataProviderCt = $searchModelCt->search(Yii::$app->request->post());
         } else {
             $dataProviderCt = $searchModelCt->search(Yii::$app->request->queryParams);
@@ -388,11 +417,15 @@ class PhieuMuaSamController extends Controller
             $baoGia=null;
 
         $searchModelBg = new CtBaoGiaMuaSamSearch();
+        if($model->dm_mua_sam=="vat_tu")
+        $searchModelBg = new CtBaoGiaMuaSamVtSearch();
         $searchModelBg->id_bao_gia=$baoGia->id ?? 0;
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProviderBg = $searchModelBg->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModelBg->load(Yii::$app->request->post())) {
             $searchModelBg = new CtBaoGiaMuaSamSearch(); // "reset"
+            if($model->dm_mua_sam=="vat_tu")
+            $searchModelBg = new CtBaoGiaMuaSamVtSearch();
             $dataProviderBg = $searchModelBg->search(Yii::$app->request->post());
         } else {
             $dataProviderBg = $searchModelBg->search(Yii::$app->request->queryParams);
@@ -400,11 +433,16 @@ class PhieuMuaSamController extends Controller
 
         //chi tiết phiếu nhập
         $searchModelPn = new CtPhieuNhapHangSearch();
+        if($model->dm_mua_sam=="vat_tu")
+        $searchModelPn = new CtPhieuNhapHangVtSearch();
         $searchModelPn->id_phieu_mua_sam=$id_phieu_mua_sam;
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProviderPn = $searchModelPn->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModelPn->load(Yii::$app->request->post())) {
+            
             $searchModelPn = new CtPhieuNhapHangSearch(); // "reset"
+            if($model->dm_mua_sam=="vat_tu")
+            $searchModelPn = new CtPhieuNhapHangVtSearch();
             $dataProviderPn = $searchModelPn->search(Yii::$app->request->post());
         } else {
             $dataProviderPn = $searchModelPn->search(Yii::$app->request->queryParams);

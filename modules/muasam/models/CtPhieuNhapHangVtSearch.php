@@ -5,12 +5,12 @@ namespace app\modules\muasam\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\muasam\models\PhieuMuaSam;
+use app\modules\muasam\models\CtPhieuNhapHangVt;
 
 /**
- * PhieuMuaSamSearch represents the model behind the search form about `app\modules\muasam\models\PhieuMuaSam`.
+ * CtPhieuNhapHangVtSearch represents the model behind the search form about `app\modules\muasam\models\CtPhieuNhapHangVt`.
  */
-class PhieuMuaSamSearch extends PhieuMuaSam
+class CtPhieuNhapHangVtSearch extends CtPhieuNhapHangVt
 {
     /**
      * @inheritdoc
@@ -18,9 +18,9 @@ class PhieuMuaSamSearch extends PhieuMuaSam
     public function rules()
     {
         return [
-            [['id', 'id_nguoi_duyet', 'nguoi_tao', 'nguoi_cap_nhat'], 'integer'],
-            [['ngay_yeu_cau', 'trang_thai', 'ghi_chu', 'ngay_tao', 'ngay_cap_nhat','dm_mua_sam'], 'safe'],
-            [['tong_phi'], 'number'],
+            [['id', 'id_phieu_mua_sam', 'id_ct_phieu_mua_sam_vt', 'so_luong', 'id_vat_tu', 'id_kho', 'nguoi_tao', 'nguoi_cap_nhat'], 'integer'],
+            [['hang_san_xuat', 'ghi_chu', 'don_vi_tinh', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
+            [['don_gia'], 'number'],
         ];
     }
 
@@ -42,15 +42,10 @@ class PhieuMuaSamSearch extends PhieuMuaSam
      */
     public function search($params, $cusomSearch=NULL)
     {
-        $query = PhieuMuaSam::find();
+        $query = CtPhieuNhapHangVt::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ]
         ]);
 
         $this->load($params);
@@ -61,24 +56,28 @@ class PhieuMuaSamSearch extends PhieuMuaSam
             return $dataProvider;
         }
 		if($cusomSearch != NULL){
-			$query->andFilterWhere ( [ 'OR' ,['like', 'trang_thai', $cusomSearch],
-            ['like', 'ghi_chu', $cusomSearch]] );
+			$query->andFilterWhere ( [ 'OR' ,['like', 'hang_san_xuat', $cusomSearch],
+            ['like', 'ghi_chu', $cusomSearch],
+            ['like', 'don_vi_tinh', $cusomSearch]] );
  
 		} else {
         	$query->andFilterWhere([
             'id' => $this->id,
-            'ngay_yeu_cau' => $this->ngay_yeu_cau,
-            'id_nguoi_duyet' => $this->id_nguoi_duyet,
-            'tong_phi' => $this->tong_phi,
+            'id_phieu_mua_sam' => $this->id_phieu_mua_sam,
+            'id_ct_phieu_mua_sam_vt' => $this->id_ct_phieu_mua_sam_vt,
+            'so_luong' => $this->so_luong,
+            'don_gia' => $this->don_gia,
+            'id_vat_tu' => $this->id_vat_tu,
+            'id_kho' => $this->id_kho,
             'nguoi_tao' => $this->nguoi_tao,
             'ngay_tao' => $this->ngay_tao,
             'nguoi_cap_nhat' => $this->nguoi_cap_nhat,
             'ngay_cap_nhat' => $this->ngay_cap_nhat,
-            'dm_mua_sam' => $this->dm_mua_sam,
         ]);
 
-        $query->andFilterWhere(['like', 'trang_thai', $this->trang_thai])
-            ->andFilterWhere(['like', 'ghi_chu', $this->ghi_chu]);
+        $query->andFilterWhere(['like', 'hang_san_xuat', $this->hang_san_xuat])
+            ->andFilterWhere(['like', 'ghi_chu', $this->ghi_chu])
+            ->andFilterWhere(['like', 'don_vi_tinh', $this->don_vi_tinh]);
 		}
         return $dataProvider;
     }

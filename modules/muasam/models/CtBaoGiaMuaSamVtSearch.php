@@ -5,12 +5,12 @@ namespace app\modules\muasam\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\muasam\models\PhieuMuaSam;
+use app\modules\muasam\models\CtBaoGiaMuaSamVt;
 
 /**
- * PhieuMuaSamSearch represents the model behind the search form about `app\modules\muasam\models\PhieuMuaSam`.
+ * CtBaoGiaMuaSamVtSearch represents the model behind the search form about `app\modules\muasam\models\CtBaoGiaMuaSamVt`.
  */
-class PhieuMuaSamSearch extends PhieuMuaSam
+class CtBaoGiaMuaSamVtSearch extends CtBaoGiaMuaSamVt
 {
     /**
      * @inheritdoc
@@ -18,9 +18,9 @@ class PhieuMuaSamSearch extends PhieuMuaSam
     public function rules()
     {
         return [
-            [['id', 'id_nguoi_duyet', 'nguoi_tao', 'nguoi_cap_nhat'], 'integer'],
-            [['ngay_yeu_cau', 'trang_thai', 'ghi_chu', 'ngay_tao', 'ngay_cap_nhat','dm_mua_sam'], 'safe'],
-            [['tong_phi'], 'number'],
+            [['id', 'id_bao_gia', 'id_ct_phieu_mua_sam', 'so_luong', 'nguoi_tao', 'nguoi_cap_nhat'], 'integer'],
+            [['hang_san_xuat', 'ghi_chu', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
+            [['don_gia', 'thanh_tien'], 'number'],
         ];
     }
 
@@ -42,15 +42,10 @@ class PhieuMuaSamSearch extends PhieuMuaSam
      */
     public function search($params, $cusomSearch=NULL)
     {
-        $query = PhieuMuaSam::find();
+        $query = CtBaoGiaMuaSamVt::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ]
         ]);
 
         $this->load($params);
@@ -61,23 +56,24 @@ class PhieuMuaSamSearch extends PhieuMuaSam
             return $dataProvider;
         }
 		if($cusomSearch != NULL){
-			$query->andFilterWhere ( [ 'OR' ,['like', 'trang_thai', $cusomSearch],
+			$query->andFilterWhere ( [ 'OR' ,['like', 'hang_san_xuat', $cusomSearch],
             ['like', 'ghi_chu', $cusomSearch]] );
  
 		} else {
         	$query->andFilterWhere([
             'id' => $this->id,
-            'ngay_yeu_cau' => $this->ngay_yeu_cau,
-            'id_nguoi_duyet' => $this->id_nguoi_duyet,
-            'tong_phi' => $this->tong_phi,
+            'id_bao_gia' => $this->id_bao_gia,
+            'id_ct_phieu_mua_sam' => $this->id_ct_phieu_mua_sam,
+            'so_luong' => $this->so_luong,
+            'don_gia' => $this->don_gia,
+            'thanh_tien' => $this->thanh_tien,
             'nguoi_tao' => $this->nguoi_tao,
             'ngay_tao' => $this->ngay_tao,
             'nguoi_cap_nhat' => $this->nguoi_cap_nhat,
             'ngay_cap_nhat' => $this->ngay_cap_nhat,
-            'dm_mua_sam' => $this->dm_mua_sam,
         ]);
 
-        $query->andFilterWhere(['like', 'trang_thai', $this->trang_thai])
+        $query->andFilterWhere(['like', 'hang_san_xuat', $this->hang_san_xuat])
             ->andFilterWhere(['like', 'ghi_chu', $this->ghi_chu]);
 		}
         return $dataProvider;

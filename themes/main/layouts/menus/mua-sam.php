@@ -24,7 +24,9 @@
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a>
 							</li>
-							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam?menu=pms1') ?>" class="slide-item" data-menu="pms1">Phiếu mua sắm</a>
+							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam?menu=pms1') ?>" class="slide-item" data-menu="pms1">Mua sắm thiết bị</a>
+							</li>
+							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam/list-mua-sam-vat-tu?menu=pms4') ?>" class="slide-item" data-menu="pms4">Mua sắm vật tư</a>
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam/duyet-phieu-mua-sam?menu=pms3') ?>" class="slide-item" data-menu="pms3">Duyệt phiếu mua sắm</a>
 							</li>

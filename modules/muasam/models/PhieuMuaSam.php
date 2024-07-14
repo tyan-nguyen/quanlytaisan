@@ -46,7 +46,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             [['id_nguoi_duyet', 'nguoi_tao', 'nguoi_cap_nhat','id_nguoi_quan_ly','id_bo_phan_quan_ly','id_tt_mua_sam'], 'integer'],
             [['tong_phi','danh_gia_ms','danh_gia_bg'], 'number'],
             [['ghi_chu','ghi_chu2'], 'string'],
-            [['trang_thai'], 'string', 'max' => 255],
+            [['trang_thai','dm_mua_sam'], 'string', 'max' => 255],
             [['id_nguoi_duyet'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_duyet' => 'id']],
         ];
     }
@@ -71,7 +71,8 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             'ngay_cap_nhat' => 'Ngày cập nhật',
             'danh_gia_ms'=>'Đánh giá TT mua sắm',
             'danh_gia_bg'=>'Đánh giá dv báo giá',
-            'ghi_chu2'=>'ghi chú 2'
+            'ghi_chu2'=>'ghi chú 2',
+            'dm_mua_sam'=>'Danh mục mua sắm'
         ];
     }
 
@@ -105,7 +106,10 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
      */
     public function getCtPhieuMuaSams()
     {
-        return $this->hasMany(CtPhieuMuaSam::class, ['id_phieu_mua_sam' => 'id']);
+        if($this->dm_mua_sam==='thiet_bi')
+            return $this->hasMany(CtPhieuMuaSam::class, ['id_phieu_mua_sam' => 'id']);
+        else
+            return $this->hasMany(CtPhieuMuaSamVt::class, ['id_phieu_mua_sam' => 'id']);
     }
 
     /**

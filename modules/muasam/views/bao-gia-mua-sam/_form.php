@@ -5,6 +5,11 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\muasam\models\BaoGiaMuaSam */
 /* @var $form yii\widgets\ActiveForm */
+$phieuMuaSam=$model->phieuMuaSam;
+if($phieuMuaSam->dm_mua_sam=="thiet_bi")
+$viewCt='\ct-bao-gia.php';
+else
+$viewCt='\ct-bao-gia-vt.php';
 ?>
 
 <div class="bao-gia-mua-sam-form">
@@ -16,7 +21,7 @@ use yii\widgets\ActiveForm;
         'enableClientValidation' => true,
     ]); ?>
     
-    <?php include __DIR__.'/ct-bao-gia.php' ?>
+    <?php include __DIR__.$viewCt ?>
     <div class="row">
         
         <div class="col-12">

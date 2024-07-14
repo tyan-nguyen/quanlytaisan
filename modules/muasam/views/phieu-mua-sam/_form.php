@@ -133,7 +133,7 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
         <div class='col-12'><?= $form->field($model, 'ghi_chu')->textarea(['rows' => 4]) ?></div>
     </div>
 
-
+    <?= $form->field($model, 'dm_mua_sam')->textInput(['hidden' => 'hidden'])->label(false) ?>
 
     <?php if (!in_array($model->trang_thai,['rejected','completed'])){ ?>
     <div class="form-group text-center">

@@ -5,6 +5,7 @@ namespace app\modules\muasam\models;
 use Yii;
 use app\modules\taisan\models\ThietBiBase as ThietBi;
 use app\modules\dungchung\models\CustomFunc;
+use app\modules\kholuutru\models\DmVatTu;
 /**
  * This is the model class for table "ts_phieu_nhap_hang".
  *
@@ -85,6 +86,10 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CtPhieuNhapHang::class, ['id_phieu_mua_sam' => 'id_phieu_mua_sam']);
     }
+    public function getCtPhieuNhapHangVts()
+    {
+        return $this->hasMany(CtPhieuNhapHangVt::class, ['id_phieu_mua_sam' => 'id_phieu_mua_sam']);
+    }
     public function beforeSave($insert) {
         if ($this->isNewRecord) {
             $this->ngay_tao = date('Y-m-d H:i:s');
@@ -94,11 +99,15 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
             if($this->getOldAttribute('trang_thai')!=$this->trang_thai && $this->trang_thai === "completed")
             {
                 
+                $phieuMuaSam=$this->phieuMuaSam;
+                if($phieuMuaSam->dm_mua_sam=='thiet_bi')
                 $isSuccess=$this->chuyenThietBi();
+                else
+                $isSuccess=$this->chuyenVatTu();
                 if(!$isSuccess)
                 $this->trang_thai="draft";
                 else{
-                    $phieuMuaSam=$this->phieuMuaSam;
+                    
                     $phieuMuaSam->trang_thai="completed";
                     $phieuMuaSam->save();
                 }
@@ -181,6 +190,51 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
         $checkNhapHang=CtPhieuNhapHang::find()
         ->where(['id_phieu_mua_sam' => $this->id_phieu_mua_sam])
         ->andWhere('id_thiet_bi is null')
+        ->count();
+        
+        if($checkNhapHang>0)
+        return false;
+        else return true;
+    }
+    public function chuyenVatTu()
+    {
+        $cus = new CustomFunc();
+        
+        foreach($this->ctPhieuNhapHangVts as $key=>$item)
+        {
+            if(!$item->id_vat_tu)
+            {
+                $ctPhieuMuaSam=$item->ctPhieuMuaSam;
+                $data=[
+                    'ten_vat_tu' => $ctPhieuMuaSam->ten_vat_tu,//*
+                    'so_luong' => $item->so_luong,//*
+                    'don_gia' => $item->don_gia,//*
+                    'trang_thai' => 'new',//*
+                    //'ghi_chu' => $item->ghi_chu,//*
+                    'id_kho' => $ctPhieuMuaSam->id_kho,//*
+                    'hang_san_xuat'=> $item->hang_san_xuat,//*
+                    'don_vi_tinh'=> $ctPhieuMuaSam->don_vi_tinh,//*
+                    
+                ];
+                $vatTu=new DmVatTu($data);
+                
+                if($vatTu->save())
+                {
+                    $item->id_vat_tu=$vatTu->id;
+                    $item->save();
+                    
+                }
+                else{
+                    //echo 123;
+                    //echo json_encode($thietBi->getErrors());
+                }
+            }
+            
+            
+        }
+        $checkNhapHang=CtPhieuNhapHangVt::find()
+        ->where(['id_phieu_mua_sam' => $this->id_phieu_mua_sam])
+        ->andWhere('id_vat_tu is null')
         ->count();
         
         if($checkNhapHang>0)

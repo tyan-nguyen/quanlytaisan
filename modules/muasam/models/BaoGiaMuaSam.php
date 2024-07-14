@@ -101,7 +101,11 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
      */
     public function getCtBaoGiaMuaSams()
     {
-        return $this->hasMany(CtBaoGiaMuaSam::class, ['id_bao_gia' => 'id']);
+        $phieuMuaSam=$this->phieuMuaSam;
+        if($phieuMuaSam->dm_mua_sam==='thiet_bi')
+            return $this->hasMany(CtBaoGiaMuaSam::class, ['id_bao_gia' => 'id']);
+        else
+            return $this->hasMany(CtBaoGiaMuaSamVt::class, ['id_bao_gia' => 'id']);
     }
     public static function getBaoGiaByPhieuMuaSam($id_phieu_mua_sam)
     {
@@ -198,6 +202,8 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
                 $phieuNhapHang->save();
                 foreach($this->ctBaoGiaMuaSams as $key=>$item)
                 {
+                    //xử lý cho phiếu nhập thiết bị
+                    if($phieuMuaSam->dm_mua_sam=='thiet_bi')
                     for ($i = 0; $i < $item->so_luong; $i++)
                     {
                         //$han_bao_hanh= date('Y-m-d', strtotime($phieuNhapHang->ngay_nhap_hang . ' +'.$item->han_bao_hanh.' month'));
@@ -218,6 +224,19 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
                         
                         $ctNhapHang->save(false);
                         //echo json_encode($ctNhapHang->getErrors());
+                    }
+                    else{
+                        //xử lý cho phiếu nhập vật tư
+                        $ctNhapHang=new CtPhieuNhapHangVt([
+                            'id_phieu_mua_sam' => $phieuMuaSam->id,
+                            'id_ct_phieu_mua_sam_vt' => $item->id_ct_phieu_mua_sam,
+                            'hang_san_xuat' => $item->hang_san_xuat,
+                            'so_luong' => $item->so_luong,
+                            'don_gia' => $item->don_gia,
+                            //'id_kho' => $item->id_kho,
+                            //'don_vi_tinh' => $item->don_vi_tinh
+                        ]);
+                        $ctNhapHang->save(false);
                     }
                     
 
