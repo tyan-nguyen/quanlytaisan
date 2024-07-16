@@ -139,6 +139,10 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return $this->hasOne(BoPhan::class, ['id' => 'id_tt_sua_chua']);
     }
+    public function getDoiTac()
+    {
+        return $this->hasOne(DoiTac::class, ['id' => 'id_tt_sua_chua']);
+    }
     public function beforeSave($insert) {
         //ngaythangnam
         $cus = new CustomFunc();
@@ -195,13 +199,25 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
             $thietBi->save();
         }
-        // if(isset($changedAttributes['danh_gia_sc']))
-        // {
-        //     $avg=PhieuSuaChua::find()->where(['id_tt_sua_chua'=>$this->id_tt_sua_chua])->average('danh_gia_sc');
-        //     $this->ttSuaChua->danh_gia=(int) $avg;
-        //     $this->ttSuaChua->save();
+        if(isset($changedAttributes['danh_gia_sc']))
+        {
+            $avg=PhieuSuaChua::find()->where(['id_tt_sua_chua'=>$this->id_tt_sua_chua])->average('danh_gia_sc');
+            $this->ttSuaChua->danh_gia=(int) $avg;
+            $this->ttSuaChua->save();
             
-        // }
+        }
+        if(isset($changedAttributes['danh_gia_bg']))
+        {
+            $avg=PhieuSuaChua::find()->where(['id_tt_sua_chua'=>$this->id_tt_sua_chua])->average('danh_gia_bg');
+            $dvBaoGia=$this->baoGiaSuaChua->dvBaoGia;
+            if($dvBaoGia)
+            {
+                $dvBaoGia->danh_gia=(int) $avg;
+                $dvBaoGia->save();
+            }
+            
+            
+        }
         
         return parent::afterSave($insert,$changedAttributes);
     }
