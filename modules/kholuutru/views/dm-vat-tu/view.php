@@ -32,6 +32,7 @@ use yii\widgets\DetailView;
                             'id',
                             'ten_vat_tu',
                             'so_luong',
+                            'so_luong_min',
                             'kho.ten_kho',
                             'don_vi_tinh',
 

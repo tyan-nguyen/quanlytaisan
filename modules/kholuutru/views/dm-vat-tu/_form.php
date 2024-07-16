@@ -29,7 +29,7 @@ use kartik\select2\Select2;
         ]) ?>
         </div>
         <div class="col-2">
-            <?= $form->field($model, 'so_luong')->textInput() ?>
+            <?= $form->field($model, 'so_luong')->textInput(['type'=>'number']) ?>
         </div>
     </div>
 
@@ -59,8 +59,11 @@ use kartik\select2\Select2;
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <?=$form->field($model, 'hang_san_xuat')->textInput(['maxlength' => true])?>
+        </div>
+        <div class="col-6">
+        <?= $form->field($model, 'so_luong_min')->textInput(['type'=>'number']) ?>
         </div>
     </div>
 

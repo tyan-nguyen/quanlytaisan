@@ -24,6 +24,10 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'so_luong_min',
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'kho.ten_kho',
         
     ],

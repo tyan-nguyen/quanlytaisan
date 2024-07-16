@@ -37,7 +37,7 @@ class DmVatTu extends \yii\db\ActiveRecord
     {
         return [
             [['ten_vat_tu'], 'required'],
-            [['so_luong', 'id_kho', 'nguoi_tao'], 'integer'],
+            [['so_luong', 'id_kho', 'nguoi_tao','so_luong_min'], 'integer'],
             [['don_gia'], 'number'],
             [['ngay_tao'], 'safe'],
             [['ten_vat_tu', 'don_vi_tinh', 'trang_thai','hang_san_xuat'], 'string', 'max' => 255],
@@ -54,6 +54,7 @@ class DmVatTu extends \yii\db\ActiveRecord
             'id' => 'ID',
             'ten_vat_tu' => 'Tên vật tư',
             'so_luong' => 'Số lượng',
+            'so_luong_min'=>'Số lượng giới hạn',
             'id_kho' => 'Kho lưu trữ',
             'don_vi_tinh' => 'Đơn vị tính',
             'hang_san_xuat' => 'Hãng sản xuất',
