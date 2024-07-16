@@ -99,6 +99,15 @@ use app\modules\bophan\models\BoPhan;
                                 'type'=>'VIEW'
                             ])
                         ],
+                        'la_dv_sua_chua'=>[
+                            'attribute'=>'la_dv_sua_chua',
+                            'format'=>'raw',
+                            'value'=>SwitchWidget::widget([
+                                'model'=>$model,
+                                'attr'=>'la_dv_sua_chua',
+                                'type'=>'VIEW'
+                            ])
+                        ],
                         /* 'id_kho_vat_tu',
                         'id_kho_phe_lieu',
                         'id_kho_thanh_pham',
