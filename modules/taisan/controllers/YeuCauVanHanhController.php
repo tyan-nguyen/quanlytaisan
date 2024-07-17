@@ -142,7 +142,7 @@ class YeuCauVanHanhController extends Controller
                     . Html::button('Print', [
                         'class' => 'btn btn-primary',
                         'id' => 'print-button',
-                        'hidden' => !$isPrint
+                        // 'hidden' => !$isPrint
 
                     ]),
 
@@ -161,6 +161,16 @@ class YeuCauVanHanhController extends Controller
 
             ]);
         }
+    }
+
+    public function actionPendingRequests()
+    {
+        $pendingRequests = YeuCauVanHanh::find()
+            ->where(['hieu_luc' => 'CHODUYET'])
+            ->all();
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $pendingRequests;
     }
 
 

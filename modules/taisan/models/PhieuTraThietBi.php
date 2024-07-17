@@ -40,4 +40,23 @@ class PhieuTraThietBi extends PhieuTraThietBiBase
         }
         return parent::beforeSave($insert);
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($this->hieu_luc == 'DATRA') {  // Adjust the condition as needed
+            $this->updateRequestStatus();
+        }
+    }
+
+    protected function updateRequestStatus()
+    {
+        if ($this->id_yeu_cau_van_hanh) {
+            $request = YeuCauVanHanh::findOne($this->id_yeu_cau_van_hanh);
+            if ($request) {
+                $request->hieu_luc = 'DATRA';
+                $request->save(false);
+            }
+        }
+    }
 }

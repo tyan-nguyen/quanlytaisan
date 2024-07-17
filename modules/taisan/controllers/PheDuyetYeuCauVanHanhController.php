@@ -78,12 +78,24 @@ class PheDuyetYeuCauVanHanhController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
 
-        $hieuLuc = $model->hieu_luc ?? null;
-        $isPending = true;
+        $isDraft = false;
+        $isPending = false;
+        $isApproved = false;
+        $isPrint = false;
 
-        if ($hieuLuc !== null && $hieuLuc !== 'CHODUYET') {
-            $isPending = false;
+        $hieuLuc = $model->hieu_luc ?? null;
+
+
+        if ($hieuLuc !== null && $hieuLuc === 'NHAP') {
+            $isDraft = true;
+        } else if ($hieuLuc !== null && $hieuLuc === 'CHODUYET') {
+            $isPending = true;
+        } else if ($hieuLuc !== null && $hieuLuc === 'DADUYET') {
+            $isApproved = true;
+        } else if ($hieuLuc !== null && $hieuLuc === 'VANHANH') {
+            $isPrint = true;
         }
+
 
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -111,6 +123,12 @@ class PheDuyetYeuCauVanHanhController extends Controller
 
                         ]
                     )
+                    . Html::button('Print', [
+                        'class' => 'btn btn-primary',
+                        'id' => 'print-button',
+                        // 'hidden' => !$isPrint
+
+                    ]),
             ];
         } else {
             return $this->render('view', [
@@ -122,31 +140,75 @@ class PheDuyetYeuCauVanHanhController extends Controller
 
     public function actionApprove($id)
     {
+        $request = Yii::$app->request;
         $model = $this->findModel($id);
+        $modelsDetail = $model->details;
 
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
 
-            $status = Yii::$app->request->post('hieu_luc');
-
-            if ($status === 'DADUYET' || $status === 'NGUNG_QUYTRINH') {
-
-                $model->hieu_luc = $status;
-                $model->id_nguoi_duyet = Yii::$app->user->identity->id;
-                $model->ngay_duyet = date('Y-m-d H:i:s');
-                $model->noi_dung_duyet = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_duyet'];
-
-                if ($model->save(false)) {
-                    Yii::$app->session->setFlash('success', 'Successfully.');
-                    // return $this->redirect(['index']);
-                    return ['success' => true, 'redirectUrl' => \yii\helpers\Url::to(['index'])];
-                } else {
-                    Yii::$app->session->setFlash('error', 'Failed.');
-                    return ['success' => false, 'errors' => $model->errors];
-                }
+            if ($request->isGet) {
+                return [
+                    'title' => "Phê duyệt yêu cầu",
+                    'content' => $this->renderAjax('approve', [
+                        'model' => $model,
+                        'modelsDetail' => $modelsDetail,
+                    ]),
+                    'footer' => Html::button('Đóng', [
+                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                    ])
+                        . Html::button('Phê duyệt', [
+                            'class' => 'btn btn-primary',
+                            'type' => 'submit',
+                            'form' => 'approve-form'
+                        ])
+                        . Html::button(
+                            'Không duyệt',
+                            [
+                                'class' => 'btn btn-danger',
+                                'type' => 'button',
+                                // 'form' => 'approve-form',
+                                'onClick' => "setStatusAndSubmit('NGUNG_QUYTRINH')",
+                            ]
+                        )
+                ];
             }
         }
-        return $this->redirect(['index']);
+
+        $status = Yii::$app->request->post('hieu_luc');
+
+        if ($status === 'DADUYET' || $status === 'NGUNG_QUYTRINH') {
+
+            $model->hieu_luc = $status;
+            $model->id_nguoi_duyet = Yii::$app->user->identity->id;
+            $model->ngay_duyet = date('Y-m-d H:i:s');
+            $model->noi_dung_duyet = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_duyet'];
+
+            if ($model->save(false)) {
+                Yii::$app->session->setFlash('success', 'Successfully.');
+
+                return [
+                    'success' => true,
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Phê duyệt thành công",
+                    'content' => $this->renderAjax('view', [
+                        'model' => $model,
+                        'modelsDetail' => $modelsDetail,
+
+                    ]),
+                    'tcontent' => 'Phê duyệt thành công!',
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
+                ];
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed.');
+                return [
+                    'success' => false,
+                    'message' => 'Failed to approve.'
+                ];
+            }
+            // return $this->redirect(['view', 'id' => $model->id]);
+        }
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
 
@@ -291,5 +353,15 @@ class PheDuyetYeuCauVanHanhController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    // Print Action
+
+    public function actionPrintView($id)
+    {
+        // Render the view you want to print
+        return $this->renderPartial('print', [
+            'model' => $this->findModel($id)
+        ]);
     }
 }

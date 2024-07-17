@@ -14,6 +14,8 @@ use app\modules\user\models\User;
 use app\modules\taisan\models\HeThong;
 use app\modules\suachua\models\PhieuSuaChuaSearch;
 use app\modules\baotri\models\search\PhieuBaoTriSearch;
+use app\modules\taisan\models\YeuCauVanHanhCt;
+
 /**
  * ThietBiController implements the CRUD actions for ThietBi model.
  */
@@ -174,6 +176,16 @@ class ThietBiController extends Controller
             $searchModelBaoTri = new PhieuBaoTriSearch();
             $searchModelBaoTri->idThietBi = $model->id;
             $dataProviderBaoTri = $searchModelBaoTri->search(Yii::$app->request->queryParams);
+
+            // Yeu Cau Van Hanh Chi Tiet
+            $requestDetails = null;
+            if ($model->trang_thai === 'VANHANH') {
+                $requestDetails = YeuCauVanHanhCt::find()
+                    ->joinWith('yeuCauVanHanh')
+                    ->where(['id_thiet_bi' => $id, 'ts_yeu_cau_van_hanh.hieu_luc' => 'VANHANH'])
+                    ->all();
+            }
+
             
             if(isset($_POST['search']) && $_POST['search'] != null){
                 $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
@@ -194,7 +206,8 @@ class ThietBiController extends Controller
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
                         'searchModelBaoTri' => $searchModelBaoTri,
-                        'dataProviderBaoTri'=>$dataProviderBaoTri
+                        'dataProviderBaoTri'=>$dataProviderBaoTri,
+                        'requestDetails' => $requestDetails,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote']).

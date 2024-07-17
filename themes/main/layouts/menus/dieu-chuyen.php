@@ -24,8 +24,8 @@
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a></li>
 							<li><a href="/taisan/yeu-cau-van-hanh?menu=dc1" class="slide-item" data-menu="dc1">Danh sách điều chuyển</a></li>
-							
-							<!-- <li><a href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=dc2" class="slide-item" data-menu="dc2">Phê duyệt</a></li>
+							<li><a href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=dc2" class="slide-item" data-menu="dc2">Phê duyệt điều chuyển</a></li>
+							<!-- 
 							<li><a href="/taisan/xuat-yeu-cau-van-hanh?menu=dc3" class="slide-item" data-menu="dc3">Xuất và vận hành</a></li> -->
 
 							<li><a href="/taisan/theo-doi-van-hanh?menu=dc5" class="slide-item" data-menu="dc5">Theo dõi thiết bị</a></li>

@@ -225,6 +225,12 @@ class ThietBiBase extends \app\models\TsThietBi
         return $this->id_thiet_bi_cha != NULL ? $this->hasOne(ThietBi::class, ['id' => 'id_thiet_bi_cha']) : '';
     }
 
+    public function getYeuCauVanHanhCt()
+    {
+        return $this->hasOne(YeuCauVanHanhCt::className(), ['id_thiet_bi' => 'id']);
+    }
+    
+
     /**
      * {@inheritdoc}
      */

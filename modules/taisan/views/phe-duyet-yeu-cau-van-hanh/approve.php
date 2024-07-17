@@ -24,12 +24,11 @@ use yii\helpers\Url;
     }
 </style>
 
-<div class="ts-yeu-cau-van-hanh-view">
+<div class="ts-phe-duyet-yeu-cau-van-hanh-view">
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
@@ -167,16 +166,19 @@ use yii\helpers\Url;
     </div>
 </div>
 
-<div id="print-yeu-cau-van-hanh-content" class="print-yeu-cau-van-hanh-content">
-</div>
-
 <script>
     function setStatusAndSubmit(status) {
         var statusInput = document.getElementById('hieu-luc-hidden-input');
+
+        console.log("status: " + status);
+
         if (statusInput) {
             statusInput.value = status;
+            console.log("\nstatusInput.value =  " + statusInput.value);
+
             var form = document.getElementById('approve-form');
             var formData = new FormData(form);
+
             // Submit the form using AJAX
             $.ajax({
                 url: form.action,
@@ -186,7 +188,11 @@ use yii\helpers\Url;
                 contentType: false,
                 success: function(response) {
                     if (response.success) {
-                        window.location.href = response.redirectUrl;
+                        console.log('Data saved successfully');
+                        $('#ajaxCrudModal').modal('hide');
+                        $.pjax.reload({
+                            container: '#crud-datatable-pjax'
+                        });
                     } else {
                         console.error('Failed to save data:', response.errors);
                     }
@@ -199,29 +205,31 @@ use yii\helpers\Url;
             console.error('Status hidden input not found');
         }
     }
-</script>
 
+    $(document).on('submit', '#approve-form', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = new FormData(this);
 
-<?php
-$js = <<< JS
-$(document).ready(function() {
-    var modelId = '{$model->id}';
-    console.log(modelId);
-    $('#print-button').on('click', function() {
         $.ajax({
-            url: '/taisan/phe-duyet-yeu-cau-van-hanh/print-view?id='+ modelId,
-            type: 'GET',
-            success: function(data) {
-                $('#print-yeu-cau-van-hanh-content').html(data);
-                $('.print-yeu-cau-van-hanh').printThis();
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    $('#ajaxCrudModal').modal('hide');
+                    $.pjax.reload({
+                        container: '#crud-datatable-pjax'
+                    });
+                } else {
+                    console.error('Failed to save data:', response.message);
+                }
             },
-            error: function() {
-                alert('Đã xảy ra lỗi trong khi tải nội dung.');
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX request failed:', textStatus, errorThrown);
             }
         });
     });
-});
-JS;
-$this->registerJs($js, \yii\web\View::POS_READY);
-
-?>
+</script>

@@ -22,7 +22,6 @@ use yii\helpers\ArrayHelper;
 class PhieuTraThietBiController extends Controller
 {
 
-
     public function beforeAction($action)
     {
         Yii::$app->params['moduleID'] = 'Module Phiếu trả thiết bị';

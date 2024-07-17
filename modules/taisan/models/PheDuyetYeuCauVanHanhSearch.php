@@ -87,7 +87,7 @@ class PheDuyetYeuCauVanHanhSearch extends YeuCauVanHanh
 
         $query->andFilterWhere(['like', 'cong_trinh', $this->cong_trinh])
             ->andFilterWhere(['like', 'ly_do', $this->ly_do])
-            ->andFilterWhere(['like', 'hieu_luc', $this->hieu_luc])
+            ->andFilterWhere(['like', 'hieu_luc', 'CHODUYET'])
             ->andFilterWhere(['like', 'noi_dung_lap', $this->noi_dung_lap])
             ->andFilterWhere(['like', 'noi_dung_gui', $this->noi_dung_gui])
             ->andFilterWhere(['like', 'noi_dung_duyet', $this->noi_dung_duyet])
@@ -96,13 +96,13 @@ class PheDuyetYeuCauVanHanhSearch extends YeuCauVanHanh
             ->andFilterWhere(['like', 'dia_diem', $this->dia_diem]);
 		}
 
-        $query->orderBy(new \yii\db\Expression("
-        CASE
-            WHEN hieu_luc IS NULL THEN 0
-            WHEN hieu_luc = 'CHODUYET' THEN 1
-            ELSE 2
-        END ASC
-    "));
+    //     $query->orderBy(new \yii\db\Expression("
+    //     CASE
+    //         WHEN hieu_luc IS NULL THEN 0
+    //         WHEN hieu_luc = 'CHODUYET' THEN 1
+    //         ELSE 2
+    //     END ASC
+    // "));
         return $dataProvider;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use yii\widgets\ActiveForm;
 use app\modules\user\models\User;
 ?>
@@ -6,8 +7,7 @@ use app\modules\user\models\User;
 <div class="main-header side-header sticky">
 	<div class="container-fluid main-container">
 		<div class="main-header-left sidemenu">
-			<a class="main-header-menu-icon" href="javascript:void(0);" data-bs-toggle="sidebar"
-				id="mainSidebarToggle"><span></span></a>
+			<a class="main-header-menu-icon" href="javascript:void(0);" data-bs-toggle="sidebar" id="mainSidebarToggle"><span></span></a>
 		</div>
 		<div class="main-header-left horizontal">
 			<a class="main-logo" href="<?= Yii::getAlias('@web/') ?>">
@@ -16,24 +16,21 @@ use app\modules\user\models\User;
 				<img src="<?= Yii::getAlias('@web') ?>/assets/images/brand/logo1.png" class="desktop-logo theme-logo" alt="viboonlogo">
 			</a>
 		</div>
-		
-		<?php if(Yii::$app->params['showTopSearch'] != false):?>
-		<div class="">
-			<form class="myFilterForm input-icon" method="post">
-				<div class="input-icon-addon">
-					<span class="header-serach-btn">
-						<i class="fe fe-search"></i>
-					</span>
-				</div>
-				<input name="search" type="search" class="form-control header-search" placeholder="Tìm kiếm&hellip;"
-					tabindex="1">
-			</form>
-		</div>
+
+		<?php if (Yii::$app->params['showTopSearch'] != false) : ?>
+			<div class="">
+				<form class="myFilterForm input-icon" method="post">
+					<div class="input-icon-addon">
+						<span class="header-serach-btn">
+							<i class="fe fe-search"></i>
+						</span>
+					</div>
+					<input name="search" type="search" class="form-control header-search" placeholder="Tìm kiếm&hellip;" tabindex="1">
+				</form>
+			</div>
 		<?php endif; ?>
 		<div class="main-header-right ms-auto">
-			<button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto collapsed" type="button"
-				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
-				aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon fe fe-more-vertical"></span>
 			</button>
 			<div class="navbar navbar-expand-lg navbar-collapse responsive-navbar p-0">
@@ -82,8 +79,7 @@ use app\modules\user\models\User;
 						<!-- Country-selector-->
 						<!-- Theme-Layout -->
 						<li class="dropdown main-header-notification d-md-flex">
-							<a class="nav-link icon theme-layout nav-link-bg layout-setting"
-								href="javascript:void(0);">
+							<a class="nav-link icon theme-layout nav-link-bg layout-setting" href="javascript:void(0);">
 								<span class="dark-layout"><i class="bi bi-cloud-moon"></i></span>
 								<span class="light-layout"><i class="bi bi-cloud-sun"></i></span>
 							</a>
@@ -113,7 +109,7 @@ use app\modules\user\models\User;
 									<a class="btn ripple btn-primary btn-sm ms-auto" href="#">Xem tất cả</a>
 								</div>
 								<div class="header-dropdown-list cart-list">
-								    <!-- 
+									<!-- 
 									<div class="dropdown-item d-flex border-bottom pb-1 align-items-center">
 										<a href="product-cart.html" class="cart-link"></a>
 										<div>
@@ -225,8 +221,36 @@ use app\modules\user\models\User;
 								<i class="bi bi-fullscreen-exit fullscreen-button floating" id="fullscreen-button"></i>
 							</a>
 						</li>
+
+						<!-- Yeu cau van hanh -->
+						<li class="dropdown  d-flex shopping-cart main-header-notification">
+							<a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+								<i class="bi bi-bell"></i>
+								<span class="badge bg-warning header-badge" id="notification-count">0</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+								<div class="header-navheading d-flex border-bottom mb-0 align-items-center">
+									<h5 class="fw-semibold mb-0">Yêu cầu vận hành</h5>
+									<a class="btn ripple btn-primary btn-sm ms-auto" href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=dc2">Xem tất cả</a>
+								</div>
+								<div class="header-dropdown-list cart-list" id="notification-list">
+									<!-- <ul id="notification-list" class="dropdown-menu"></ul> -->
+
+
+									<div  class="dropdown-item d-flex border-bottom pb-1 align-items-center">
+										<a href="product-cart.html" class="cart-link"></a>
+										<div class="ms-3">
+											<p class="mb-0 tx-14 text-dark fw-medium">Flower Pot</p>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</li>
+						<!-- Yeu cau van hanh -->
+
 						<!-- NOTIFICATIONS -->
-						<li class="dropdown main-header-notification d-flex">
+						<!-- <li class="dropdown main-header-notification d-flex">
 							<a class="nav-link icon" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
 								<i class="bi bi-bell"></i>
 								<span class="pulse bg-secondary"></span>
@@ -237,7 +261,7 @@ use app\modules\user\models\User;
 									<a class="btn ripple btn-primary btn-sm ms-auto"
 										href="javascript:void(0);">Đánh dấu đã đọc</a>
 								</div>
-								<div class="header-dropdown-list notification-list">
+								<div class="header-dropdown-list notification-list"> -->
 									<!-- 
 									<a href="view-mail.html" class="dropdown-item d-flex border-bottom pb-1">
 										<div class="main-img-user online"><img alt="avatar"
@@ -289,13 +313,12 @@ use app\modules\user\models\User;
 											<span>Nov 14 12:40pm</span>
 										</div>
 									</a>-->
-								</div>
+								<!-- </div>
 								<div class="dropdown-footer">
-									<a class="btn ripple btn-success btn-sm btn-block"
-										href="#">Xem tất cả thông báo</a>
+									<a class="btn ripple btn-success btn-sm btn-block" href="#">Xem tất cả thông báo</a>
 								</div>
 							</div>
-						</li>
+						</li> -->
 						<!-- SHORTCUTS -->
 						<!-- 
 						<li class="dropdown main-header-notification shortcuts d-flex">
@@ -357,8 +380,7 @@ use app\modules\user\models\User;
 						 -->
 						<li class="dropdown d-flex main-profile-menu">
 
-							<a class="main-img-user d-flex" href="javascript:void(0);"
-								data-bs-toggle="dropdown">
+							<a class="main-img-user d-flex" href="javascript:void(0);" data-bs-toggle="dropdown">
 								<img alt="avatar" src="<?= Yii::getAlias('@web') ?>/uploads/icons/user.png">
 							</a>
 
@@ -389,11 +411,11 @@ use app\modules\user\models\User;
 					</ul>
 				</div>
 			</div>
-			
+
 			<!-- <div class="switcher-icon nav-link icon sidebar-right1  fe-spin">
 				<i class="bi bi-gear  floating"></i>
 			</div> -->
-	
+
 		</div>
 	</div>
 </div>

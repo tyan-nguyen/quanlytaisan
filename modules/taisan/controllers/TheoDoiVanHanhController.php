@@ -74,18 +74,23 @@ class TheoDoiVanHanhController extends Controller
             ->joinWith(['yeuCauVanHanh' => function ($query) {
                 $query->alias('ycvh');
             }])
-            ->where(['ycvh.hieu_luc' => 'VANHANH'])
+            ->where(['ycvh.hieu_luc' => ['VANHANH', 'DATRA']])
             ->all();
 
         $events = [];
 
         foreach ($requests as $detail) {
+            $eventColor = $detail->yeuCauVanHanh->hieu_luc == 'DATRA' ? 'red' : null;
+
             $events[] = [
                 'id' => $detail->id_yeu_cau_van_hanh,
                 'title' => $detail->thietBi->ten_thiet_bi,
                 'start' => $detail->ngay_bat_dau,
                 'end' => $detail->ngay_ket_thuc,
                 'url' => Yii::$app->urlManager->createUrl(['/taisan/theo-doi-van-hanh/view', 'id' => $detail->id_yeu_cau_van_hanh]),
+                'color' => $eventColor,
+                'backgroundColor' => $eventColor,
+                'eventColor' => '#378006'
             ];
         }
         return $events;
@@ -115,7 +120,7 @@ class TheoDoiVanHanhController extends Controller
                     'model' => $this->findModel($id),
                     'modelsDetail' => $model->details,
                 ]),
-                'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) 
+                'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
                 // .Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
             ];
         } else {

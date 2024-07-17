@@ -3,6 +3,7 @@
 use app\modules\bophan\models\NhanVien;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\taisan\models\ThietBi;
+use app\modules\taisan\models\YeuCauVanHanh;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\bootstrap5\Html;
@@ -71,7 +72,34 @@ $cus = new CustomFunc();
                         ],
                     ]); ?>
                 </div>
-                <div class="col-6">
+                <div class="col-3">
+                    <?php
+                    $requests = YeuCauVanHanh::find()->all();
+                    $formattedRequests = [];
+
+                    foreach ($requests as $request) {
+                        $formattedId = 'P-' . str_pad($request->id, 6, '0', STR_PAD_LEFT);
+                        $formattedRequests[$request->id] = $formattedId;
+                    }
+
+                    ?>
+
+                    <?= $form->field($model, 'id_yeu_cau_van_hanh')->widget(Select2::className(), [
+                        'data' => $formattedRequests,
+                        'language' => 'vi',
+                        'options' => [
+                            'placeholder' => 'Chọn...',
+                            // 'data-dropdown-parent' => "#offcanvasRight"
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+
+                        ],
+                    ]) ?>
+                </div>
+
+                <div class="col-3">
                     <?= $form->field($model, 'noi_dung_tra')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>

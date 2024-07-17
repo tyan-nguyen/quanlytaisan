@@ -105,7 +105,8 @@ $(document).ready(function() {
             var aClick = '<a href="/taisan/theo-doi-van-hanh/view?id='+ info.event.id +'" role="modal-remote">Click</a>';
 	        modal.open(aClick, null);
 
-        }
+        },
+       
     });
 
     calendar.render();

@@ -67,8 +67,7 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
     {
         return [
             [['id_nguoi_tra'], 'required'],
-            [['id_nguoi_tra'], 'integer'],
-            [['id_nguoi_nhan'], 'integer'],
+            [['id_nguoi_tra', 'id_yeu_cau_van_hanh', 'id_nguoi_nhan'], 'integer'],
             [
                 ['created_at', 'updated_at', 'deleted_at', 'noi_dung_tra'],
                 'safe'
@@ -91,6 +90,7 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
             'deleted_at' => 'Ngày xóa',
+            'id_yeu_cau_van_hanh' => 'Yêu cầu vận hành'
         ];
     }
 
@@ -115,10 +115,15 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
         return $cus->convertYMDToDMY($this->created_at);
     }
 
-  
+
 
     public function getDetails()
     {
         return $this->hasMany(PhieuTraThietBiCt::className(), ['id_phieu_tra_thiet_bi' => 'id']);
+    }
+
+    public function getYeuCauCanHanh()
+    {
+        return $this->hasOne(YeuCauVanHanh::class, ['id' => 'id_yeu_cau_van_hanh']);
     }
 }
