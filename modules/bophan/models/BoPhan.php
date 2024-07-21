@@ -1,7 +1,10 @@
 <?php
 
 namespace app\modules\bophan\models;
+
 use Yii;
+use app\modules\muasam\models\PhieuMuaSam;
+use app\modules\suachua\models\PhieuSuaChua;
 
 class BoPhan extends BoPhanBase
 {
@@ -138,5 +141,13 @@ class BoPhan extends BoPhanBase
                 $this->resultTree .= '</li>';
         }
         return $this->resultTree;
+    }
+    public function getLichSuSuaChua()
+    {
+        return $this->hasMany(PhieuSuaChua::class, ['id_tt_sua_chua' => 'id'])->orderBy('id','desc')->limit(10);
+    }
+    public function getLichSuMuaSam()
+    {
+        return $this->hasMany(PhieuMuaSam::class, ['id_bo_phan_quan_ly' => 'id'])->orderBy('id','desc')->limit(10);
     }
 }

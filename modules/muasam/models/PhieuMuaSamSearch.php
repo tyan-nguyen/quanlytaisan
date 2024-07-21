@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\muasam\models\PhieuMuaSam;
+use app\modules\dungchung\models\CustomFunc;
 
 /**
  * PhieuMuaSamSearch represents the model behind the search form about `app\modules\muasam\models\PhieuMuaSam`.
@@ -65,9 +66,13 @@ class PhieuMuaSamSearch extends PhieuMuaSam
             ['like', 'ghi_chu', $cusomSearch]] );
  
 		} else {
+            $cus = new CustomFunc();
+            $ngay_yeu_cau=null;
+            if($this->ngay_yeu_cau != null)
+            $ngay_yeu_cau = $cus->convertDMYToYMD($this->ngay_yeu_cau);
         	$query->andFilterWhere([
             'id' => $this->id,
-            'ngay_yeu_cau' => $this->ngay_yeu_cau,
+            'ngay_yeu_cau' => $ngay_yeu_cau,
             'id_nguoi_duyet' => $this->id_nguoi_duyet,
             'tong_phi' => $this->tong_phi,
             'nguoi_tao' => $this->nguoi_tao,

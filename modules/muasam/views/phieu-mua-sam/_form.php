@@ -11,7 +11,6 @@ use yii\helpers\Url;
 use app\modules\bophan\models\NhanVien;
 use app\modules\user\models\User;
 
-
 /* @var $this yii\web\View */
 /* @var $model app\modules\muasam\models\PhieuMuaSam */
 /* @var $form yii\widgets\ActiveForm */
@@ -35,6 +34,17 @@ if($model->isNewRecord){
 }
 
 $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
+$isDuyet=$permissionCheck && $model->trang_thai==='submited';
+
+
+// Display success flash message
+if (Yii::$app->session->hasFlash('success')) {
+    echo '<div class="alert alert-success">' . Yii::$app->session->getFlash('success') . '</div>';
+}
+// Display error flash message
+if (Yii::$app->session->hasFlash('error')) {
+    echo '<div class="alert alert-danger">' . Yii::$app->session->getFlash('error') . '</div>';
+}
 ?>
 
 <div class="phieu-mua-sam-form">
@@ -100,11 +110,12 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
     <div class='row'>
 
         <div class="col">
+        
             <?=$form->field($model, 'id_tt_mua_sam')->widget(Select2::classname(), [
                         'data' => ArrayHelper::map(BoPhan::find()->where(['la_dv_mua_hang'=>1])->all(), 'id', 'ten_bo_phan'),
                                     'language' => 'vi',
                                     'options' => [
-                                        'placeholder' => 'Chọn trung tâm sửa chữa...'
+                                        'placeholder' => 'Chọn trung tâm mua sắm...'
                                         
                                     ],
                                     'pluginOptions' => [
@@ -129,8 +140,14 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
 
     </div>
     <div class='row'>
-
-        <div class='col-12'><?= $form->field($model, 'ghi_chu')->textarea(['rows' => 4]) ?></div>
+        <div class="col">
+        <?= $form->field($model, 'ghi_chu')->textarea(['rows' => 4]) ?>
+        </div>
+        <?php if(!$model->isNewRecord) { ?>
+        <div class="col">
+        <?= $form->field($model, 'ghi_chu_duyet')->textarea(['rows' => 4,'disabled'=>$isDuyet ? 'disabled' : false]) ?>
+        </div>
+        <?php } ?>
     </div>
 
     <?= $form->field($model, 'dm_mua_sam')->textInput(['hidden' => 'hidden'])->label(false) ?>
@@ -142,17 +159,29 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
 					'style'=>"margin-left:5px",
 					'data' => [
 						'method' => 'post',
-						'params'=>['PhieuMuaSam[trang_thai]'=>'submited']
-					]
+						'params'=>[
+                            'PhieuMuaSam[trang_thai]'=>'submited',
+                            'messageSuccess'=>'Gửi báo giá thành công',
+                            'messageError'=>'Gửi báo giá thất bại'
+                            ]
+                    ],
+                    'data-confirm' => 'Bạn có chắc muốn gửi báo giá',
+                    //'title' => Yii::t('yii', 'NDel'),
+                    'data-confirm-title'=>'',
+                    'data-confirm-message'=>''
 				]) : '';
 			?>
+            
         <?= $permissionCheck && $model->trang_thai==='submited' ? Html::a('Duyệt yêu cầu', null, [
 					'class' => 'btn btn-primary',
 					'style'=>"margin-left:5px",
 					'data' => [
 						'method' => 'post',
-						'params'=>['PhieuMuaSam[trang_thai]'=>'approved']
-					]
+						'params'=>['PhieuMuaSam[trang_thai]'=>'approved'],
+                        'messageSuccess'=>'Duyệt báo giá thành công',
+                        'messageError'=>'Duyệt báo giá thất bại'
+                    ],
+                    'data-confirm' => 'Bạn có chắc muốn duyệt báo giá',
 				]) : '';
 			?>
         <?= $permissionCheck && $model->trang_thai==='submited' ? Html::a('Từ chối', null, [
@@ -160,8 +189,11 @@ $permissionCheck=User::hasPermission("qDuyetPhieuMuaSam");
 					'style'=>"margin-left:5px",
 					'data' => [
 						'method' => 'post',
-						'params'=>['PhieuMuaSam[trang_thai]'=>'rejected']
-					]
+						'params'=>['PhieuMuaSam[trang_thai]'=>'rejected'],
+                        'messageSuccess'=>'Từ chối báo giá thành công',
+                        'messageError'=>'Từ chối báo giá thất bại'
+                    ],
+                    'data-confirm' => 'Bạn có chắc muốn từ chối báo giá',
 				]) :'';
 			?>
     </div>

@@ -7,7 +7,9 @@ use cangak\ajaxcrud\CrudAsset;
 use cangak\ajaxcrud\BulkButtonWidget;
 use yii\widgets\Pjax;
 use app\widgets\FilterFormWidget;
-
+use app\modules\muasam\models\BaoGiaMuaSam;
+use app\widgets\forms\DocumentWidget;
+use app\widgets\forms\ImageWidget;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\muasam\models\CtBaoGiaMuaSamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -25,6 +27,7 @@ $isUpdate=$model && $model->trang_thai=='draft';
     'timeout' => 10000,
     'formSelector' => '.myFilterForm'
 ]); ?>
+
 <div class="row">
     <div class="col-4">
     
@@ -37,7 +40,8 @@ $isUpdate=$model && $model->trang_thai=='draft';
     <div class="col-8">
         <div class="ct-bao-gia-mua-sam-index">
             <div id="ajaxCrudDatatable1">
-            
+
+    
                 <?=GridView::widget([
             'id'=>'crud-datatable-ct-bao-gia',
             'dataProvider' => $dataProvider,
@@ -64,18 +68,18 @@ $isUpdate=$model && $model->trang_thai=='draft';
                 //'type' => 'primary', 
                 'heading' => $model ? ($model->dvBaoGia->ten_doi_tac ?? '') : '',
                 //'before'=>'<em>* Danh sách Ct Bao Gia Mua Sams</em>',
-                'after'=>$isUpdate ? BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
-                                ["bulkdelete"] ,
-                                [
-                                    'class'=>'btn ripple btn-secondary',
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Xác nhận xóa?',
-                                    'data-confirm-message'=>'Bạn có chắc muốn xóa?'
-                                ]),
-                        ]) : ''.                        
+                // 'after'=>$isUpdate ? BulkButtonWidget::widget([
+                //             'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
+                //                 ["bulkdelete"] ,
+                //                 [
+                //                     'class'=>'btn ripple btn-secondary',
+                //                     'role'=>'modal-remote-bulk',
+                //                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                //                     'data-request-method'=>'post',
+                //                     'data-confirm-title'=>'Xác nhận xóa?',
+                //                     'data-confirm-message'=>'Bạn có chắc muốn xóa?'
+                //                 ]),
+                //         ]) : ''.                        
                         '<div class="clearfix"></div>',
             ]
         ])?>

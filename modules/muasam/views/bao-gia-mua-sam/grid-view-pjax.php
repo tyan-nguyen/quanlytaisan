@@ -26,7 +26,9 @@ $isUpdate=$phieuMuaSam->trang_thai=='approved';
             'toolbar'=> [
                 ['content'=>
                     ($isUpdate ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm báo giá', ['/muasam/bao-gia-mua-sam/create','id_phieu_mua_sam'=>$phieuMuaSam->id],
-                    ['role'=>'modal-remote-2','title'=> 'Thêm mới báo giá','class'=>'btn btn-outline-primary']) : '')
+                    ['role'=>'modal-remote-3','title'=> 'Thêm mới báo giá','class'=>'btn btn-outline-primary']) : '').
+                    Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', ['','id_phieu_mua_sam'=>$phieuMuaSam->id],
+                    ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại','id'=> 'update-gridview-bg'])
                     
                 ],
             ],          

@@ -23,6 +23,20 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_bo_phan_quan_ly',
+        'value'=>function($model){
+            return $model->tenBoPhanQuanLy ?? "";
+         }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_nguoi_quan_ly',
+        'value'=>function($model){
+            return $model->tenNguoiQuanLy ?? "";
+         }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ngay_yeu_cau',
         'value'=>function($model){
             $cus = new CustomFunc();
@@ -33,25 +47,27 @@ return [
         }
     ],
     
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'tong_phi',
-        'value'=>function($model){
-            return number_format($model->tong_phi);
-        }
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'tong_phi',
+    //     'value'=>function($model){
+    //         return number_format($model->tong_phi);
+    //     }
+    // ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'trang_thai',
+        'format'=>'raw',
         'value'=>function($model){
-            //$html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
-            return $model->getDmTrangThai()[$model->trang_thai];
+            $html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
+            return $html;
+            //return $model->getDmTrangThai()[$model->trang_thai];
         }
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'ghi_chu',
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'ghi_chu',
+    // ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_nguoi_duyet',

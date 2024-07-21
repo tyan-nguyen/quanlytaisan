@@ -137,16 +137,20 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
     }
     public function beforeSave($insert) {
         if ($this->isNewRecord) {
+            $phieuMuaSam=$this->phieuMuaSam;
+            if($phieuMuaSam->trang_thai!='approved')
+            return;
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->ngay_bao_gia = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
         }
         else{
-            if(count($this->ctBaoGiaMuaSams)==0)
-            return ;
+            
         }
         if($this->getOldAttribute('trang_thai')!=$this->trang_thai)
         {
+            if(count($this->ctBaoGiaMuaSams)==0)
+            return ;
             if($this->trang_thai=="approved" || $this->trang_thai=="rejected")
             {
                 $this->ngay_ket_thuc = date('Y-m-d H:i:s');

@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\modules\muasam\models\PhieuMuaSam;
 /**
  * This is the model class for table "ts_bo_phan".
  *
@@ -107,4 +107,6 @@ class TsBoPhan extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TsThietBi::class, ['id_bo_phan_quan_ly' => 'id']);
     }
+    
+
 }

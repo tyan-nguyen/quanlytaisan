@@ -163,7 +163,7 @@ class CtPhieuMuaSamController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Cập nhật CtPhieuMuaSam",
+                    'title'=> "Cập nhật thông tin thiết bị",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -171,19 +171,20 @@ class CtPhieuMuaSamController extends Controller
                                 Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "CtPhieuMuaSam",
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'tcontent'=>'Cập nhật thành công!',
-                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+                // return [
+                //     'forceReload'=>'#crud-datatable-pjax',
+                //     'title'=> "Thông tin thiết bị",
+                //     'content'=>$this->renderAjax('view', [
+                //         'model' => $model,
+                //     ]),
+                //     'tcontent'=>'Cập nhật thành công!',
+                //     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                //             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                // ];    
             }else{
                  return [
-                    'title'=> "Cập nhật CtPhieuMuaSam",
+                    'title'=> "Cập nhật thông tin thiết bị",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),

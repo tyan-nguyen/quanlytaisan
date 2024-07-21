@@ -67,7 +67,7 @@ class CtPhieuNhapHangController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "CtPhieuNhapHang",
+                    'title'=> "Thông tin thiết bị nhập hàng",
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),

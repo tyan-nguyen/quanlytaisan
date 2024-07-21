@@ -37,11 +37,18 @@ return [
         'vAlign'=>'middle',
         'visible'=>$isUpdate,
         'width' => '50px',
-        'template'=>'{delete}',
+        'template'=>'{update} {delete}',
         'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to(['/muasam/bao-gia-mua-sam/'.$action,'id'=>$key]);
+                $actionCustom=$action;
+                if($action=='update')
+                $actionCustom="update-content";
+                return Url::to(['/muasam/bao-gia-mua-sam/'.$actionCustom,'id'=>$key]);
         },
-        'deleteOptions'=>['role'=>'modal-remote-2','title'=>'Xóa dữ liệu này', 
+        'updateOptions'=>['role'=>'modal-remote-3','title'=>'Cập nhật dữ liệu', 
+            'class'=>'btn ripple btn-info btn-sm',
+            'data-bs-placement'=>'top',
+            'data-bs-toggle'=>'tooltip-info'],
+        'deleteOptions'=>['role'=>'modal-remote-3','title'=>'Xóa dữ liệu này', 
                           'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                           'data-request-method'=>'post',
                           'data-toggle'=>'tooltip',

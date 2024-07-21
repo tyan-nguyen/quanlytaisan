@@ -49,10 +49,12 @@ class PhieuMuaSamController extends Controller
     public function actionIndex()
     {    
         $searchModel = new PhieuMuaSamSearch();
+        $searchModel->dm_mua_sam='thiet_bi';
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModel->load(Yii::$app->request->post())) {
             $searchModel = new PhieuMuaSamSearch(); // "reset"
+            $searchModel->dm_mua_sam='thiet_bi';
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -70,6 +72,7 @@ class PhieuMuaSamController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModel->load(Yii::$app->request->post())) {
             $searchModel = new PhieuMuaSamSearch(); // "reset"
+            $searchModel->dm_mua_sam='vat_tu';
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -150,13 +153,16 @@ class PhieuMuaSamController extends Controller
         
                 ];         
             }else if($model->load($request->post()) && $model->save()){
+                $textBtn='thiết bị';
+                if($model->dm_mua_sam=='vat_tu')
+                $textBtn='vật tư';
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Thêm mới phiếu mua sắm",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Thêm thiết bị cần mua',['/muasam/phieu-mua-sam/chi-tiet-phieu-mua-sam','id_phieu_mua_sam'=>$model->id],['class'=>'btn btn-primary'])
+                            Html::a('Thêm '.$textBtn.' cần mua',['/muasam/phieu-mua-sam/chi-tiet-phieu-mua-sam','id_phieu_mua_sam'=>$model->id],['class'=>'btn btn-primary'])
         
                 ];         
             }else{           
@@ -240,9 +246,11 @@ class PhieuMuaSamController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', $request->post('messageSuccess'));
                 $refererUrl = Yii::$app->request->referrer;
                 return $this->redirect($refererUrl);
             } else {
+                Yii::$app->session->setFlash('error', $request->post('messageError'));
                 $refererUrl = Yii::$app->request->referrer;
                 return $this->redirect($refererUrl);
             }

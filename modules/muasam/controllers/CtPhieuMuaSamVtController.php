@@ -114,7 +114,7 @@ class CtPhieuMuaSamVtController extends Controller
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Tiếp tục thêm',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a('Tiếp tục thêm',['create',"id_phieu_mua_sam"=>$id_phieu_mua_sam],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
@@ -170,16 +170,17 @@ class CtPhieuMuaSamVtController extends Controller
                                 Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "vật tư cần mua",
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'tcontent'=>'Cập nhật thành công!',
-                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+                // return [
+                //     'forceReload'=>'#crud-datatable-pjax',
+                //     'title'=> "Vật tư cần mua",
+                //     'content'=>$this->renderAjax('view', [
+                //         'model' => $model,
+                //     ]),
+                //     'tcontent'=>'Cập nhật thành công!',
+                //     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                //             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                // ];    
             }else{
                  return [
                     'title'=> "Cập nhật vật tư cần mua",

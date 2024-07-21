@@ -19,6 +19,8 @@ use app\modules\bophan\models\DoiTac;
 				<li><a href="#tab3" data-bs-toggle="tab" aria-selected="true" role="tab">
 					Lịch sử thay đổi
 				</a></li>
+                <li><a href="#tab4" data-bs-toggle="tab" aria-selected="false" role="tab" class="" tabindex="-1">Đánh giá sửa chữa</a></li>
+                <li><a href="#tab5" data-bs-toggle="tab" aria-selected="false" role="tab" class="" tabindex="-1">Đánh giá mua sắm</a></li>
 			</ul>
 		</div>
 	</div>
@@ -66,6 +68,17 @@ use app\modules\bophan\models\DoiTac;
             <div class="tab-pane" id="tab3" role="tabpanel">
 				<?= History::showHistory(DoiTac::MODEL_ID, $model->id) ?>
 			</div>
+            <div class="tab-pane" id="tab4" role="tabpanel">
+                <?= $this->render('./danh-gia-suachua', [
+                    'model' => $model
+                ]) ?>
+			</div>
+            <div class="tab-pane" id="tab5" role="tabpanel">
+                <?= $this->render('./danh-gia-muasam', [
+                    'model' => $model
+                ]) ?>
+			</div>
+
         </div>
 	</div>
 </div>

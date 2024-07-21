@@ -18,7 +18,8 @@ use app\modules\bophan\models\BoPhan;
 				<li><a href="#tab3" data-bs-toggle="tab" aria-selected="true" role="tab">
 					Lịch sử thay đổi
 				</a></li>
-				<!-- <li><a href="#tab28" data-bs-toggle="tab" aria-selected="false" role="tab" class="" tabindex="-1">Tab 4</a></li> -->
+				<li><a href="#tab4" data-bs-toggle="tab" aria-selected="false" role="tab" class="" tabindex="-1">Đánh giá sửa chữa</a></li>
+                <li><a href="#tab5" data-bs-toggle="tab" aria-selected="false" role="tab" class="" tabindex="-1">Đánh giá mua sắm</a></li>
 			</ul>
 		</div>
 	</div>
@@ -142,7 +143,16 @@ use app\modules\bophan\models\BoPhan;
 			<div class="tab-pane" id="tab3" role="tabpanel">
 				<?= History::showHistory(BoPhan::MODEL_ID, $model->id) ?>
 			</div>
-
+            <div class="tab-pane" id="tab4" role="tabpanel">
+                <?= $this->render('./lich-su-danh-gia-suachua', [
+                    'model' => $model
+                ]) ?>
+			</div>
+            <div class="tab-pane" id="tab5" role="tabpanel">
+                <?= $this->render('./lich-su-danh-gia-muasam', [
+                    'model' => $model
+                ]) ?>
+			</div>
 		</div>
 	
     	<!-- <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
@@ -168,3 +178,4 @@ $this->registerJsFile("@web/assets/plugins/tabs/tab-content.js",[
     ]
 ]);
 ?>
+

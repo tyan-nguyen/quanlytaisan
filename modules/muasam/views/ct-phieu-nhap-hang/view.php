@@ -10,7 +10,7 @@ use app\modules\dungchung\models\CustomFunc;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'ma_thiet_bi',
             [
                 'attribute'=>'id_vi_tri',

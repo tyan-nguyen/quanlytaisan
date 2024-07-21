@@ -6,6 +6,7 @@ use Yii;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\user\models\User;
 use app\modules\bophan\models\NhanVien;
+use app\modules\bophan\models\BoPhanBase as BoPhan;
 /**
  * This is the model class for table "ts_phieu_mua_sam".
  *
@@ -45,7 +46,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             [['ngay_yeu_cau', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
             [['id_nguoi_duyet', 'nguoi_tao', 'nguoi_cap_nhat','id_nguoi_quan_ly','id_bo_phan_quan_ly','id_tt_mua_sam'], 'integer'],
             [['tong_phi','danh_gia_ms','danh_gia_bg'], 'number'],
-            [['ghi_chu','ghi_chu2'], 'string'],
+            [['ghi_chu','ghi_chu2','ghi_chu_duyet'], 'string'],
             [['trang_thai','dm_mua_sam'], 'string', 'max' => 255],
             [['id_nguoi_duyet'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_duyet' => 'id']],
         ];
@@ -64,6 +65,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             'tong_phi' => 'Tổng phí',
             'trang_thai' => 'Trạng thái',
             'ghi_chu' => 'Ghi chú',
+            'ghi_chu_duyet'=>'Ghi chú duyệt/từ chối',
             'nguoi_tao' => 'Người tạo',
             'id_nguoi_quan_ly' => 'Người yêu cầu',
             'id_bo_phan_quan_ly' => 'Bộ phận',
@@ -167,6 +169,12 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
             "processing"=>"Đang nhập hàng",
             "completed"=>"Hoàn thành"       ];
     }
+    public static function getDmMuaSam(){
+        return [
+            "thiet_bi"=>'Thiết bị',
+            "vat_tu"=>'Vật tư',
+                   ];
+    }
     public function getNguoiTao()
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
@@ -191,7 +199,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
      * @return string
      */
     public function getTenBoPhanQuanLy(){
-        return $this->boPhanQuanLy != NULL ? $this->boPhanQuanLy->ten_bo_phan : '';
+        return $this->boPhanQuanLy->ten_bo_phan ?? '';
     }
     /**
      * Gets query for [[NguoiQuanLy]].
@@ -209,7 +217,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
      */
     public function getBoPhanQuanLy()
     {
-        return $this->id_bo_phan_quan_ly !=NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_bo_phan_quan_ly']) : '';
+        return $this->hasOne(BoPhan::class, ['id' => 'id_bo_phan_quan_ly']);
     }
     public static function getColorTrangThai(){
         return [
