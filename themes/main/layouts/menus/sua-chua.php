@@ -28,8 +28,8 @@
 							</li>
                             <li class=""><a href="<?= Yii::getAlias('@web/suachua/bao-gia-sua-chua?menu=psc2') ?>" class="slide-item" data-menu="psc2">Báo giá sửa chữa</a>
 							</li>
-							<li class=""><a href="<?= Yii::getAlias('@web/suachua/dm-tt-sua-chua?menu=psc3') ?>" class="slide-item" data-menu="psc3">Trung tâm sửa chữa</a>
-							</li>
+							<!-- <li class=""><a href="<?= Yii::getAlias('@web/suachua/dm-tt-sua-chua?menu=psc3') ?>" class="slide-item" data-menu="psc3">Trung tâm sửa chữa</a>
+							</li> -->
 						</ul>
 						<div class="menutabs-content px-0">
 							<!-- menu tab here -->
