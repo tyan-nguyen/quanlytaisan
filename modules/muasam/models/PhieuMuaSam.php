@@ -179,6 +179,10 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
     }
+    public static function getListMuaSamByStatus($status)
+    {
+        return PhieuMuaSam::find()->where(['in','trang_thai',$status])->limit(10)->orderBy('id','desc')->all();
+    }
     public function getNguoiCapNhat()
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_cap_nhat']);

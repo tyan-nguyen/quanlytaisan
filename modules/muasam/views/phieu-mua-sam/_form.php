@@ -161,8 +161,8 @@ if (Yii::$app->session->hasFlash('error')) {
 						'method' => 'post',
 						'params'=>[
                             'PhieuMuaSam[trang_thai]'=>'submited',
-                            'messageSuccess'=>'Gửi báo giá thành công',
-                            'messageError'=>'Gửi báo giá thất bại'
+                            'messageSuccess'=>'Gửi yêu cầu thành công',
+                            'messageError'=>'Gửi yêu cầu thất bại'
                             ]
                     ],
                     'data-confirm' => 'Bạn có chắc muốn gửi báo giá',
@@ -178,8 +178,8 @@ if (Yii::$app->session->hasFlash('error')) {
 					'data' => [
 						'method' => 'post',
 						'params'=>['PhieuMuaSam[trang_thai]'=>'approved'],
-                        'messageSuccess'=>'Duyệt báo giá thành công',
-                        'messageError'=>'Duyệt báo giá thất bại'
+                        'messageSuccess'=>'Duyệt yêu cầu thành công',
+                        'messageError'=>'Duyệt yêu cầu thất bại'
                     ],
                     'data-confirm' => 'Bạn có chắc muốn duyệt báo giá',
 				]) : '';
@@ -190,8 +190,8 @@ if (Yii::$app->session->hasFlash('error')) {
 					'data' => [
 						'method' => 'post',
 						'params'=>['PhieuMuaSam[trang_thai]'=>'rejected'],
-                        'messageSuccess'=>'Từ chối báo giá thành công',
-                        'messageError'=>'Từ chối báo giá thất bại'
+                        'messageSuccess'=>'Từ chối yêu cầu thành công',
+                        'messageError'=>'Từ chối yêu cầu thất bại'
                     ],
                     'data-confirm' => 'Bạn có chắc muốn từ chối báo giá',
 				]) :'';

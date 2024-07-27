@@ -36,6 +36,7 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $ten_thiet_bi="";
     public static function tableName()
     {
         return 'ts_bao_gia_sua_chua';
@@ -218,5 +219,15 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
     public function getNguoiDuyet()
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_duyet_bg']);
+    }
+    public static function getBaoGiaByStatus($status)
+    {
+        $result=BaoGiaSuaChua::find()
+        ->select(['ts_bao_gia_sua_chua.*','ts_thiet_bi.ten_thiet_bi'])
+        ->leftJoin('ts_phieu_sua_chua', 'ts_phieu_sua_chua.id = ts_bao_gia_sua_chua.id_phieu_sua_chua')
+        ->leftJoin('ts_thiet_bi', 'ts_thiet_bi.id = ts_phieu_sua_chua.id_thiet_bi')
+        ->where(['ts_bao_gia_sua_chua.flag_index'=>0])
+        ->where(['ts_bao_gia_sua_chua.trang_thai'=>$status]);
+        return $result;
     }
 }
