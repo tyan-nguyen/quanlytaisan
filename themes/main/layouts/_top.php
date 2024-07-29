@@ -89,14 +89,36 @@ $countPhieuMuaSam=0;
 							</div>
 						</li>-->
                         <!-- Country-selector-->
-                        <!-- Theme-Layout -->
-                        <li class="dropdown main-header-notification d-md-flex">
-                            <a class="nav-link icon theme-layout nav-link-bg layout-setting" href="javascript:void(0);">
-                                <span class="dark-layout"><i class="bi bi-cloud-moon"></i></span>
-                                <span class="light-layout"><i class="bi bi-cloud-sun"></i></span>
+
+						    <!-- Yeu cau van hanh -->
+							<li class="dropdown  d-flex shopping-cart main-header-notification">
+                            <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                <i class="bi bi-arrow-left-right"></i>
+                                <span class="badge bg-warning header-badge" id="notification-count">0</span>
                             </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <div class="header-navheading d-flex border-bottom mb-0 align-items-center">
+                                    <h5 class="fw-semibold mb-0">Yêu cầu vận hành</h5>
+                                    <a class="btn ripple btn-primary btn-sm ms-auto"
+                                        href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=dc2">Xem tất cả</a>
+                                </div>
+                                <div class="header-dropdown-list cart-list" id="notification-list">
+                                    <!-- <ul id="notification-list" class="dropdown-menu"></ul> -->
+
+
+                                    <div class="dropdown-item d-flex border-bottom pb-1 align-items-center">
+                                        <a href="product-cart.html" class="cart-link"></a>
+                                        <div class="ms-3">
+                                            <p class="mb-0 tx-14 text-dark fw-medium">Flower Pot</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </li>
-                        <!-- Theme-Layout -->
+                        <!-- Yeu cau van hanh -->
+
+
                         <li class="dropdown header-search">
                             <a class="nav-link icon header-search" data-bs-toggle="dropdown" href="#">
                                 <i class="fe fe-search"></i>
@@ -162,34 +184,16 @@ $countPhieuMuaSam=0;
                             </div>
                         </li>
                         <!-- sửa chữa -->
-                        <!-- Yeu cau van hanh -->
-                        <li class="dropdown  d-flex shopping-cart main-header-notification">
-                            <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-bell"></i>
-                                <span class="badge bg-warning header-badge" id="notification-count">0</span>
+                    
+                        <!-- Theme-Layout -->
+                        <li class="dropdown main-header-notification d-md-flex">
+                            <a class="nav-link icon theme-layout nav-link-bg layout-setting" href="javascript:void(0);">
+                                <span class="dark-layout"><i class="bi bi-cloud-moon"></i></span>
+                                <span class="light-layout"><i class="bi bi-cloud-sun"></i></span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <div class="header-navheading d-flex border-bottom mb-0 align-items-center">
-                                    <h5 class="fw-semibold mb-0">Yêu cầu vận hành</h5>
-                                    <a class="btn ripple btn-primary btn-sm ms-auto"
-                                        href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=dc2">Xem tất cả</a>
-                                </div>
-                                <div class="header-dropdown-list cart-list" id="notification-list">
-                                    <!-- <ul id="notification-list" class="dropdown-menu"></ul> -->
-
-
-                                    <div class="dropdown-item d-flex border-bottom pb-1 align-items-center">
-                                        <a href="product-cart.html" class="cart-link"></a>
-                                        <div class="ms-3">
-                                            <p class="mb-0 tx-14 text-dark fw-medium">Flower Pot</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                         </li>
-                        <!-- Yeu cau van hanh -->
-
+                        <!-- Theme-Layout -->
+						 
                         <!-- NOTIFICATIONS -->
                         <!-- <li class="dropdown main-header-notification d-flex">
 							<a class="nav-link icon" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">

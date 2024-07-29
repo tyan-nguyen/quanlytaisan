@@ -17,6 +17,15 @@ return [
     // ],
     [
         'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'id',
+        'value' => function ($model) {
+
+            return  'P-' . substr("0000000{$model->id}", -6);
+        },
+        'label' => 'Số Phiếu'
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id_nguoi_lap',
         "format" => 'raw',
         'value' => function ($model) {

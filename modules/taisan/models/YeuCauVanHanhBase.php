@@ -228,6 +228,9 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     {
         return $this->id_bo_phan_quan_ly != NULL ? $this->hasOne(BoPhan::class, ['id' => 'id_bo_phan_quan_ly']) : '';
     }
+    public function getTenBoPhan() {
+        return $this->boPhan->ten_bo_phan;
+    }
 
     public function getNguoiLap()
     {
@@ -267,6 +270,10 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     public function getDetails()
     {
         return $this->hasMany(YeuCauVanHanhCt::className(), ['id_yeu_cau_van_hanh' => 'id']);
+    }
+
+    public function getDetailsCount() {
+        return $this->getDetails()->count();
     }
 
     public function getCreatedAt()
