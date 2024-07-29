@@ -8,7 +8,7 @@ $phieuSuaChuas=$phieuSuaChua->limit(10)->all();
     <a href="/suachua/phieu-sua-chua/chi-tiet-phieu-sua-chua?id_phieu_sua_chua=<?= $value->id ?>" class="cart-link"></a>
     
     <div class="ms-12">
-        <p class="mb-0 tx-14 text-dark fw-medium"><?= 'Sửa chữa '.$value->ten_thiet_bi ?? "" ?></p>
+        <p class="mb-0 tx-14 text-dark fw-medium text-wrap"><?= 'Sửa chữa '.$value->ten_thiet_bi ?? "" ?></p>
         <div class=" mb-0">
             <span class="tx-14  text-muted mb-0"><?= $value->getDmTrangThai()[$value->trang_thai] ?></span>
         </div>
