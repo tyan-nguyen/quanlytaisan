@@ -6,18 +6,22 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\taisan\models\PhieuTraThietBi;
+
 /**
  * PhieuTraThietBiSearch represents the model behind the search form about `app\models\TsPhieuTraThietBi`.
  */
 class PhieuTraThietBiSearch extends PhieuTraThietBi
 {
+
+    public $id_thiet_bi;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'id_nguoi_tra'], 'integer'],
+            [['id', 'id_nguoi_tra','id_nguoi_nhan' , 'id_thiet_bi'], 'integer'],
             [['noi_dung_tra', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
         ];
     }
@@ -38,7 +42,7 @@ class PhieuTraThietBiSearch extends PhieuTraThietBi
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $cusomSearch=NULL)
+    public function search($params, $cusomSearch = NULL)
     {
         $query = PhieuTraThietBi::find();
 
@@ -56,20 +60,27 @@ class PhieuTraThietBiSearch extends PhieuTraThietBi
             // $query->where('0=1');
             return $dataProvider;
         }
-		if($cusomSearch != NULL){
-			$query->andFilterWhere ( [ 'OR' ,['like', 'noi_dung_tra', $cusomSearch]] );
- 
-		} else {
-        	$query->andFilterWhere([
-            'id' => $this->id,
-            'id_nguoi_tra' => $this->id_nguoi_tra,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
-        ]);
+        if ($cusomSearch != NULL) {
+            $query->andFilterWhere(['OR', ['like', 'noi_dung_tra', $cusomSearch]]);
+        } else {
+            $query->andFilterWhere([
+                'id' => $this->id,
+                'id_nguoi_tra' => $this->id_nguoi_tra,
+                'id_nguoi_nhan' => $this->id_nguoi_nhan,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+                'deleted_at' => $this->deleted_at,
+            ]);
 
-        $query->andFilterWhere(['like', 'noi_dung_tra', $this->noi_dung_tra]);
-		}
+            $query->andFilterWhere(['like', 'noi_dung_tra', $this->noi_dung_tra]);
+        }
+
+        if ($this->id_thiet_bi) {
+            $query->joinWith(['details.thietBi'])
+                  ->andFilterWhere(['ts_thiet_bi.id' => $this->id_thiet_bi])
+                  ;
+
+        }
         return $dataProvider;
     }
 }

@@ -74,7 +74,10 @@ $cus = new CustomFunc();
                 </div>
                 <div class="col-3">
                     <?php
-                    $requests = YeuCauVanHanh::find()->all();
+                    $requests = YeuCauVanHanh::find()
+                    ->where(['hieu_luc' => 'VANHANH'])
+                    ->all();
+                    
                     $formattedRequests = [];
 
                     foreach ($requests as $request) {
@@ -146,8 +149,9 @@ $cus = new CustomFunc();
 
                     <div class="row">
                         <div class="col">
+                            
                             <?= $form->field($modelDetail, "[{$i}]id_thiet_bi")->dropDownList(
-                                ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
+                                ArrayHelper::map(ThietBi::find()->where(['trang_thai' => 'VANHANH'])->all(), 'id', 'ten_thiet_bi'),
                                 ['prompt' => '-- Chọn --'],
 
                             ) ?>

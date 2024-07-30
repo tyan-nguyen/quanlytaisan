@@ -122,6 +122,11 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
         return $this->hasMany(PhieuTraThietBiCt::className(), ['id_phieu_tra_thiet_bi' => 'id']);
     }
 
+    public function getThietBis()
+    {
+        return $this->hasMany(ThietBi::className(), ['id' => 'id_thiet_bi'])->via('details');
+    }
+
     public function getYeuCauCanHanh()
     {
         return $this->hasOne(YeuCauVanHanh::class, ['id' => 'id_yeu_cau_van_hanh']);
