@@ -5,7 +5,7 @@ use app\widgets\LinkToModalWidget;
 	<div class="card-header">
 		<h3 class="card-title">Lịch sử hoạt động</h3>
 	</div>
-	<div class="card-body" style="height:400px">
+	<div class="card-body" style="height:400px;position: relative;overflow: scroll;">
 
 		<div class="table-responsive border-top-0">
 			<table class="table  text-nowrap border-0 border-top-0 mb-0 ">
