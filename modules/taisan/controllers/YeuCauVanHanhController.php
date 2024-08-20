@@ -165,12 +165,23 @@ class YeuCauVanHanhController extends Controller
 
     public function actionPendingRequests()
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
         $pendingRequests = YeuCauVanHanh::find()
             ->where(['hieu_luc' => 'CHODUYET'])
             ->all();
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        return $pendingRequests;
+        $data = [];
+        foreach ($pendingRequests as $request) {
+            $data[] = [
+                'id' => $request->id,
+                'details_count' => $request->getDetailsCount(),
+                'ten_bo_phan' => $request->getTenBoPhan()
+            ];
+        }
+        
+        return $data;
+        // return $pendingRequests;
     }
 
 

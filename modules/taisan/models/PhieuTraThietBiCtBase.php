@@ -57,6 +57,11 @@ class PhieuTraThietBiCtBase extends \app\models\TsPhieuTraThietBiCt
     {
         return $this->hasOne(ThietBi::class, ['id' => 'id_thiet_bi']);
     }
+
+    public function getPhieuTraThietBi()
+    {
+        return $this->hasOne(PhieuTraThietBi::className(), ['id' => 'id_phieu_tra_thiet_bi']);
+    }
     
     public function getNgayTra()
     {

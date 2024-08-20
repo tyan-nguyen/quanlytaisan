@@ -44,9 +44,9 @@ class TsPhieuTraThietBiCt extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_thiet_bi' => 'Id Thiet Bi',
+            'id_thiet_bi' => 'Thiết bị',
             'id_phieu_tra_thiet_bi' => 'Id Phieu Tra Thiet Bi',
-            'ngay_tra' => 'Ngay Tra',
+            'ngay_tra' => 'Ngày trả',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',

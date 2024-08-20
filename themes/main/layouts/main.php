@@ -218,12 +218,16 @@ $(document).ready(function() {
 
                 if (data.length > 0) {
                     data.forEach(function(request) {
-                        var listItem = '<div  class="dropdown-item d-flex border-bottom pb-1 align-items-center"><div class="ms-3">' 
+                        var listItem = '<div  class="dropdown-item d-flex border-bottom pb-1 align-items-center">' 
 						// + '<a href="$approveUrl?id=' + request.id + '">' +
-						+ '<a href="#" class="approve-link" data-id="' + request.id + '">'
-						+ 'Yêu cầu #' + request.id + ' - ' + '<span class="badge bg-warning">Chờ duyệt</span>' +
-                            '</a>' +
-                            '</div></div>';
+						+ '<a href="#" class="approve-link cart-link" data-id="' + request.id + '">' + '</a>'
+						+ '<div class="ms-12">'
+							+ '<p class="mb-0 tx-14 text-dark fw-medium text-wrap">Yêu cầu số P-' + ("0000000" + request.id).slice(-6) + ' - ' + '<span class="tx-14 text-muted mb-0">Chờ duyệt</span></p>'
+							+ '<div class=" mb-0">'
+								+ '<span class="tx-14 text-muted mb-0">'+ request.ten_bo_phan + ', </span>' + '<span class="tx-14 text-muted mb-0">' + request.details_count+' Thiết bị</span>' 
+							+ '</div>'
+						+ '</div>'
+					+'</div>';
                         notificationList.append(listItem);
                     });
 

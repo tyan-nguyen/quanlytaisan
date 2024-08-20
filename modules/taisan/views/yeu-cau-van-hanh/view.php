@@ -31,7 +31,7 @@ use yii\data\ArrayDataProvider;
                 </li>
                 <li>
                     <a href="#tab2" data-bs-toggle="tab" aria-selected="false" role="tab" class="" tabindex="-1">
-                        Thông tin phụ
+                        Thông tin khác
                     </a>
                 </li>
             </ul>
