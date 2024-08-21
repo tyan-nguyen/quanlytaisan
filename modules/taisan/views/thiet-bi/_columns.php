@@ -169,7 +169,7 @@ return [
               'data-request-method'=>'post',
               'data-toggle'=>'tooltip',
               'data-confirm-title'=>'Thông báo',
-              'data-confirm-message'=>'Bạn có chắc xoá dòng chọn không',
+              'data-confirm-message'=>'Dữ liệu liên quan tài sản/thiết bị như: lịch sử thay đổi, lịch sử sữa chữa, phiếu bảo trì, kế hoạch bảo trì, tài liệu sẽ cũng được xóa theo. Bạn có chắc xoá dòng được chọn không?',
               'class'=>'btn ripple btn-secondary btn-sm',
               'data-bs-placement'=>'top',
               'data-bs-toggle'=>'tooltip-secondary'

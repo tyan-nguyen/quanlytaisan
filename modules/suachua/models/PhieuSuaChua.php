@@ -222,15 +222,19 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         return parent::afterSave($insert,$changedAttributes);
     }
     public function beforeDelete(){
-        if($this->vatTus){
+        /* if($this->vatTus){
             return false;
-        }
-        $baoGia=$this->baoGiaSuaChua;
+        } */
+        /* $baoGia=$this->baoGiaSuaChua;
         if(isset($baoGia->trang_thai) && $baoGia->trang_thai=="approved"){
             //nếu trạng thái đã duyệt hoặc đã từ chói thì không lưu
             return false;
-        }
-
+        } */
+        //xóa báo giá sữa chửa
+        
+       /*  foreach($this->baoGiaSuaChuas as $key=>$bgSuaChua){
+            $bgSuaChua->delete();
+        } */
         //cập nhật lại status thiết bị trước khi xóa
         $thietBi=$this->thietBi;
         $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;

@@ -118,7 +118,7 @@ $btns = '<a style="margin-left:10px" class="btn ripple btn-primary dropdown-togg
                                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                                     'data-request-method'=>'post',
                                     'data-confirm-title'=>'Thông báo',
-                                    'data-confirm-message'=>'Bạn có chắc xoá dòng được chọn không?'
+                                    'data-confirm-message'=>'Dữ liệu liên quan tài sản/thiết bị như: lịch sử thay đổi, lịch sử sữa chữa, phiếu bảo trì, kế hoạch bảo trì, tài liệu sẽ cũng được xóa theo. Bạn có chắc xoá dòng được chọn không?'
                                 ]),
                 ]). $btns . '<div class="clearfix"></div>',
             ]
