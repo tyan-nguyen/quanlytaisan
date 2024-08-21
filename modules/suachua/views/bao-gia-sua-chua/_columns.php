@@ -20,7 +20,7 @@ return [
         'attribute'=>'id_phieu_sua_chua',
         'value'=>function($model)
         {
-            return ($phieu->keHoach!=null && $phieu->keHoach->thietBi!=null) ? $model->phieuSuaChua->thietBi->ten_thiet_bi : '';
+            return ($phieu->phieuSuaChua!=null && $phieu->phieuSuaChua->thietBi!=null) ? $model->phieuSuaChua->thietBi->ten_thiet_bi : '';
         }
     ],
     [
