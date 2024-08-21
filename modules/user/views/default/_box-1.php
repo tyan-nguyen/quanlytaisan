@@ -16,7 +16,7 @@ $custom = new CustomFunc();
 						<div class="d-flex ms-1">
 							<span class="main-img-user"><i class="fe fe-file  bg-secondary tx-fixed-white rounded-circle secondary-dropshadow product-icon avatar"></i></span>
 							<div class="ms-3">
-								<h6 class="mg-b-0"><?= $phieu->keHoach->thietBi->ten_thiet_bi ?></h6><span class="tx-13 tx-gray-500"><?= $phieu->keHoach->ten_cong_viec ?></span>
+								<h6 class="mg-b-0"><?= ($phieu->keHoach!=null && $phieu->keHoach->thietBi!=null) ? $phieu->keHoach->thietBi->ten_thiet_bi : '' ?></h6><span class="tx-13 tx-gray-500"><?= $phieu->keHoach!=null ? $phieu->keHoach->ten_cong_viec : '' ?></span>
 							</div>
 						</div>
 					</div>
