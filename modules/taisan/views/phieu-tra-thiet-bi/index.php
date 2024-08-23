@@ -77,7 +77,7 @@ Yii::$app->params['showExport'] = true;
                             'data-confirm' => false, 'data-method' => false, // for overide yii data api
                             'data-request-method' => 'post',
                             'data-confirm-title' => 'Xác nhận xóa?',
-                            'data-confirm-message' => 'Bạn có chắc muốn xóa?'
+                            'data-confirm-message' => 'Lưu ý: Dữ liệu liên quan phiếu này sẽ bị xóa theo và không thể phục hồi. Bạn có chắc chắn thực hiện hành động này?'
                         ]
                     ),
                 ]) .

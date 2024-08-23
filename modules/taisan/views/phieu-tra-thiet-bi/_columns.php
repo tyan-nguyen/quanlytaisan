@@ -74,7 +74,7 @@ return [
                           'data-request-method'=>'post',
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>'Xác nhận xóa dữ liệu?',
-                          'data-confirm-message'=>'Bạn có chắc chắn thực hiện hành động này?',
+                          'data-confirm-message'=>'Lưu ý: Dữ liệu liên quan phiếu này sẽ bị xóa theo và không thể phục hồi. Bạn có chắc chắn thực hiện hành động này?',
                            'class'=>'btn ripple btn-secondary btn-sm',
                            'data-bs-placement'=>'top',
                            'data-bs-toggle'=>'tooltip-secondary'], 
