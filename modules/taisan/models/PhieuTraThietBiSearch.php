@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\taisan\models\PhieuTraThietBi;
+use app\modules\user\models\User;
+use app\modules\bophan\models\NhanVien;
 
 /**
  * PhieuTraThietBiSearch represents the model behind the search form about `app\models\TsPhieuTraThietBi`.
@@ -21,7 +23,7 @@ class PhieuTraThietBiSearch extends PhieuTraThietBi
     public function rules()
     {
         return [
-            [['id', 'id_nguoi_tra','id_nguoi_nhan' , 'id_thiet_bi'], 'integer'],
+            [['id', 'id_nguoi_tra','id_nguoi_nhan' , 'id_thiet_bi', 'nguoi_tao'], 'integer'],
             [['noi_dung_tra', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
         ];
     }
@@ -63,6 +65,25 @@ class PhieuTraThietBiSearch extends PhieuTraThietBi
         if ($cusomSearch != NULL) {
             $query->andFilterWhere(['OR', ['like', 'noi_dung_tra', $cusomSearch]]);
         } else {
+            if($this->nguoi_tao != null){
+                $nhanVienTao = NhanVien::findOne($this->nguoi_tao);
+                if($nhanVienTao != null){
+                    $userTao =  User::findOne(['username'=>$nhanVienTao->ten_truy_cap]);
+                    if($userTao != null){
+                        $query->andFilterWhere([
+                            'nguoi_tao' => $userTao->id
+                        ]);
+                    } else {
+                        $query->andFilterWhere([
+                            'nguoi_tao' => 0
+                        ]);
+                    }
+                }else {
+                    $query->andFilterWhere([
+                        'nguoi_tao' => 0
+                    ]);
+                }
+            }
             $query->andFilterWhere([
                 'id' => $this->id,
                 'id_nguoi_tra' => $this->id_nguoi_tra,

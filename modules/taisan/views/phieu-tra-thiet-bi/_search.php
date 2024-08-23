@@ -58,6 +58,19 @@ use yii\widgets\ActiveForm;
         ],
     ])->label('Thiết bị');
     ; ?>
+    
+     <?= $form->field($model, 'nguoi_tao')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
+        'language' => 'vi',
+        'options' => [
+            'placeholder' => 'Chọn...',
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'width' => '100%'
+        ],
+    ])->label('Nhân viên tạo phiếu');
+    ; ?>
 
 
     <?php if (!Yii::$app->request->isAjax) { ?>

@@ -37,6 +37,7 @@ class PhieuTraThietBi extends PhieuTraThietBiBase
 
         if ($insert) {
             $this->hieu_luc = 'NHAP';
+            $this->nguoi_tao = Yii::$app->user->identity->id;
         }
         return parent::beforeSave($insert);
     }

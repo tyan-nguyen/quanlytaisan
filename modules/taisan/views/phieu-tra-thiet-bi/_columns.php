@@ -34,6 +34,7 @@ return [
     ],
     [
         'class' => '\kartik\grid\DataColumn',
+        'label'=>'Hiệu lực',
         'attribute' => 'hieu_luc',
         'format' => 'raw',
         'value' => 'tenHieuLucWithBadge'

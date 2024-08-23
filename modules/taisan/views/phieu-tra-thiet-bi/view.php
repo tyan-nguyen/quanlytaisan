@@ -5,6 +5,7 @@ use yii\data\ArrayDataProvider;
 use yii\widgets\DetailView;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\user\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsPhieuTraThietBi */
@@ -33,11 +34,15 @@ use yii\widgets\ActiveForm;
             ],
             [
                 'attribute' => 'id_yeu_cau_van_hanh',
-
                 //Số phiếu: P- substr("0000000{$model->id}", -6) ,
                 'value' => $model->id_yeu_cau_van_hanh ? 'P-' . substr("0000000{$model->id_yeu_cau_van_hanh}", -6) : '-',
                 'label' => 'Thuộc yêu cầu vận hành',
-            ]
+            ],
+            [
+                'attribute' => 'nguoi_tao',
+                'value' => $model->nguoi_tao!=null?(User::findOne($model->nguoi_tao)->tenNhanVien):'',
+            ],
+            
         ],
     ]) ?>
 

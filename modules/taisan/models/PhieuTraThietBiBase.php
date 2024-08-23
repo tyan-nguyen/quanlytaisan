@@ -18,6 +18,7 @@ use app\widgets\views\StatusWithIconWidget;
  * @property string $created_at
  * @property string|null $updated_at
  * @property string|null $deleted_at
+ * @property int $nguoi_tao
  */
 class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
 {
@@ -67,7 +68,7 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
     {
         return [
             [['id_nguoi_tra'], 'required'],
-            [['id_nguoi_tra', 'id_yeu_cau_van_hanh', 'id_nguoi_nhan'], 'integer'],
+            [['id_nguoi_tra', 'id_yeu_cau_van_hanh', 'id_nguoi_nhan', 'nguoi_tao'], 'integer'],
             [
                 ['created_at', 'updated_at', 'deleted_at', 'noi_dung_tra'],
                 'safe'
@@ -90,7 +91,8 @@ class PhieuTraThietBiBase extends \app\models\TsPhieuTraThietBi
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
             'deleted_at' => 'Ngày xóa',
-            'id_yeu_cau_van_hanh' => 'Yêu cầu vận hành'
+            'id_yeu_cau_van_hanh' => 'Yêu cầu vận hành',
+            'nguoi_tao' => 'Người tạo'
         ];
     }
 

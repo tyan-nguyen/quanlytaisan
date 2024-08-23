@@ -191,7 +191,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     {
         return [
             'id' => 'ID',
-            'id_nguoi_lap' => 'Người lập',
+            'id_nguoi_lap' => 'Người lập phiếu',
             'id_nguoi_yeu_cau' => 'Người yêu cầu',
             'id_nguoi_gui' => 'Người gửi',
             'id_nguoi_duyet' => 'Người duyệt',
