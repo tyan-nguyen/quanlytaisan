@@ -29,7 +29,7 @@ return [
         'attribute' => 'id_nguoi_lap',
         "format" => 'raw',
         'value' => function ($model) {
-            return ($model->nguoiLap->ten_nhan_vien)
+        return ($model->nguoiLap!=null?$model->nguoiLap->ten_nhan_vien:'')
                 . "<br>"
                 . '<span class="badge bg-light text-dark">'
                 . $model->ngayLap . "</span>"
@@ -41,7 +41,7 @@ return [
         'attribute' => 'id_nguoi_yeu_cau',
         "format" => 'raw',
         'value' => function ($model) {
-            return ($model->nguoiYeuCau->ten_nhan_vien)
+        return ($model->nguoiYeuCau!=null?$model->nguoiYeuCau->ten_nhan_vien:'')
                 . "<br>"
                 . '<span class="badge bg-light text-dark">'
                 . $model->ngayLap . "</span>"
