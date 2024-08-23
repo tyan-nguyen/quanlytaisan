@@ -68,7 +68,7 @@ Yii::$app->params['showImportModel'] = NhanVien::MODEL_ID;
                                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                                     'data-request-method'=>'post',
                                     'data-confirm-title'=>'Xác nhận xóa?',
-                                    'data-confirm-message'=>'Bạn có chắc muốn xóa?'
+                                    'data-confirm-message'=>'Lưu ý: Để không ảnh hưởng dữ liệu vui lòng chỉnh sửa trạng thái nhân viên đã thôi việc. Nếu xác nhận xóa thì dữ liệu liên quan sẽ bị xóa, riêng tài sản do nhân viên này quản lý sẽ về trạng thái chưa bàn giao. Bạn có chắc muốn xóa?'
                                 ]),
                         ]).                        
                         '<div class="clearfix"></div>',

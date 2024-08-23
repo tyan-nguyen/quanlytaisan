@@ -89,7 +89,7 @@ return [
                           'data-request-method'=>'post',
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>'Xác nhận xóa dữ liệu?',
-                          'data-confirm-message'=>'Bạn có chắc chắn thực hiện hành động này?',
+                          'data-confirm-message'=>'Lưu ý: Để không ảnh hưởng dữ liệu vui lòng chỉnh sửa trạng thái nhân viên đã thôi việc. Nếu xác nhận xóa thì dữ liệu liên quan sẽ bị xóa, riêng tài sản do nhân viên này quản lý sẽ về trạng thái chưa bàn giao. Bạn có chắc muốn xóa?',
                            'class'=>'btn ripple btn-secondary btn-sm',
                            'data-bs-placement'=>'top',
                            'data-bs-toggle'=>'tooltip-secondary'], 
