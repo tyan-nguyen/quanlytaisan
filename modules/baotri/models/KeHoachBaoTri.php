@@ -7,6 +7,7 @@ use app\modules\bophan\models\NhanVien;
 use app\modules\taisan\models\ThietBi;
 use app\widgets\views\StatusWithIconWidget;
 use Yii;
+use app\modules\taisan\models\HeThong;
 
 class KeHoachBaoTri extends KeHoachBaoTriBase
 {
@@ -65,14 +66,14 @@ class KeHoachBaoTri extends KeHoachBaoTriBase
         }
         switch ($val){
             case "0":
+                $label = "Không";
+                $icon = 'fa fa-times';
+                $type = 'info';
+                break;
+            case "1":
                 $label = "Có";
                 $icon = 'fe fe-check';
                 $type = 'primary';
-                break;
-            case "1":
-                $label = "Không";
-                $icon = 'a fa-times';
-                $type = 'info';
                 break;
             default:
                 $label = '';
@@ -167,5 +168,14 @@ class KeHoachBaoTri extends KeHoachBaoTriBase
      */
     public static function themSoNam($ngay, $soNam){
         return date('Y-m-d', strtotime($ngay. ' + ' . $soNam . ' years'));
+    }
+    /**
+     * Gets query for [[HeThong]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHeThong()
+    {
+        return $this->hasOne(HeThong::class, ['id' => 'id_he_thong']);
     }
 }

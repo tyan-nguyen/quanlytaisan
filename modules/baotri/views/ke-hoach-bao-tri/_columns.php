@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
+use app\modules\dungchung\models\CustomFunc;
 
 return [
     [
@@ -19,14 +20,20 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_he_thong',
-        'value'=> 'heThong.ten_he_thong',
+        'value'=> function($model){
+            if($model->heThong != null){
+                return $model->heThong->ten_he_thong;
+            } else {
+                return ($model->thietBi&&$model->thietBi->heThong)?$model->thietBi->heThong->ten_he_thong:'';
+            }
+        },
         'width' => '180px',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_thiet_bi',
         //'value'=> 'thietBi.ten_thiet_bi',
-        'width' => '150px',
+        'width' => '300px',
         'format'=>'raw',
         'value'=>function($model){
         return $model->thietBi != NULL ? Html::a($model->thietBi->ten_thiet_bi, ['/taisan/thiet-bi/view','id'=>$model->id_thiet_bi],
@@ -37,13 +44,13 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_loai_bao_tri',
         'value'=> 'loaiBaoTri.ten',
-        'width' => '150px',
+        'width' => '200px',
     ],
     
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ten_cong_viec',
-        'width'=>'350px',
+        'width'=>'250px',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -68,17 +75,30 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_nguoi_chiu_trach_nhiem',
         'value'=>'nguoiChiuTrachNhiem.ten_nhan_vien',
-        'width'=>'120px',
+        'width'=>'100px',
     ],
 //     [
 //         'class'=>'\kartik\grid\DataColumn',
 //         'attribute'=>'id_chi_tiet',
 //     ],
    
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'ngay_bat_dau',
-    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'ngay_bat_dau',
+        'value'=>function($model){
+            $cus = new CustomFunc();
+            return $cus->convertYMDToDMY($model->ngay_bat_dau);
+        },
+        'width'=>'100px',
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'label'=>'Tần suất',
+        'value'=>function($model){
+            return $model->so_ky . ' kỳ (' . $model->tan_suat . ' ' . $model->getKyBaoTriLabel($model->ky_bao_tri) . '/lần)';
+        },
+        'width'=>'200px',
+     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'bao_truoc',

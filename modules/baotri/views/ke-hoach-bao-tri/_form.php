@@ -13,6 +13,8 @@ use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use app\modules\baotri\models\KeHoachBaoTri;
 use app\modules\dungchung\models\CustomFunc;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\baotri\models\KeHoachBaoTri */
@@ -56,7 +58,7 @@ if($model->ngay_het_hieu_luc != null)
                                  <?= $form->field($model, 'id_he_thong')->widget(Select2::classname(), [
                                         'data' => ArrayHelper::map(HeThong::find()->all(), 'id', 'ten_he_thong'),
                                         'language' => 'vi',
-                                        'options' => ['placeholder' => 'Chọn hệ thống...'],
+                                        'options' => ['id'=>'id-he-thong', 'placeholder' => 'Chọn hệ thống...'],
                                         'pluginOptions' => [
                                             'allowClear' => true,
                                             'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
@@ -64,7 +66,7 @@ if($model->ngay_het_hieu_luc != null)
                                 ]);?>
                             </div>
                             <div class="col">
-                                  <?= $form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
+                                  <?php /* $form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
                                     'language' => 'vi',
                                     'options' => ['placeholder' => 'Chọn thiết bị...'],
@@ -72,7 +74,30 @@ if($model->ngay_het_hieu_luc != null)
                                         'allowClear' => true,
                                         'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
                                     ],
-                                ]);?>
+                                ]); */ ?>
+                                <?= $form->field($model, 'id_thiet_bi')->widget(DepDrop::classname(), [
+                                        'options'=>[
+                                            'id'=>'id-thiet-bi',
+                                            'placeholder' => 'Select ...'
+                                        ],
+                                        'data' => ($model->isNewRecord 
+                                            ? ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi')
+                                            :[$model->id_thiet_bi=>$model->thietBi->ten_thiet_bi]),
+                                        'type'=>DepDrop::TYPE_SELECT2,
+                                        'select2Options'=>[
+                                            'pluginOptions' => [
+                                                'allowClear' => true,
+                                                'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+                                            ],
+                                        ],
+                                        'pluginOptions'=>[
+                                            'depends'=>['id-he-thong'],
+                                            //'initialize' => true,
+                                            'url'=>Url::to(['/taisan/ajax/get-tai-san-by-he-thong']),
+                                        ],
+                                    ]);
+                               ?>
+                   
                             </div>
                         </div>
                         <div class="row">
