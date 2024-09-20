@@ -114,7 +114,7 @@ use yii\helpers\Url;
 	
 	<div class="row">
 		<div class="col-6">
-			<?= '<label class="form-label">Ngày hết hiệu lực</label>';?>
+			<?php // '<label class="form-label">Ngày hết hiệu lực</label>';?>
 			<?php /* DatePicker::widget([
                     'name' => 'ngay_het_hieu_luc', 
                     'value' => '',
