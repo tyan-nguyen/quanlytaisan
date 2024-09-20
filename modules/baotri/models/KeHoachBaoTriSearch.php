@@ -85,7 +85,7 @@ class KeHoachBaoTriSearch extends KeHoachBaoTri
             'truc_thuoc' => $this->truc_thuoc,
         	'ngay_thuc_hien' => $this->ngay_thuc_hien!=null? $cus->convertDMYToYMD($this->ngay_thuc_hien): $this->ngay_thuc_hien,
             'thoi_gian_thuc_hien' => $this->thoi_gian_thuc_hien,
-            'ngay_het_hieu_luc' => $this->ngay_het_hieu_luc,
+        	'ngay_het_hieu_luc' =>  $this->ngay_het_hieu_luc!=null? $cus->convertDMYToYMD($this->ngay_het_hieu_luc): $this->ngay_het_hieu_luc,
             'thoi_gian_tao' => $this->thoi_gian_tao,
             'nguoi_tao' => $this->nguoi_tao,
         ]);

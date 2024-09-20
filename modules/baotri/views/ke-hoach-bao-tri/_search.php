@@ -8,6 +8,8 @@ use kartik\select2\Select2;
 use yii\bootstrap5\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\baotri\models\KeHoachBaoTri */
@@ -28,6 +30,7 @@ use yii\widgets\ActiveForm;
                     'data' => ArrayHelper::map(HeThong::find()->all(), 'id', 'ten_he_thong'),
                     'language' => 'vi',
                     'options' => [
+                        'id'=>'id-he-thong-search', 
                         'placeholder' => 'Chọn hệ thống...',
                         'data-dropdown-parent'=>"#offcanvasRight"
                     ],
@@ -38,7 +41,7 @@ use yii\widgets\ActiveForm;
             ]);?>
 		</div>
 		<div class="col-6">
-			  <?= $form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
+			  <?php /* $form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
                     'data' => ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
                     'language' => 'vi',
                     'options' => [
@@ -49,7 +52,28 @@ use yii\widgets\ActiveForm;
                         'allowClear' => true,
                         //'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
                     ],
-                ]);?>
+                ]); */ ?>
+                <label>Thiết bị</label>
+                <?= $form->field($model, 'id_thiet_bi')->widget(DepDrop::classname(), [
+                        'options'=>[
+                            'id'=>'id-thiet-bi-search',
+                            'placeholder' => 'Select ...'
+                        ],
+                        'data' => (ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi')),
+                        'type'=>DepDrop::TYPE_SELECT2,
+                        'select2Options'=>[
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'dropdownParent' => '#offcanvasRight',
+                            ],
+                        ],
+                        'pluginOptions'=>[
+                            'depends'=>['id-he-thong-search'],
+                            //'initialize' => true,
+                            'url'=>Url::to(['/taisan/ajax/get-tai-san-by-he-thong']),
+                        ],
+                    ])->label('');
+               ?>
 		</div>
 	</div>
 	<div class="row">
@@ -91,19 +115,30 @@ use yii\widgets\ActiveForm;
 	<div class="row">
 		<div class="col-6">
 			<?= '<label class="form-label">Ngày hết hiệu lực</label>';?>
-			<?=  DatePicker::widget([
+			<?php /* DatePicker::widget([
                     'name' => 'ngay_het_hieu_luc', 
-                    'value' => date('d-m-Y'),
+                    'value' => '',
                     'options' => ['placeholder' => 'Chọn ngày ....'],
                     'type' => DatePicker::TYPE_COMPONENT_APPEND,
                     'pickerIcon' => '<i class="fas fa-calendar-alt text-infor"></i>',
                     'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
                     'pluginOptions' => [
-                        'format' => 'dd-mm-yyyy',
+                        'format' => 'dd/mm/yyyy',
                         'todayHighlight' => true
                     ]
-                ]);
+                ]);*/
             ?>
+            <?= $form->field($model, 'ngay_het_hieu_luc')->widget(DatePicker::classname(), [
+                    'options' => [
+                        'placeholder' => 'Chọn ngày...'
+                    ],
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd/mm/yyyy',
+                        'todayHighlight' => true
+                    ]
+        	   ]);
+           ?>
 		</div>
 		<div class="col-6">
 				<?= $form->field($model, 'id_nguoi_chiu_trach_nhiem')->widget(Select2::classname(), [
