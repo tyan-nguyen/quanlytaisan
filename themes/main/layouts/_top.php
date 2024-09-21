@@ -93,7 +93,7 @@ $countPhieuMuaSam=0;
 						    <!-- Yeu cau van hanh -->
 							<li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-arrow-left-right"></i>
+                                <i class="bi bi-arrow-left-right"></i> <span class="icon-text-top">Điều chuyển</span>
                                 <span class="badge bg-warning header-badge" id="notification-count">0</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -133,7 +133,7 @@ $countPhieuMuaSam=0;
                         <!-- CART -->
                         <li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-cart-check"></i>
+                                <i class="bi-bag-check"></i> <span class="icon-text-top">Mua sắm</span>
                                 <span class="badge bg-warning header-badge"><?= count($phieuMuaSamNew) ?></span>
 
                             </a>
@@ -157,16 +157,11 @@ $countPhieuMuaSam=0;
                         </li>
                         <!-- CART -->
 
-                        <!-- FULL SCREEN -->
-                        <li class="dropdown d-none d-md-flex mt-1">
-                            <a class="nav-link icon full-screen-link">
-                                <i class="bi bi-fullscreen-exit fullscreen-button floating" id="fullscreen-button"></i>
-                            </a>
-                        </li>
+                       
                         <!-- sửa chữa -->
                         <li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-gear"></i>
+                                <i class="bi bi-gear"></i> <span class="icon-text-top">Sữa chửa</span>
                                 <span class="badge bg-warning header-badge" id="notification-count-sc"><?= $phieuSuaChuaCount ?? 0 ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -184,15 +179,25 @@ $countPhieuMuaSam=0;
                             </div>
                         </li>
                         <!-- sửa chữa -->
-                    
+                    	
+                    	 <li class="dropdown d-none d-md-flex">
+                    	 	&nbsp;&nbsp;|&nbsp;&nbsp;
+                    	 </li>
                         <!-- Theme-Layout -->
-                        <li class="dropdown main-header-notification d-md-flex">
+                        <li class="dropdown d-none d-md-flex">
                             <a class="nav-link icon theme-layout nav-link-bg layout-setting" href="javascript:void(0);">
                                 <span class="dark-layout"><i class="bi bi-cloud-moon"></i></span>
                                 <span class="light-layout"><i class="bi bi-cloud-sun"></i></span>
                             </a>
                         </li>
                         <!-- Theme-Layout -->
+                        
+                         <!-- FULL SCREEN -->
+                        <li class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon full-screen-link">
+                                <i class="bi bi-fullscreen-exit fullscreen-button floating" id="fullscreen-button"></i>
+                            </a>
+                        </li>
 						 
                         <!-- NOTIFICATIONS -->
                         <!-- <li class="dropdown main-header-notification d-flex">
@@ -327,15 +332,17 @@ $countPhieuMuaSam=0;
 
                             <a class="main-img-user d-flex" href="javascript:void(0);" data-bs-toggle="dropdown">
                                 <img alt="avatar" src="<?= Yii::getAlias('@web') ?>/uploads/icons/user.png">
+                               
                             </a>
-
+							<span data-bs-toggle="dropdown" style="margin-top:5px;margin-left:5px;cursor:pointer;"> Xin chào, <?= User::getCurrentUser()->username ?>! </span>
+							
                             <div class="dropdown-menu dropdown-menu-arrow">
-                                <div class="header-navheading">
-                                    <h6 class="main-notification-title mb-1"><?= User::getCurrentUser()->username ?>
-                                    </h6>
-                                    <span class="tx-13 text-muted"><?= User::getCurrentUser()->tenNhanVien ?></span>
+                                <!-- <div class="header-navheading"> -->
+                                    <!-- <h6 class="main-notification-title mb-1"><?= User::getCurrentUser()->username ?>
+                                    </h6>-->
+                                   <!-- <span class="tx-13 text-muted"><?= User::getCurrentUser()->tenNhanVien ?></span> --> 
                                     <!-- <br/><span class="tx-13 text-muted"><?= User::getCurrentUser()->chucVu ?></span>-->
-                                </div>
+                                 <!--  </div>  -->
                                 <!-- <a class="dropdown-item border-top text-wrap" href="<?= Yii::getAlias('@web') ?>/user/info">
 									<i class="fe fe-user"></i> <span class="lh-1">Thông tin</span>
 								</a> -->
@@ -356,6 +363,7 @@ $countPhieuMuaSam=0;
                             </div>
 
                         </li>
+                         
                     </ul>
                 </div>
             </div>

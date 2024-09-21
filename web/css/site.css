@@ -235,3 +235,7 @@ a.desc:after {
 	height:600px;
 	overflow-y: auto;
 }
+
+.icon-text-top{
+	font-size: 14px;
+}
