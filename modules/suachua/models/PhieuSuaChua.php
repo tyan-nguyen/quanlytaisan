@@ -254,6 +254,7 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     public static function getDmTrangThai(){
         return [
             "new"=>'Mới',
+            "quote_sent"=>'Gửi báo giá',
             "processing"=>'Đang sửa chữa',
             "completed"=>"Hoàn thành"
         ];

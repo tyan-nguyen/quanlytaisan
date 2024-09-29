@@ -13,6 +13,7 @@ use yii\helpers\Html;
 use yii\filters\AccessControl;
 use app\modules\suachua\models\PhieuSuaChuaVatTuSearch;
 use app\modules\suachua\models\CtBaoGiaSuaChuaSearch;
+use app\modules\suachua\models\BaoGiaSuaChuaSearch;
 use app\modules\suachua\models\BaoGiaSuaChua;
 
 /**
@@ -93,12 +94,30 @@ class PhieuSuaChuaController extends Controller
             }    
             //end grid view vật tư
 
+            //báo giá mua sắm
+        
+        
+            $searchModelBgsc = new BaoGiaSuaChuaSearch();
+            $searchModelBgsc->id_phieu_sua_chua=$id_phieu_sua_chua;
+            if(isset($_POST['search']) && $_POST['search'] != null){
+                $dataProviderBgsc = $searchModelBgsc->searchAll(Yii::$app->request->post(), $_POST['search']);
+            } else if ($searchModelBgsc->load(Yii::$app->request->post())) {
+                $searchModelBgsc = new BaoGiaSuaChuaSearch(); // "reset"
+                $dataProviderBgsc = $searchModelBgsc->searchAll(Yii::$app->request->post());
+            } else {
+                $dataProviderBgsc = $searchModelBgsc->searchAll(Yii::$app->request->queryParams);
+            }
 
             //grid view báo giá
-            $baoGiaSuaChua=BaoGiaSuaChua::getBaoGiaByPhieuSuaChua($id_phieu_sua_chua);
+            //$baoGiaSuaChua=BaoGiaSuaChua::getBaoGiaByPhieuSuaChua($id_phieu_sua_chua);
+            $id_bao_gia=Yii::$app->request->get('id_bao_gia');
+            if($id_bao_gia)
+                $baoGiaSuaChua=BaoGiaSuaChua::findOne($id_bao_gia);
+            else
+                $baoGiaSuaChua=null;
             //var_dump($baoGiaSuaChua->id_phieu_sua_chua);
             $searchModelBaoGia = new CtBaoGiaSuaChuaSearch();
-            $searchModelBaoGia->id_bao_gia=$baoGiaSuaChua->id;
+            $searchModelBaoGia->id_bao_gia=$baoGiaSuaChua->id ?? 0;
             if(isset($_POST['search']) && $_POST['search'] != null){
                 $dataProviderBaoGia = $searchModelBaoGia->search(Yii::$app->request->post(), $_POST['search']);
             } else if ($searchModelBaoGia->load(Yii::$app->request->post())) {
@@ -116,7 +135,9 @@ class PhieuSuaChuaController extends Controller
                 'searchModelBaoGia' => $searchModelBaoGia,
                 'dataProviderBaoGia' => $dataProviderBaoGia,
                 'baoGiaSuaChua'=>$baoGiaSuaChua,
-                "phieuSuaChua"=>$phieuSuaChua
+                "phieuSuaChua"=>$phieuSuaChua,
+                //'dataProviderBg' => $dataProviderBg,
+                'dataProviderBgsc'=>$dataProviderBgsc
             ]);
         }
     }
@@ -365,6 +386,47 @@ class PhieuSuaChuaController extends Controller
         return $this->renderPartial('print-phieu-xuat-kho',[
             'model'=>$this->findModel($id)
         ]);
+    }
+    public function actionGuiBaoGia($id_phieu_sua_chua)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id_phieu_sua_chua);
+        $sendOk = false;
+        $fList = array();
+        foreach ( $model->baoGiaSuaChuas as $baoGia ) {
+            
+            try{
+            	$baoGia->trang_thai='submited';
+                //$baoGia->save();
+                if($baoGia->save())
+                $sendOk = true;
+            }catch(\Exception $e) {
+            	$sendOk = false;
+            	$fList[] = $baoGia->id;
+            }
+            
+        }
+        if($sendOk)
+        {
+            $model->trang_thai="quote_sent";
+            $model->save();
+        }
+        
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax-bao-gia',
+            			'tcontent'=>$sendOk==true?'Gửi báo giá thành công!':('Không thể gửi báo giá:'.implode('</br>', $fList)),
+            ];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            $refererUrl = Yii::$app->request->referrer;
+            return $this->redirect($refererUrl);
+        }
     }
     
 }

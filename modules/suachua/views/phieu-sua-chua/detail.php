@@ -67,16 +67,16 @@ body .select2-container {
 
                     </div>
                     <div class="tab-pane" id="tab26" role="tabpanel">
-                        <?= $this->render('_form-gui-bao-gia', [
-                            'model' => $baoGiaSuaChua,
-                            "phieuSuaChua"=>$phieuSuaChua
-                        ]) ?>
+                       
 
                         <?= $this->render('../ct-bao-gia-sua-chua/grid-view-pjax', [
+                            'model' => $model,
                             'searchModel' => $searchModelBaoGia,
                             'dataProvider' => $dataProviderBaoGia,
                             "baoGiaSuaChua"=>$baoGiaSuaChua,
-                            "phieuSuaChua"=>$phieuSuaChua
+                            "phieuSuaChua"=>$phieuSuaChua,
+                            'dataProviderBgsc'=>$dataProviderBgsc
+                            
                         ]) ?>
 
                     </div>
@@ -166,4 +166,16 @@ $this->registerCssFile('@web/css/bootstrap-rating.css', [
     'footer'=>'',// always need it for jquery plugin
 ])?>
 
+<?php Modal::end(); ?>
+
+<?php Modal::begin([
+    'options' => [
+            'id'=>'ajaxCrudModal3',
+            'tabindex' => false // important for Select2 to work properly
+    ],
+    'dialogOptions'=>['class'=>'modal-lg'],
+    'closeButton'=>['label'=>'<span aria-hidden=\'true\'>×</span>'],
+    'id'=>'ajaxCrudModal3',
+    'footer'=>'',// always need it for jquery plugin
+    ]) ?>
 <?php Modal::end(); ?>

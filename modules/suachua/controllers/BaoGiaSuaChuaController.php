@@ -91,11 +91,11 @@ class BaoGiaSuaChuaController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id_phieu_sua_chua)
     {
         $request = Yii::$app->request;
         $model = new BaoGiaSuaChua();  
-
+        $model->id_phieu_sua_chua=$id_phieu_sua_chua;
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -103,7 +103,7 @@ class BaoGiaSuaChuaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm mới BaoGiaSuaChua",
+                    'title'=> "Thêm mới báo giá sửa chữa",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -113,17 +113,17 @@ class BaoGiaSuaChuaController extends Controller
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Thêm mới BaoGiaSuaChua",
+                    'forceReload'=>'#crud-datatable-pjax-bao-gia',
+                    'title'=> "Thêm mới báo giá",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
-                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Tiếp tục thêm',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"])
+                            //Html::a('Tiếp tục thêm',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới BaoGiaSuaChua",
+                    'title'=> "Thêm mới báo giá".json_encode($model->getErrors()[0]),
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -146,7 +146,62 @@ class BaoGiaSuaChuaController extends Controller
         }
        
     }
+    public function actionUpdateContent($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);       
+        
 
+        $dvBaoGia=$model->dvBaoGia;
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
+                    'content'=>$this->renderAjax('_update_content', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit","id"=>"submit-form-bg"])
+                ];         
+            }else if($model->load($request->post()) && $model->save()){
+                return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax-bao-gia'];
+                // return [
+                //     'forceReload'=>'#crud-datatable-pjax-bao-gia',
+                //     'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
+                //     'content'=>$this->renderAjax('view', [
+                //         'model' => $model,
+                //     ]),
+                //     'tcontent'=>'Cập nhật thành công!',
+                //     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                //             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                // ];    
+            }else{
+                 return [
+                    'title'=> "Thông tin báo giá ".($dvBaoGia ? $dvBaoGia->ten_doi_tac : ""),
+                    'content'=>$this->renderAjax('_update_content', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                ];        
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                $refererUrl = Yii::$app->request->referrer;
+                return $this->redirect($refererUrl);
+            } else {
+                $refererUrl = Yii::$app->request->referrer;
+                return $this->redirect($refererUrl);
+            }
+        }
+    }
     /**
      * Updates an existing BaoGiaSuaChua model.
      * For ajax request will return json object
@@ -245,7 +300,7 @@ class BaoGiaSuaChuaController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax-bao-gia'];
         }else{
             /*
             *   Process for non-ajax request

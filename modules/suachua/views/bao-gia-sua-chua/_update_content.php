@@ -4,10 +4,10 @@ use yii\bootstrap5\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\suachua\models\BaoGiaSuaChua */
+/* @var $model app\modules\muasam\models\BaoGiaMuaSam */
 
 ?>
-<div class="bao-gia-sua-chua-create">
+<div class="bao-gia-mua-sam-update">
     <?= $this->render('_form_add', [
         'model' => $model,
     ]) ?>

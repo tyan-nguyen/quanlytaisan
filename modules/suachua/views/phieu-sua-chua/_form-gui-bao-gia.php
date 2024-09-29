@@ -29,30 +29,7 @@ $isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
                 <?php $form = ActiveForm::begin([
         'action' => ['/suachua/bao-gia-sua-chua/update','id'=>$model->id]
     ]); ?>
-                <div class="row">
-                    <div class="col-12">
-                        <?=$form->field($model, 'id_dv_bao_gia')->widget(Select2::classname(), [
-                        'data' => ArrayHelper::map(DoiTac::find()->all(), 'id', 'ten_doi_tac'),
-                        'language' => 'vi',
-                        'options' => [
-                            'placeholder' => 'Chọn đơn vị báo giá...'
-                            
-                        ],
-                        'pluginOptions' => [
-        'allowClear' => true,
-        'width' => '100%',
-        'dropdownParent' => Yii::$app->request->isAjax ? new yii\web\JsExpression('$("#ajaxCrudModal")') : null,
-    ],
-]);?>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <?= $form->field($model, 'ghi_chu_bg1')->textarea(['rows' => 3,'disabled'=>($model->trang_thai !=='draft')]) ?>
-                    </div>
-
-                </div>
+                
 
 
 

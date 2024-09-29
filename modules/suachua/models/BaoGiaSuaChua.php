@@ -110,8 +110,9 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->ngay_bao_gia = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
+            $this->trang_thai = 'draft';
         }
-        if($this->getOldAttribute('trang_thai')!=$this->trang_thai)
+        elseif($this->getOldAttribute('trang_thai')!=$this->trang_thai)
         {
             if($this->trang_thai=="approved" || $this->trang_thai=="rejected")
             {
@@ -122,10 +123,36 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
                 $this->flag_index = -1;
                 
             }
-            if($this->trang_thai=="submited")
-            $this->ngay_gui_bg = date('Y-m-d H:i:s');
-            $this->ngay_cap_nhat = date('Y-m-d H:i:s');
-            $this->nguoi_cap_nhat = Yii::$app->user->id;
+            if($this->getOldAttribute('trang_thai')!=$this->trang_thai)
+            {
+                if(count($this->ctBaoGiaSuaChuas)==0)
+                return ;
+                if($this->trang_thai=="approved" || $this->trang_thai=="rejected")
+                {
+                    $this->ngay_ket_thuc = date('Y-m-d H:i:s');
+                    $this->nguoi_duyet_bg = Yii::$app->user->id;
+                    $this->flag_index = 0;
+                    if($this->trang_thai=="rejected")
+                    $this->flag_index = -1;
+                    else{
+                        //xử lý duyệt báo giá. là từ chối tất cả các báo giá còn lại
+                        $baoGia=BaoGiaSuaChua::find()->where(['id_phieu_sua_chua'=>$this->id_phieu_sua_chua])
+                        ->where(['flag_index'=>0])
+                        ->where(['<>','id',$this->id])->all();
+                        foreach($baoGia as $key=>$bg)
+                        {
+                            $bg->trang_thai="rejected";
+                            $bg->save();
+                        }
+                    }
+                    
+                }
+                if($this->trang_thai=="submited")
+                $this->ngay_gui_bg = date('Y-m-d H:i:s');
+                $this->ngay_cap_nhat = date('Y-m-d H:i:s');
+                $this->nguoi_cap_nhat = Yii::$app->user->id;
+                //$this->save();
+            }
             //$this->save();
         }
         elseif($this->trang_thai=="rejected" || $this->trang_thai=="approved"){
