@@ -141,7 +141,7 @@ class BaoGiaSuaChuaSearch extends BaoGiaSuaChua
         ]);
 
         $query->andFilterWhere(['like', 'so_bao_gia', $this->so_bao_gia])
-            //->andFilterWhere(['=', 'trang_thai', "draft"])//không hiển thị trạng thái nhấp trên ds duyệt báo giá
+            ->andFilterWhere(['in', 'trang_thai', ["draft","submited","approved"]])//không hiển thị trạng thái nhấp trên ds duyệt báo giá
             ->andFilterWhere(['like', 'ghi_chu_bg1', $this->ghi_chu_bg1])
             ->andFilterWhere(['like', 'ghi_chu_bg2', $this->ghi_chu_bg2]);
 		}

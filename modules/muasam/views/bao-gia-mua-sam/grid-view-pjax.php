@@ -11,7 +11,7 @@ use app\widgets\FilterFormWidget;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\muasam\models\BaoGiaMuaSamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$isUpdate=$phieuMuaSam->trang_thai=='approved';
+$isUpdate=$phieuMuaSam->trang_thai=='approved' || $phieuMuaSam->trang_thai=='quote_sent';
 ?>
 
 

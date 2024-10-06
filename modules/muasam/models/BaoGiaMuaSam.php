@@ -138,8 +138,13 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         if ($this->isNewRecord) {
             $phieuMuaSam=$this->phieuMuaSam;
-            if($phieuMuaSam->trang_thai!='approved')
+            //chỉ cho tạo báo giá mua sắm ở trạng thái đã duyệt hoặc đã gửi báo giá 
+            if(!in_array($phieuMuaSam->trang_thai,['approved','quote_sent']))
             return;
+            $this->so_bao_gia=BaoGiaMuaSam::find()->where([
+                "id_phieu_mua_sam"=>$this->id_phieu_mua_sam,
+                "id_dv_bao_gia"=>$this->id_dv_bao_gia
+                ])->count()+1;
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->ngay_bao_gia = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
@@ -161,8 +166,8 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
                 else{
                     //xử lý duyệt báo giá. là từ chối tất cả các báo giá còn lại
                     $baoGia=BaoGiaMuaSam::find()->where(['id_phieu_mua_sam'=>$this->id_phieu_mua_sam])
-                    ->where(['flag_index'=>0])
-                    ->where(['<>','id',$this->id])->all();
+                    ->andWhere(['flag_index'=>0])
+                    ->andWhere(['<>','id',$this->id])->all();
                     foreach($baoGia as $key=>$bg)
                     {
                         $bg->trang_thai="rejected";

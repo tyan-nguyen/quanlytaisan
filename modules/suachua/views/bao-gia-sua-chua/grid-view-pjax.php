@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\suachua\models\BaoGiaSuaChuaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$isUpdate = $phieuSuaChua->trang_thai == 'new';
+$isUpdate = $phieuSuaChua->trang_thai == 'new' || $phieuSuaChua->trang_thai == 'quote_sent' ;
 ?>
 
 

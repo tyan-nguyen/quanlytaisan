@@ -145,7 +145,7 @@ if (Yii::$app->session->hasFlash('error')) {
         </div>
         <?php if(!$model->isNewRecord) { ?>
         <div class="col">
-        <?= $form->field($model, 'ghi_chu_duyet')->textarea(['rows' => 4,'disabled'=>$isDuyet ? 'disabled' : false]) ?>
+        <?= $form->field($model, 'ghi_chu_duyet')->textarea(['rows' => 4,'disabled'=> $isDuyet ? false :'disabled' ]) ?>
         </div>
         <?php } ?>
     </div>
