@@ -333,10 +333,14 @@ class PhieuMuaSamController extends Controller
         foreach ( $model->baoGiaMuaSams as $baoGia ) {
             
             try{
-            	$baoGia->trang_thai='submited';
-                //$baoGia->save();
-                if($baoGia->save())
-                $sendOk = true;
+                if($baoGia->trang_thai=='draft')
+                {
+                    $baoGia->trang_thai='submited';
+                    //$baoGia->save();
+                    if($baoGia->save())
+                    $sendOk = true;
+                }
+            	
             }catch(\Exception $e) {
             	$sendOk = false;
             	$fList[] = $baoGia->id;

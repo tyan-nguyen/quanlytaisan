@@ -42,6 +42,7 @@ class BaoGiaMuaSamController extends Controller
     public function actionIndex()
     {    
         $searchModel = new BaoGiaMuaSamSearch();
+        $searchModel->flag_index=0;
   		if(isset($_POST['search']) && $_POST['search'] != null){
             $dataProvider = $searchModel->search(Yii::$app->request->post(), $_POST['search']);
         } else if ($searchModel->load(Yii::$app->request->post())) {

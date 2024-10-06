@@ -133,6 +133,7 @@ class BaoGiaMuaSamSearch extends BaoGiaMuaSam
         ]);
 
         $query->andFilterWhere(['like', 'so_bao_gia', $this->so_bao_gia])
+            ->andFilterWhere(['in', 'trang_thai', ["draft","submited","approved"]])
             ->andFilterWhere(['like', 'ghi_chu_bg1', $this->ghi_chu_bg1])
             ->andFilterWhere(['like', 'ghi_chu_bg2', $this->ghi_chu_bg2]);
 		}
