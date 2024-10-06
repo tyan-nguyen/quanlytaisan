@@ -155,31 +155,19 @@ class BoPhan extends BoPhanBase
      * chi tinh phieu nao có đánh giá > 0
      */
     public function getDanhGiaMuaSamTrungBinh(){
-        $query = PhieuMuaSam::find()->where([
+        $avr = PhieuMuaSam::find()->where([
             'id_tt_mua_sam' => $this->id,
-        ])->andWhere('danh_gia_ms > 0');
-        $count = $query->count();
-        $sum = $query->sum('danh_gia_ms');
-        if($count>0){
-            return round($sum/$count, 2);
-        } else {
-            return 0;
-        }
+        ])->andWhere('danh_gia_ms > 0')->average('danh_gia_ms');
+        return round($avr,2);
     }
     /**
      * tinh danh gia mua sam trung binh
      * chi tinh phieu nao có đánh giá > 0
      */
     public function getDanhGiaSuaChuaTrungBinh(){
-        $query = PhieuSuaChua::find()->where([
+        $avr = PhieuSuaChua::find()->where([
             'id_tt_sua_chua' => $this->id,
-        ])->andWhere('danh_gia_sc > 0');
-        $count = $query->count();
-        $sum = $query->sum('danh_gia_sc');
-        if($count>0){
-            return round($sum/$count, 2);
-        } else {
-            return 0;
-        }
+        ])->andWhere('danh_gia_sc > 0')->average('danh_gia_sc');
+        return round($avr,2);
     }
 }

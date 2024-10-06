@@ -5,6 +5,7 @@ namespace app\modules\taisan\models;
 use Yii;
 use app\modules\dungchung\models\CustomFunc;
 use app\widgets\views\StatusWithIconWidget;
+use app\modules\baotri\models\PhieuBaoTri;
 
 class ThietBi extends ThietBiBase
 {
@@ -15,6 +16,17 @@ class ThietBi extends ThietBiBase
     public function getQrCode()
     {
         return Yii::getAlias('@web') . $this::QR_FOLDER . $this->autoid . '.png';
+    }
+    
+    /**
+     * get list data thong ke lich su hoat dong, sua chua, bao tri cua tai san
+     */
+    public function getLichSuHoatDong(){
+        
+    }
+        
+    public function getLichSuBaoTri(){
+        $phieuBaoTris = PhieuBaoTri::find()->joinWith([])->where();
     }
 
     /**

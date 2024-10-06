@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\suachua\models\PhieuSuaChua;
+use app\modules\dungchung\models\CustomFunc;
 
 /**
  * PhieuSuaChuaSearch represents the model behind the search form about `app\modules\suachua\models\PhieuSuaChua`.
@@ -66,6 +67,13 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
             ['like', 'ghi_chu2', $cusomSearch]] );
  
 		} else {
+		    $custom = new CustomFunc();
+		    if($this->ngay_sua_chua!=null){
+		        $this->ngay_sua_chua = $custom->convertDMYToYMD($this->ngay_sua_chua);
+		    }
+		    if($this->ngay_hoan_thanh!=null){
+		        $this->ngay_hoan_thanh = $custom->convertDMYToYMD($this->ngay_hoan_thanh);
+		    }
         	$query->andFilterWhere([
             'id' => $this->id,
             'id_thiet_bi' => $this->id_thiet_bi,

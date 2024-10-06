@@ -60,5 +60,11 @@ class ThongKeController extends Controller
         ]);
     }
     
+    public function actionThongKeTaiSanHoatDong(){
+        Yii::$app->params['modelID'] = 'Thống kê lịch sử sử dụng tài sản/sữa chữa';
+        return $this->render('ts-hoat-dong', [
+        ]);
+    }
+    
 }
 ?>

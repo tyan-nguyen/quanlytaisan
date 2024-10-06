@@ -58,38 +58,26 @@ class DoiTac extends DoiTacBase
      * chi tinh phieu nao có đánh giá > 0
      */
     public function getDanhGiaMuaSamTrungBinh(){
-        $query = PhieuMuaSam::find()
+        $avr = PhieuMuaSam::find()
         ->select(['ts_phieu_mua_sam.*'])
         ->leftJoin('ts_bao_gia_mua_sam', 'ts_phieu_mua_sam.id = ts_bao_gia_mua_sam.id_phieu_mua_sam')
         ->where(['=','ts_bao_gia_mua_sam.id_dv_bao_gia',$this->id])
         ->andWhere(['=','ts_bao_gia_mua_sam.flag_index',0])
-        ->andWhere('ts_phieu_mua_sam.danh_gia_bg > 0');
-        $count = $query->count();
-        $sum = $query->sum('ts_phieu_mua_sam.danh_gia_bg');
-        if($count>0){
-            return round($sum/$count, 2);
-        } else {
-            return 0;
-        }
+        ->andWhere('ts_phieu_mua_sam.danh_gia_bg > 0')->average('ts_phieu_mua_sam.danh_gia_bg');
+        return round($avr,2);
     }
     /**
      * tinh danh gia mua sam trung binh
      * chi tinh phieu nao có đánh giá > 0
      */
     public function getDanhGiaSuaChuaTrungBinh(){
-        $query = PhieuSuaChua::find()
+        $avr = PhieuSuaChua::find()
         ->select(['ts_phieu_sua_chua.*'])
         ->leftJoin('ts_bao_gia_sua_chua', 'ts_phieu_sua_chua.id = ts_bao_gia_sua_chua.id_phieu_sua_chua')
         ->where(['=','ts_bao_gia_sua_chua.id_dv_bao_gia',$this->id])
         ->andWhere(['=','ts_bao_gia_sua_chua.flag_index',0])
-        ->andWhere('ts_phieu_sua_chua.danh_gia_bg > 0');
-        $count = $query->count();
-        $sum = $query->sum('ts_phieu_sua_chua.danh_gia_bg');
-        if($count>0){
-            return round($sum/$count, 2);
-        } else {
-            return 0;
-        }
+        ->andWhere('ts_phieu_sua_chua.danh_gia_bg > 0')->average('ts_phieu_sua_chua.danh_gia_bg');
+        return round($avr,2);
     }
     
 }

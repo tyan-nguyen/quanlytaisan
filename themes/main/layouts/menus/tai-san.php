@@ -36,6 +36,7 @@
     							</a>
     							<ul class="sub-slide-menu open" style="display: block;">
     								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-mua-sam?menu=ts8" data-menu="ts8">Thống kê tài sản mua sắm</a></li>
+    								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-hoat-dong?menu=ts9" data-menu="ts9">Thống kê hoạt động tài sản</a></li>
     							</ul>
     						</li>
 							<!-- 
