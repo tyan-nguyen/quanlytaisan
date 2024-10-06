@@ -6,6 +6,7 @@ use Yii;
 use app\modules\dungchung\models\CustomFunc;
 use app\widgets\views\StatusWithIconWidget;
 use app\modules\baotri\models\PhieuBaoTri;
+use yii\helpers\ArrayHelper;
 
 class ThietBi extends ThietBiBase
 {
@@ -22,11 +23,31 @@ class ThietBi extends ThietBiBase
      * get list data thong ke lich su hoat dong, sua chua, bao tri cua tai san
      */
     public function getLichSuHoatDong(){
-        
+        return $this->getLichSuBaoTri();
     }
         
     public function getLichSuBaoTri(){
-        $phieuBaoTris = PhieuBaoTri::find()->joinWith([])->where();
+        /* $phieuBaoTris = PhieuBaoTri::find()->alias('t')
+        ->joinWith(['keHoach as kh'])
+        ->where([
+            'kh.id_thiet_bi' => $this->id,
+        ])->asArray()->all();
+        return $phieuBaoTris; */
+        $custom = new CustomFunc();
+        $result = array();
+        $phieuBaoTris = PhieuBaoTri::find()
+        ->select(['ts_phieu_bao_tri.*'])
+        ->leftJoin('ts_ke_hoach_bao_tri', 'ts_ke_hoach_bao_tri.id = ts_phieu_bao_tri.id_ke_hoach')
+        ->where(['=','ts_ke_hoach_bao_tri.id_thiet_bi',$this->id])
+        //->andWhere(['=','ts_phieu_bao_tri.da_hoan_thanh',1])
+        ->all();
+        foreach ($phieuBaoTris as $phieuBaoTri){
+            $result[str_replace('-', '', $custom->convertYMDHISToYMD($phieuBaoTri->thoi_gian_bat_dau))] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuBaoTri->thoi_gian_bat_dau),
+                'noi_dung' => $phieuBaoTri->keHoach->ten_cong_viec
+            ];
+        }
+        return $result;
     }
 
     /**

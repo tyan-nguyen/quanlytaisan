@@ -60,9 +60,11 @@ class ThongKeController extends Controller
         ]);
     }
     
-    public function actionThongKeTaiSanHoatDong(){
+    public function actionThongKeTaiSanHoatDong($idThietBi=NULL, $showBaoTri=false, $showSuaChua=false, $showVanHanh=false){
         Yii::$app->params['modelID'] = 'Thống kê lịch sử sử dụng tài sản/sữa chữa';
+        $model = ThietBi::findOne($idThietBi);
         return $this->render('ts-hoat-dong', [
+            'model'=>$model
         ]);
     }
     
