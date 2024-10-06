@@ -109,11 +109,16 @@ use app\modules\bophan\models\BoPhan;
                                 'type'=>'VIEW'
                             ])
                         ],
-                        /* 'id_kho_vat_tu',
-                        'id_kho_phe_lieu',
-                        'id_kho_thanh_pham',
-                        'thoi_gian_tao',
-                        'nguoi_tao', */
+                        [
+                            'label'=>'Đánh giá mua sắm',
+                            'format'=>'raw',
+                            'value'=>'<div class="star-ratings-css" title="'.floor($model->getDanhGiaMuaSamTrungBinh()).'">'. ($model->getDanhGiaMuaSamTrungBinh()>0?$model->getDanhGiaMuaSamTrungBinh():'') .'</div>'
+                        ],
+                        [
+                            'label'=>'Đánh giá sửa chữa',
+                            'format'=>'raw',
+                            'value'=>'<div class="star-ratings-css" title="'.floor($model->getDanhGiaSuaChuaTrungBinh()).'">'. ($model->getDanhGiaSuaChuaTrungBinh()>0?$model->getDanhGiaSuaChuaTrungBinh():'') .'</div>'
+                        ]
                     ],
                     'template' => "<tr><th style='width: 40%;'>{label}</th><td>{value}</td></tr>"
                 ]) ?>    

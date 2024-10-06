@@ -10,19 +10,31 @@ return [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
     ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
+        'dropdown' => false,
+        'vAlign'=>'middle',
+        'width' => '30px',
+        'header'=>'',
+        'template'=>'{updatePhieu}',
+        'urlCreator' => function($action, $model, $key, $index) {
+            return Url::to([$action,'id'=>$key]);
+        },
+        'viewOptions'=>['role'=>'modal-remote','title'=>'View','title'=>'Xem thông tin',
+            'class'=>'btn ripple btn-primary btn-sm',
+            'data-bs-placement'=>'top',
+            'data-bs-toggle'=>'tooltip-primary'],
+        'buttons'=>[
+            'updatePhieu'=>function ($url, $model) {
+            return Html::a('<i class="icon icon-pencil"></i>', ['/baotri/phieu-bao-tri/update','id'=>$model->id],
+                    ['data-pjax'=>0,'title'=> 'Chi tiết phiếu bảo trì', 'class'=>"btn ripple btn-info btn-sm", 'role'=>'modal-remote']);
+            }
+         ],
+      ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
     // 'attribute'=>'id',
     // ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'keHoach.thietBi.ten_thiet_bi',
-        'format'=>'raw',
-        'value'=>function($model){
-        return ($model->keHoach != NULL && $model->keHoach->thietBi != NULL) ? Html::a($model->keHoach->thietBi->ten_thiet_bi, ['/taisan/thiet-bi/view','id'=>$model->keHoach->id_thiet_bi],
-                ['data-pjax'=>0,'title'=> 'Chi tiết thiết bị', 'class'=>"text-primary", 'role'=>'modal-remote']) : '';
-        }
-    ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id',
@@ -32,14 +44,39 @@ return [
             $phieuBaoTriLabel = 'Phiếu bảo trì #' . $model->id;
             return Html::a($phieuBaoTriLabel, ['/baotri/phieu-bao-tri/view','id'=>$model->id],
                 ['data-pjax'=>0,'title'=> 'Chi tiết phiếu bảo trì', 'class'=>"text-primary", 'role'=>'modal-remote']);
-        }
-    ],
+        },
+        'width' => '200px',
+    ],    
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_ke_hoach',
+        'label'=>'Thuộc KHBT',
+        'format'=>'raw',
+        'value'=>function($model){
+            $khBaoTriLabel = 'Kế hoạch #' . $model->id;
+            return Html::a($khBaoTriLabel, ['/baotri/ke-hoach-bao-tri/view','id'=>$model->id_ke_hoach],
+                ['data-pjax'=>0,'title'=> 'Chi tiết Kế hoạch bảo trì', 'class'=>"text-primary", 'role'=>'modal-remote']);
+       },
+       'width' => '200px',
+   ], 
+        
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'keHoach.thietBi.ten_thiet_bi',
+        'format'=>'raw',
+        'value'=>function($model){
+            return ($model->keHoach != NULL && $model->keHoach->thietBi != NULL) ? Html::a($model->keHoach->thietBi->ten_thiet_bi, ['/taisan/thiet-bi/view','id'=>$model->keHoach->id_thiet_bi],
+                ['data-pjax'=>0,'title'=> 'Chi tiết thiết bị', 'class'=>"text-primary", 'role'=>'modal-remote']) : '';
+        },
+        'width' => '350px',
+    ],        
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ky_thu',
         'value'=>function($model){
-            return 'Kỳ bảo trì thứ ' . $model->ky_thu;
-        }
+            return 'Kỳ thứ ' . $model->ky_thu;
+        },
+        'width' => '80px',
     ],
         
    /*  [
@@ -63,7 +100,8 @@ return [
             $html=Html::a($dvbt ? $dvbt->ten_bo_phan : "", ['/bophan/bo-phan/view','id'=>$model->id_don_vi_bao_tri],
                 ['data-pjax'=>0,'title'=> 'Chi tiết đơn vị chịu trách nhiệm', 'class'=>"text-primary", 'role'=>'modal-remote']);
             return $html;
-        }
+        },
+        'width' => '100px',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -74,7 +112,8 @@ return [
         $html=Html::a($dvbt ? $dvbt->ten_nhan_vien : "", ['/bophan/nhan-vien/view','id'=>$model->id_nguoi_chiu_trach_nhiem],
             ['data-pjax'=>0,'title'=> 'Chi tiết người chịu trách nhiệm', 'class'=>"text-primary", 'role'=>'modal-remote']);
         return $html;
-        }
+        },
+        'width' => '70px',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -85,7 +124,8 @@ return [
             return $cus->convertYMDToDMY($model->thoi_gian_bat_dau);
         }
         else return null;
-        }
+        },
+        'width' => '70px',
     ],
     /* [
         'class'=>'\kartik\grid\DataColumn',
@@ -113,7 +153,8 @@ return [
                 'icon'=>'fe fe-minus-square',
                 'type'=>'warning'
             ]);
-        }
+        },
+        'width' => '70px',
     ],
     
    

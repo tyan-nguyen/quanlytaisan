@@ -10,6 +10,7 @@ use Yii;
 use app\modules\bophan\models\DoiTac;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\bophan\models\BoPhan;
+use app\modules\muasam\models\PhieuMuaSam;
 
 class ThietBiBase extends \app\models\TsThietBi
 {
@@ -79,7 +80,7 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return [
             [['ma_thiet_bi', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'ten_thiet_bi', 'id_nguoi_quan_ly'], 'required'],
-            [['id_vi_tri', 'id_he_thong', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao'], 'integer'],
+            [['id_vi_tri', 'id_he_thong', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao', 'id_phieu_mua_sam'], 'integer'],
             [['dac_tinh_ky_thuat', 'ghi_chu'], 'string'],
             [['ngay_mua', 'han_bao_hanh', 'ngay_dua_vao_su_dung', 'ngay_ngung_hoat_dong', 'thoi_gian_tao'], 'safe'],
             [['ma_thiet_bi', 'nam_san_xuat', 'trang_thai'], 'string', 'max' => 20],
@@ -127,6 +128,7 @@ class ThietBiBase extends \app\models\TsThietBi
             'ghi_chu' => 'Ghi chú', //*
             'thoi_gian_tao' => 'Thời gian tạo',
             'nguoi_tao' => 'Người tạo',
+            'id_phieu_mua_sam' => 'Phiếu mua sắm'
         ];
     }
 
@@ -228,6 +230,14 @@ class ThietBiBase extends \app\models\TsThietBi
     public function getYeuCauVanHanhCt()
     {
         return $this->hasOne(YeuCauVanHanhCt::className(), ['id_thiet_bi' => 'id']);
+    }
+    
+    public function getPhieuMuaSam(){
+        if($this->id_phieu_mua_sam){
+            return $this->hasOne(PhieuMuaSam::className(), ['id_phieu_mua_sam' => 'id']);
+        } else{
+            return null;
+        }
     }
     
 

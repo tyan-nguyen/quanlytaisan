@@ -170,6 +170,7 @@ class PhieuNhapHang extends \yii\db\ActiveRecord
                     'ngay_mua' => $cus->convertYMDToDMY($item->ngay_tao),//*
                     'han_bao_hanh' => $cus->convertYMDToDMY($item->han_bao_hanh),//*
                     'trang_thai' => ThietBi::STATUS_HOATDONG,//*
+                    'id_phieu_mua_sam' => $this->id_phieu_mua_sam
                 ];
                 $thietBi=new ThietBi($data);
                 

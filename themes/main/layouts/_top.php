@@ -157,11 +157,10 @@ $countPhieuMuaSam=0;
                         </li>
                         <!-- CART -->
 
-                       
                         <!-- sửa chữa -->
                         <li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-gear"></i> <span class="icon-text-top">Sữa chửa</span>
+                                <i class="bi bi-gear"></i> <span class="icon-text-top">Sửa chữa</span>
                                 <span class="badge bg-warning header-badge" id="notification-count-sc"><?= $phieuSuaChuaCount ?? 0 ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

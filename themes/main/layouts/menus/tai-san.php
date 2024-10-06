@@ -29,6 +29,15 @@
 							<li><a href="/taisan/loai-thiet-bi?menu=ts2" class="slide-item" data-menu="ts2">Loại thiết bị/tài sản</a></li>
 							<li><a href="/taisan/he-thong?menu=ts3" class="slide-item" data-menu="ts3">Hệ thống</a></li>
 							<li><a href="/taisan/vi-tri?menu=ts4" class="slide-item" data-menu="ts4">Vị trí </a></li>
+							<li class="sub-slide is-expanded">
+    							<a class="slide-item side-menu__item-sub" data-bs-toggle="sub-slide" href="javascript:void(0)">
+    								<span class="sub-side-menu__label">Thống kê</span>
+    								<i class="sub-angle fe fe-chevron-right"></i>
+    							</a>
+    							<ul class="sub-slide-menu open" style="display: block;">
+    								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-mua-sam?menu=ts8" data-menu="ts8">Thống kê tài sản mua sắm</a></li>
+    							</ul>
+    						</li>
 							<!-- 
 							<li><a href="/taisan/lop-hu-hong?menu=ts5" class="slide-item" data-menu="ts5">Lớp hư hỏng</a></li>
 							 -->

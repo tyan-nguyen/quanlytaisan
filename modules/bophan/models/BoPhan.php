@@ -148,6 +148,38 @@ class BoPhan extends BoPhanBase
     }
     public function getLichSuMuaSam()
     {
-        return $this->hasMany(PhieuMuaSam::class, ['id_bo_phan_quan_ly' => 'id'])->orderBy('id','desc')->limit(10);
+        return $this->hasMany(PhieuMuaSam::class, ['id_tt_mua_sam' => 'id'])->orderBy('id','desc')->limit(10);
+    }
+    /**
+     * tinh danh gia mua sam trung binh
+     * chi tinh phieu nao có đánh giá > 0
+     */
+    public function getDanhGiaMuaSamTrungBinh(){
+        $query = PhieuMuaSam::find()->where([
+            'id_tt_mua_sam' => $this->id,
+        ])->andWhere('danh_gia_ms > 0');
+        $count = $query->count();
+        $sum = $query->sum('danh_gia_ms');
+        if($count>0){
+            return round($sum/$count, 2);
+        } else {
+            return 0;
+        }
+    }
+    /**
+     * tinh danh gia mua sam trung binh
+     * chi tinh phieu nao có đánh giá > 0
+     */
+    public function getDanhGiaSuaChuaTrungBinh(){
+        $query = PhieuSuaChua::find()->where([
+            'id_tt_sua_chua' => $this->id,
+        ])->andWhere('danh_gia_sc > 0');
+        $count = $query->count();
+        $sum = $query->sum('danh_gia_sc');
+        if($count>0){
+            return round($sum/$count, 2);
+        } else {
+            return 0;
+        }
     }
 }

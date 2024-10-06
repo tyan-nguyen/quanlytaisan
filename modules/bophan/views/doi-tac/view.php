@@ -60,6 +60,16 @@ use app\modules\bophan\models\DoiTac;
                                 'type'=>'VIEW'
                             ])
                         ],
+                        [
+                            'label'=>'Đánh giá mua sắm',
+                            'format'=>'raw',
+                            'value'=>'<div class="star-ratings-css" title="'.floor($model->getDanhGiaMuaSamTrungBinh()).'">'. ($model->getDanhGiaMuaSamTrungBinh()>0?$model->getDanhGiaMuaSamTrungBinh():'') .'</div>'
+                        ],
+                        [
+                            'label'=>'Đánh giá sửa chữa',
+                            'format'=>'raw',
+                            'value'=>'<div class="star-ratings-css" title="'.floor($model->getDanhGiaSuaChuaTrungBinh()).'">'. ($model->getDanhGiaSuaChuaTrungBinh()>0?$model->getDanhGiaSuaChuaTrungBinh():'') .'</div>'
+                        ]
                         //'thoi_gian_tao',
                         //'nguoi_tao',
                     ],
