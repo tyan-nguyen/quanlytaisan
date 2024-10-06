@@ -19,39 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;
-Yii::$app->params['showImport'] = true;
-Yii::$app->params['showImportDownload'] = Yii::getAlias('@web/uploads/excel/down/mau_import_tai_san.xlsx');
-Yii::$app->params['showImportModel'] = ThietBi::MODEL_ID;
-
-$btns = '<a style="margin-left:10px" class="btn ripple btn-primary dropdown-toggle mb-0" href="javascript:void(0);"
-		data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-		<i class="fa fa-print"></i> IN TEM <i class="fa fa-caret-down ms-1"></i>
-	</a>
-	<div class="dropdown-menu tx-13" style="min-width:200px">'.
-	BulkButtonWidget::widget([
-	    'buttons'=>Html::a('<i class="fa fa-print" aria-hidden="true"></i>&nbsp; In danh sách đã chọn',
-	        [Yii::getAlias('@web/taisan/qr/in-qrs')] ,
-	        [
-	            "class"=>"dropdown-item",
-	            //'style'=>'margin-left:20px;',
-	            'role'=>'modal-remote-bulk',
-	            'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-	            'data-request-method'=>'post',
-	            'data-confirm-title'=>'Thông báo',
-	            'data-confirm-message'=>'Bạn có chắc in dòng được chọn không?'
-	        ]),
-	]) . Html::a(
-	    '<i class="fa fa-print me-2"></i>In theo loại thiết bị',
-	    [Yii::getAlias('@web/taisan/qr/in-loai')] ,
-	    [
-	        "class"=>"dropdown-item",
-	        'role'=>'modal-remote',
-	    ]
-	    ).'</div>';
+Yii::$app->params['showImport'] = false;
 	    
-	    $conditionShowTree = ($tsLayout>0 && $tsLayout<=3);
-	    $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchModel, 'tsLayout'=>$tsLayout]):0;
-	    ?>
+$conditionShowTree = ($tsLayout>0 && $tsLayout<=3);
+$tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchModel, 'tsLayout'=>$tsLayout]):0;
+?>
 
 <div class="row">
 	<?php if($conditionShowTree==true):?>
@@ -79,12 +51,8 @@ $btns = '<a style="margin-left:10px" class="btn ripple btn-primary dropdown-togg
             'columns' => require(__DIR__.'/ts-mua-sam-columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm mới', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Thêm thiết bị/tài sản','class'=>'btn btn-outline-primary']).
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [Yii::$app->controller->action->id . '?layout='.$tsLayout],
                     ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
-                    Html::a('<i class="fa fa-qrcode" aria-hidden="true"></i> Quét mã QR', ['qr-scan'],
-                        ['role'=>'modal-remote','title'=> 'Quét QRcode','class'=>'btn btn-outline-primary']).
                     '{export}'
                 ],
             ], 
@@ -109,18 +77,7 @@ $btns = '<a style="margin-left:10px" class="btn ripple btn-primary dropdown-togg
                 //'type' => 'primary', 
                 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Tài sản/Thiết bị',
                 'before'=>'Danh sách Tài sản/Thiết bị',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xoá dòng chọn',
-                                ["bulkdelete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Thông báo',
-                                    'data-confirm-message'=>'Để không ảnh hưởng dữ liệu liên quan vui lòng cập nhật trạng thái tài sản đã hỏng hoặc đã thanh lý. Nếu vẫn muốn xóa thì dữ liệu liên quan tài sản/thiết bị như: lịch sử thay đổi, lịch sử sữa chữa, phiếu bảo trì, kế hoạch bảo trì, tài liệu sẽ cũng được xóa theo. Bạn có chắc xoá dòng được chọn không?'
-                                ]),
-                ]). $btns . '<div class="clearfix"></div>',
+                'after'=>'<div class="clearfix"></div>',
             ]
         ])?>
     </div><!-- #ajaxCrudDatatable -->
