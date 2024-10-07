@@ -60,11 +60,40 @@ class ThongKeController extends Controller
         ]);
     }
     
-    public function actionThongKeTaiSanHoatDong($idThietBi=NULL, $showBaoTri=false, $showSuaChua=false, $showVanHanh=false){
+    public function actionThongKeTaiSanHoatDong($idThietBi=NULL, $tuNgay=NULL, $denNgay=NULL, $showBaoTri=NULL, $showSuaChua=NULL, $showVanHanh=NULL){
+        if(!isset($showBaoTri))
+            $showBaoTri = false;
+        if(!isset($showSuaChua))
+            $showSuaChua = false;
+        if(!isset($showVanHanh))
+            $showVanHanh = false;
         Yii::$app->params['modelID'] = 'Thống kê lịch sử sử dụng tài sản/sữa chữa';
         $model = ThietBi::findOne($idThietBi);
+        $lichSuHoatDong = array();
+        if($model!=NULL){
+            if($showBaoTri){
+                $lichSuHoatDong = array_merge($lichSuHoatDong, $model->getLichSuBaoTri($tuNgay, $denNgay));
+            }
+            if($showSuaChua){
+                $lichSuHoatDong = array_merge($lichSuHoatDong, $model->getLichSuSuaChua($tuNgay, $denNgay));
+            }
+            if($showVanHanh){
+                $lichSuHoatDong = array_merge($lichSuHoatDong, $model->getLichSuVanHanh($tuNgay, $denNgay));
+            }
+            usort($lichSuHoatDong, function($a, $b) {
+                return $a['ngay_sort'] <=> $b['ngay_sort'];
+            });
+            $lichSuHoatDong = array_reverse($lichSuHoatDong);
+        }
         return $this->render('ts-hoat-dong', [
-            'model'=>$model
+            'model'=>$model,
+            'lichSuHoatDong'=>$lichSuHoatDong,
+            'idThietBi'=>$idThietBi,
+            'tuNgay'=>$tuNgay,
+            'denNgay'=>$denNgay,
+            'showBaoTri'=>$showBaoTri,
+            'showSuaChua'=>$showSuaChua,
+            'showVanHanh'=>$showVanHanh
         ]);
     }
     

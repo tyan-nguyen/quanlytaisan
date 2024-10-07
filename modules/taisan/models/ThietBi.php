@@ -7,6 +7,8 @@ use app\modules\dungchung\models\CustomFunc;
 use app\widgets\views\StatusWithIconWidget;
 use app\modules\baotri\models\PhieuBaoTri;
 use yii\helpers\ArrayHelper;
+use app\modules\suachua\models\PhieuSuaChua;
+use app\modules\baotri\models\KeHoachBaoTri;
 
 class ThietBi extends ThietBiBase
 {
@@ -22,29 +24,100 @@ class ThietBi extends ThietBiBase
     /**
      * get list data thong ke lich su hoat dong, sua chua, bao tri cua tai san
      */
-    public function getLichSuHoatDong(){
-        return $this->getLichSuBaoTri();
-    }
+    /* public function getLichSuHoatDong(){
+        $result = array_merge($this->getLichSuBaoTri(), $this->getLichSuSuaChua());
         
-    public function getLichSuBaoTri(){
-        /* $phieuBaoTris = PhieuBaoTri::find()->alias('t')
+        return $result;
+    } */        
+    public function getLichSuBaoTri($tuNgay, $denNgay){
+        $custom = new CustomFunc();
+        $result = array();
+        $query = PhieuBaoTri::find()->alias('t')
         ->joinWith(['keHoach as kh'])
         ->where([
             'kh.id_thiet_bi' => $this->id,
-        ])->asArray()->all();
-        return $phieuBaoTris; */
+            't.da_hoan_thanh' => 1
+        ]);
+        if($tuNgay && $denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['>=','thoi_gian_bat_dau', $tuNgay]);
+            $query->andWhere(['<=','thoi_gian_bat_dau', $denNgay]);
+        } else if($tuNgay && !$denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $query->andWhere(['>=','thoi_gian_bat_dau', $tuNgay]);
+        } else if(!$tuNgay && $denNgay){
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['<=','thoi_gian_bat_dau', $denNgay]);
+        }
+        $phieuBaoTris = $query->all();
+        foreach ($phieuBaoTris as $phieuBaoTri){
+            $result[] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuBaoTri->thoi_gian_bat_dau),
+                'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuBaoTri->thoi_gian_bat_dau)),
+                'noi_dung' => $phieuBaoTri->keHoach->ten_cong_viec,
+                'loai'=>KeHoachBaoTri::MODEL_ID,
+                'tham_chieu'=>$phieuBaoTri->id
+            ];
+        }
+        return $result;
+    }
+    public function getLichSuSuaChua($tuNgay, $denNgay){
         $custom = new CustomFunc();
         $result = array();
-        $phieuBaoTris = PhieuBaoTri::find()
-        ->select(['ts_phieu_bao_tri.*'])
-        ->leftJoin('ts_ke_hoach_bao_tri', 'ts_ke_hoach_bao_tri.id = ts_phieu_bao_tri.id_ke_hoach')
-        ->where(['=','ts_ke_hoach_bao_tri.id_thiet_bi',$this->id])
-        //->andWhere(['=','ts_phieu_bao_tri.da_hoan_thanh',1])
-        ->all();
-        foreach ($phieuBaoTris as $phieuBaoTri){
-            $result[str_replace('-', '', $custom->convertYMDHISToYMD($phieuBaoTri->thoi_gian_bat_dau))] = [
-                'ngay' => $custom->convertYMDHISToDMY($phieuBaoTri->thoi_gian_bat_dau),
-                'noi_dung' => $phieuBaoTri->keHoach->ten_cong_viec
+        $query = PhieuSuaChua::find()->where(['id_thiet_bi'=>$this->id])->andWhere(['=','trang_thai','completed']);
+        if($tuNgay && $denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['>=','ngay_sua_chua', $tuNgay]);
+            $query->andWhere(['<=','ngay_sua_chua', $denNgay]);
+        } else if($tuNgay && !$denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $query->andWhere(['>=','ngay_sua_chua', $tuNgay]);
+        } else if(!$tuNgay && $denNgay){
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['<=','ngay_sua_chua', $denNgay]);
+        }
+        $phieuSuaChuas = $query->all();
+        foreach ($phieuSuaChuas as $phieuSuaChua){
+            $result[] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuSuaChua->ngay_sua_chua),
+                'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuSuaChua->ngay_sua_chua)),
+                'noi_dung' => 'Địa điểm: ' . $phieuSuaChua->dia_chi . '. Tình trạng: ' . $phieuSuaChua->ghi_chu1,
+                'loai'=>PhieuSuaChua::MODEL_ID,
+                'tham_chieu'=>$phieuSuaChua->id
+            ];
+        }
+        return $result;
+    }
+    public function getLichSuVanHanh($tuNgay, $denNgay){
+        $custom = new CustomFunc();
+        $result = array();
+        $query = YeuCauVanHanhCt::find()->where(['id_thiet_bi'=>$this->id]);
+        if($tuNgay && $denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['>=','DATE(ngay_bat_dau)', $tuNgay]);
+            $query->andWhere(['<=','DATE(ngay_bat_dau)', $denNgay]);
+        } else if($tuNgay && !$denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $query->andWhere(['>=','DATE(ngay_bat_dau)', $tuNgay]);
+        } else if(!$tuNgay && $denNgay){
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['<=','DATE(ngay_bat_dau)', $denNgay]);
+        }
+        $yeuCauVanHanhCts = $query->all();
+        foreach ($yeuCauVanHanhCts as $phieuVanHanh){
+            $result[] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau),
+                'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuVanHanh->ngay_bat_dau)),
+                'noi_dung' => 'Thời gian: '.$custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau)
+                    . ' - '
+                    .$custom->convertYMDHISToDMY($phieuVanHanh->ngay_ket_thuc)
+                    .'. Địa điểm: ' . $phieuVanHanh->yeuCauVanHanh->cong_trinh . 
+                    '. Nội dung: ' . $phieuVanHanh->yeuCauVanHanh->ly_do,
+                'loai'=>YeuCauVanHanh::MODEL_ID,
+                'tham_chieu'=>$phieuVanHanh->id
             ];
         }
         return $result;

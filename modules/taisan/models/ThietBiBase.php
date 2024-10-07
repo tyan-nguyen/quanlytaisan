@@ -11,6 +11,7 @@ use app\modules\bophan\models\DoiTac;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\bophan\models\BoPhan;
 use app\modules\muasam\models\PhieuMuaSam;
+use app\modules\suachua\models\PhieuSuaChua;
 
 class ThietBiBase extends \app\models\TsThietBi
 {
@@ -226,10 +227,16 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return $this->id_thiet_bi_cha != NULL ? $this->hasOne(ThietBi::class, ['id' => 'id_thiet_bi_cha']) : '';
     }
-
+    
+    //???????????????
     public function getYeuCauVanHanhCt()
     {
         return $this->hasOne(YeuCauVanHanhCt::className(), ['id_thiet_bi' => 'id']);
+    }
+    
+    public function getYeuCauVanHanhCts()
+    {
+        return $this->hasMany(YeuCauVanHanhCt::className(), ['id_thiet_bi' => 'id']);
     }
     
     public function getPhieuMuaSam(){
@@ -240,6 +247,13 @@ class ThietBiBase extends \app\models\TsThietBi
         }
     }
     
+    public function getPhieuSuaChuas(){
+        return $this->hasMany(PhieuSuaChua::class, ['id_thiet_bi' => 'id']);
+    }
+    
+    public function getPhieuSuaChuaHoanThanhs(){
+        return $this->hasMany(PhieuSuaChua::class, ['id_thiet_bi' => 'id'])->where(['=','trang_thai','completed']);
+    }
 
     /**
      * {@inheritdoc}
