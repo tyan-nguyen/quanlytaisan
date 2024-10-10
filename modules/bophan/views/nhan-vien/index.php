@@ -15,7 +15,7 @@ use app\modules\bophan\models\NhanVien;
 $this->title = 'Nhân viên';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;

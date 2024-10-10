@@ -731,7 +731,7 @@ class YeuCauVanHanhController extends Controller
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
         $userList = ArrayHelper::map(User::find()->all(), 'id', 'username');
-        $currentUserId = Yii::$app->user->identity->id ?? 1;
+        $currentUserId = Yii::$app->user->id??'';
         $currentUserName = Yii::$app->user->identity->username;
         $idNguoiYeuCau = $model->id_nguoi_yeu_cau;
 
@@ -774,6 +774,44 @@ class YeuCauVanHanhController extends Controller
             $model->id_nguoi_nhan = Yii::$app->request->post('YeuCauVanHanh')['id_nguoi_nhan'];
             $model->ngay_nhan = Yii::$app->request->post('YeuCauVanHanh')['ngay_nhan'];
             $model->noi_dung_nhan = Yii::$app->request->post('YeuCauVanHanh')['noi_dung_nhan'];
+            //check details
+            $detaiHasError = false;
+            if($model->details){
+                foreach ($model->details as $detail){
+                    if(!$detail->thietBi || !$detail->ngay_bat_dau || !$detail->ngay_ket_thuc){
+                        $detaiHasError = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!$model->validate() || ($model->validate() && !$model->details) || $detaiHasError ) {
+                if(!$model->details){
+                    $model->addError('id', 'Vui lòng chọn thiết bị cho phiếu yêu cầu vận hành trước khi xuất phiếu!');
+                } else if($detaiHasError){
+                    $model->addError('id', 'Vui lòng nhập đầy đủ thông tin cho thiết bị như tên thiết bị, ngày bắt đầu, ngày kết thúc trước khi xuất phiếu!');
+                }
+                return [
+                    'title' => "Xuất phiếu",
+                    'content' => $this->renderAjax('operate', [
+                        'model' => $model,
+                        'modelsDetail' => $modelsDetail,
+                        'userList' => $userList,
+                        'currentUserId' => $currentUserId,
+                        'idNguoiYeuCau' => $idNguoiYeuCau,
+                        
+                        
+                    ]),
+                    'footer' => Html::button('Đóng', [
+                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                    ])
+                    . Html::button('Xuất phiếu', [
+                        'class' => 'btn btn-primary',
+                        'type' => 'submit',
+                        'form' => 'operate-form'
+                    ])
+                ];
+            }
 
             // if ($model->validate() && $model->save(false)) {
 

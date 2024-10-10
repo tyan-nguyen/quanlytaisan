@@ -16,7 +16,7 @@ $this->title = 'Phiếu mua sắm ';
 //$this->params['breadcrumbs'] = ['label' => 'Employees', 'url' => ['index'],'template' => "<li><b>{link}</b></li>\n"];
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;
 $permissionCheck=User::hasPermission("qSuaPhieuMuaSamVatTu");

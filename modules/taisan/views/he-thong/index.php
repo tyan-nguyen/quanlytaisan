@@ -16,7 +16,7 @@ use app\modules\taisan\models\HeThong;
 $this->title = 'Hệ thống thiết bị';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;

@@ -2,7 +2,7 @@
 use cangak\ajaxcrud\CrudAsset; 
 use yii\bootstrap5\Modal;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 ?>
 <style>
 .fc-list-event-title a{

@@ -14,7 +14,7 @@ use app\widgets\FilterFormWidget;
 
 
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 $isUpdate=$model && $model->trang_thai=='draft';
 

@@ -23,7 +23,7 @@ use app\modules\taisan\models\YeuCauVanHanh;
 $this->title = 'Phiếu Yêu cầu vận hành';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;

@@ -16,7 +16,7 @@ use app\widgets\FilterFormWidget;
 $this->title = 'Theo dõi vận hành thiết bị';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;

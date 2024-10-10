@@ -13,7 +13,7 @@ use app\widgets\FilterFormWidget;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 
 ?>

@@ -29,6 +29,8 @@ class ViboonAsset extends AssetBundle
         'assets/fontawesome-free-6.4.0-web/css/all.min.css',
     ];
     public $js = [
+        'js/ModalRemote.js',
+        'js/ajaxcrud.js',
         'assets/plugins/bootstrap/popper.min.js',
         'assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js',
         'assets/plugins/perfect-scrollbar/p-scroll-1.js',

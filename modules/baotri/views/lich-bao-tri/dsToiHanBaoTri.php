@@ -12,7 +12,7 @@ use app\widgets\FilterFormWidget;
 /* @var $searchModel app\modules\kholuutru\models\LichSuVatTuSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 ?>
 
 <div class="row">

@@ -15,7 +15,7 @@ use app\widgets\FilterFormWidget;
 $this->title = 'Danh sách đơn vị báo giá';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;

@@ -15,7 +15,7 @@ use app\widgets\FilterFormWidget;
 $this->title = 'Danh sách tới kỳ hạn bảo trì';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['searchLabel'] = 'Tra cứu';

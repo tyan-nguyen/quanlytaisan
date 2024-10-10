@@ -249,7 +249,14 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
         	<?= $this->render('_form_chi_tiet', ['model'=>$model]) ?>
         </div>
     </div>
-	<?php } ?>
+	<?php } else if(!$model->isNewRecord && $model->sauDuyet()){ ?>    
+    <!-- chi tiet thiet bi sua -->
+    <div class="row">  
+    	<div class="col-md-12" id="chiTietBlock">
+        	<?= $this->render('_form_chi_tiet_view', ['model'=>$model]) ?>
+        </div>
+    </div>
+	<?php }?>
 	
     <!-- Them Chi tiet Thiet bi -->
 

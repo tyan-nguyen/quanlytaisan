@@ -47,6 +47,14 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
             YeuCauVanHanhBase::STATUS_NGUNG_QUYTRINH => 'Ngưng quy trình',
         ];
     }
+    
+    public function sauDuyet(){
+        if($this->hieu_luc==self::STATUS_DATRA || $this->hieu_luc==self::STATUS_VANHANH || $this->hieu_luc==self::STATUS_NGUNG_QUYTRINH){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Danh muc Ten trang thai
@@ -156,7 +164,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                     'ngay_lap', 'ngay_duyet', 'ngay_xuat', 'ngay_nhan', 'created_at', 'updated_at', 'deleted_at',
                     'noi_dung_duyet', 'id_nguoi_duyet',
                     'noi_dung_gui', 'id_nguoi_gui',
-                    'noi_dung_xuat', 'id_nguoi_xuat',
+                    'noi_dung_xuat',
                     'noi_dung_nhan', 'id_nguoi_nhan'
                     //  'idNguoiDuyet', 'ngayDuyet', 'noiDungDuyet'
                 ],
@@ -171,7 +179,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
             [['id_nguoi_lap'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_lap' => 'id']],
             [['id_nguoi_gui'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_gui' => 'id']],
             [['id_nguoi_duyet'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_duyet' => 'id']],
-            [['id_nguoi_xuat'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_xuat' => 'id']],
+           [['id_nguoi_xuat'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_xuat' => 'id']],
             [['id_nguoi_nhan'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_nhan' => 'id']],
             [['id_nguoi_yeu_cau'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_yeu_cau' => 'id']],
         ];

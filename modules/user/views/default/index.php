@@ -6,7 +6,7 @@ use cangak\ajaxcrud\CrudAsset;
 Yii::$app->params['showTopSearch'] = false;
 Yii::$app->params['moduleID'] = 'Home';
 Yii::$app->params['modelID'] = 'Dashboard';
-CrudAsset::register($this);
+//CrudAsset::register($this);
 $dash = new Dashboard();
 ?>
 

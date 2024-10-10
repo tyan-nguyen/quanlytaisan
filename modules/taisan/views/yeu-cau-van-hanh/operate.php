@@ -118,7 +118,25 @@ use yii\helpers\Url;
                 <!-- Chi tiet Van hanh -->
                 <div class="row">
                     <div class="col">
-                        <?= GridView::widget([
+                    	 <?= $this->render('_form_chi_tiet_view', ['model'=>$model]) ?>
+                    	 
+                    	 <?php 
+                    	 if(isset($model->errors['id'])){
+                    	     echo \app\widgets\SummaryAlert::widget([
+                    	         'type'=>'danger',
+                    	         'textMain'=>'',
+                    	         'textSummary'=>$model->errors['id'][0] . '<br/>' . Html::a('<i class="fas fa-pencil-alt"></i> Cập nhật thiết bị', 
+                    	             ['/taisan/yeu-cau-van-hanh/update', 'id'=>$model->id],
+                    	             [
+                    	                 'role'=>'modal-remote',
+                    	                 'class'=>'add-item btn btn-primary btn-xs'
+                    	             ]
+                    	         ),
+                    	         'showCloseButton'=>false
+                    	     ]);
+                    	 }
+                    	 ?>
+                        <?php /* GridView::widget([
                             'dataProvider' => new ArrayDataProvider([
                                 'allModels' => $modelsDetail,
                                 'pagination' => [
@@ -147,7 +165,7 @@ use yii\helpers\Url;
                                     }
                                 ],
                             ],
-                        ]) ?>
+                        ]) */ ?>
                     </div>
                 </div>
                 <!-- ./Chi tiet Van hanh -->

@@ -5,7 +5,7 @@ use yii\bootstrap5\Modal;
 use cangak\ajaxcrud\CrudAsset; 
 use app\modules\suachua\models\PhieuSuaChua;
 use app\modules\taisan\models\YeuCauVanHanh;
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 $this->title = "Thống kê hoạt động tài sản";
 

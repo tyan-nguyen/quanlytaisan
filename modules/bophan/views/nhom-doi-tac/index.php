@@ -15,7 +15,7 @@ use app\widgets\FilterFormWidget;
 $this->title = 'Nhóm đối tác';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;

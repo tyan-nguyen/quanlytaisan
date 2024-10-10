@@ -16,7 +16,7 @@ use app\modules\taisan\models\LoaiThietBi;
 $this->title = 'Loại thiết bị';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 Yii::$app->params['showSearch'] = true;
 Yii::$app->params['showExport'] = true;
 Yii::$app->params['showImport'] = true;

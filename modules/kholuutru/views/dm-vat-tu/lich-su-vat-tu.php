@@ -14,7 +14,7 @@ use app\widgets\FilterFormWidget;
 
 
 
-CrudAsset::register($this);
+//CrudAsset::register($this);
 
 
 
