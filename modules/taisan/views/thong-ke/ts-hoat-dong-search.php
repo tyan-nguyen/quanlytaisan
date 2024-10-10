@@ -73,7 +73,7 @@ use yii\helpers\Html;
      	<label>Hiển thị lịch sử sửa chữa</label>
      	<?= Html::checkbox('showSuaChua', !$idThietBi?true:$showSuaChua) ?>
      
-     	<label>Hiển thị lịch sử Vận hành</label>
+     	<label>Hiển thị lịch sử vận hành</label>
      	<?= Html::checkbox('showVanHanh', !$idThietBi?true:$showVanHanh) ?>
      </div>
      <div class="col-md-2">

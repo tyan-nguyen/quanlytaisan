@@ -17,9 +17,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
 use wbraganca\dynamicform\DynamicFormAsset;
 use yii\bootstrap5\Button;
 use yii\web\View;
+use app\widgets\SummaryAlert;
 
 DynamicFormAsset::register($this);
-
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsYeuCauVanHanh */
@@ -106,7 +106,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                             'pluginOptions' => [
                                 'allowClear' => true,
                                 'width' => '100%',
-
+                                'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
                             ],
                         ]); ?>
                     </div>
@@ -128,10 +128,10 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                     </div>
 
                     <div class="col-12">
-                        <?= $form->field($model, 'noi_dung_lap')->textInput([
+                        <?= $form->field($model, 'noi_dung_lap')->textarea([
                             'maxlength' => true,
-                            'disabled' => !$isDraft
-
+                            'disabled' => !$isDraft,
+                            'rows'=>2
                         ]) ?>
                     </div>
                 </div>
@@ -176,7 +176,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                             ],
                             'data' => ($model->isNewRecord
                                 ? $newArr
-                                : [$model->id_nguoi_yeu_cau => $model->nguoiYeuCau->ten_nhan_vien]),
+                                : [$model->id_nguoi_yeu_cau => $model->nguoiYeuCau?$model->nguoiYeuCau->ten_nhan_vien:'']),
                             'type' => DepDrop::TYPE_SELECT2,
                             'select2Options' => [
                                 'pluginOptions' => [
@@ -196,9 +196,10 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                     </div>
 
                     <div class="col-12">
-                        <?= $form->field($model, 'ly_do')->textInput([
+                        <?= $form->field($model, 'ly_do')->textarea([
                             'maxlength' => true,
-                            'disabled' => !$isDraft
+                            'disabled' => !$isDraft,
+                            'rows'=>2
                         ]) ?>
                     </div>
                 </div>
@@ -211,19 +212,21 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
         <div class="col">
             <fieldset class="border p-2" style="margin:3px">
                 <legend class="legend">
-                    <p>Địa điểm công trình</p>
+                    <p>Phục vụ công trình</p>
                 </legend>
                 <div class="row">
                     <div class="col-6">
-                        <?= $form->field($model, 'dia_diem')->textInput([
+                        <?= $form->field($model, 'dia_diem')->textarea([
                             'maxlength' => true,
-                            'disabled' => !$isDraft
+                            'disabled' => !$isDraft,
+                            'rows'=>2
                         ]) ?>
                     </div>
 
                     <div class="col-6">
-                        <?= $form->field($model, 'cong_trinh')->textInput([
-                            'disabled' => !$isDraft
+                        <?= $form->field($model, 'cong_trinh')->textarea([
+                            'disabled' => !$isDraft,
+                            'rows'=>2
                         ]) ?>
                     </div>
 
@@ -232,10 +235,25 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
             </fieldset>
         </div>
     </div>
-
+    
+    <?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>    
+    <!-- chi tiet thiet bi sua -->
+    <div class="row">
+    	<div class="col-md-12 mt-2">
+       		<?= !$model->details ? SummaryAlert::widget([
+			    'textMain'=>'Yêu cầu vận hành đã được duyệt!',
+			    'textSummary'=>'Vui lòng thêm thiết bị điều chuyển cho yêu cầu.'
+			]) : '' ?>
+       </div>   
+    	<div class="col-md-12" id="chiTietBlock">
+        	<?= $this->render('_form_chi_tiet', ['model'=>$model]) ?>
+        </div>
+    </div>
+	<?php } ?>
+	
     <!-- Them Chi tiet Thiet bi -->
 
-    <?php DynamicFormWidget::begin([
+    <?php /*DynamicFormWidget::begin([
         'widgetContainer' => 'dynamicform_wrapper',
         'widgetBody' => '.container-items',
         'widgetItem' => '.item',
@@ -277,11 +295,25 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
 
                     <div class="row">
                         <div class="col">
-                            <?= $form->field($modelDetail, "[{$i}]id_thiet_bi")->dropDownList(
-                                ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
-                                ['prompt' => '-- Chọn --'],
-
-                            ) ?>
+                            
+                            
+                            
+                             <?=$form->field($modelDetail, "[{$i}]id_thiet_bi")->widget(Select2::classname(), [
+                                 'data' => ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
+                                'language' => 'vi',
+                                'options' => [
+                                    'placeholder' => 'Chọn thiết bị...',
+                                ],
+                                'pluginOptions' => [
+                                    'allowClear' => true,
+                                    'width' => '100%',
+                                    'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+                                ],
+                            ]);?>
+                            
+                            
+                            
+                            
                         </div>
                         <div class="col">
                             <?= $form->field($modelDetail, "[{$i}]ngay_bat_dau")->widget(DatePicker::classname(), [
@@ -321,7 +353,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
 
     <!-- ./Them Chi tiet Thiet bi -->
 
-    <?php DynamicFormWidget::end(); ?>
+    <?php DynamicFormWidget::end(); */  ?>
 
     <?php if (!Yii::$app->request->isAjax) { ?>
         <div class="form-group">

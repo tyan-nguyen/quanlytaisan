@@ -5,6 +5,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\data\ArrayDataProvider;
+use app\modules\taisan\models\YeuCauVanHanh;
+use app\widgets\SummaryAlert;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsYeuCauVanHanh */
@@ -123,13 +125,23 @@ use yii\data\ArrayDataProvider;
 
 
                             ],
+                            'template' => "<tr><th style='width: 40%;'>{label}</th><td class='align-middle'>{value}</td></tr>"
                         ]) ?>
                     </div>
 
                     <!-- Right -->
                     <div class="col">
                         <div class="row">
-                            <?= GridView::widget([
+                        	<?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>
+                           <div class="col-md-12">
+								<?= !$model->details ? SummaryAlert::widget([
+								    'textMain'=>'Yêu cầu vận hành đã được duyệt!',
+								    'textSummary'=>'Vui lòng thêm thiết bị điều chuyển cho yêu cầu.'
+								]): '' ?>
+                           </div>
+                        	<?php } ?>
+	
+                            <?php /* GridView::widget([
                                 'dataProvider' => new ArrayDataProvider([
                                     'allModels' => $modelsDetail,
                                     'pagination' => [
@@ -158,8 +170,10 @@ use yii\data\ArrayDataProvider;
                                     ],
                                 ],
                                 'summary' => ''
-                            ]) ?>
+                            ]) */ ?>
                         </div>
+                        
+                        <?= $this->render('_form_chi_tiet_view', ['model'=>$model]) ?>
 
                         <div class="row">
                             <div class="col">
@@ -220,7 +234,8 @@ use yii\data\ArrayDataProvider;
                         //     'value' => $model->updatedAt ? $model->updatedAt : '-',
                         //     'label' => 'Ngày cập nhật',
                         // ],
-                    ]
+                    ],
+                    'template' => "<tr><th style='width: 25%;'>{label}</th><td class='align-middle'>{value}</td></tr>"
                 ])
                 ?>
             </div>
