@@ -11,6 +11,8 @@ use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormAsset;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
+use app\modules\taisan\models\PhieuTraThietBiBase;
+use app\widgets\SummaryAlert;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsPhieuTraThietBi */
@@ -108,9 +110,34 @@ $cus = new CustomFunc();
             </div>
         </fieldset>
     </div>
+    
+    
+     <?php if($model->isNewRecord || PhieuTraThietBiBase::STATUS_NHAP){ ?>      
+    <!-- chi tiet thiet bi sua -->
+    <div class="row">
+    	<div class="col-md-12 mt-2">
+       		<?= !$model->details ? SummaryAlert::widget([
+			    'textMain'=>'',
+			    'textSummary'=>'Vui lòng thêm thiết bị vào phiếu.'
+			]) : '' ?>
+       </div>   
+    	<div class="col-md-12" id="chiTietBlock">
+        	<?= $this->render('_form_chi_tiet', ['model'=>$model, 'modelDetail'=>$model->details]) ?>
+        </div>
+    </div>
+	<?php } else if(!$model->isNewRecord && PhieuTraThietBiBase::STATUS_DATRA){ ?>    
+    <!-- chi tiet thiet bi -->
+    <div class="row">  
+    	<div class="col-md-12" id="chiTietBlock">
+        	<?= $this->render('_form_chi_tiet_view', ['model'=>$model, 'modelDetail'=>$model->details]) ?>
+        </div>
+    </div>
+	<?php }?>
+	
+	
     <!-- Them Chi tiet Thiet bi -->
 
-    <?php DynamicFormWidget::begin([
+    <?php /* DynamicFormWidget::begin([
         'widgetContainer' => 'dynamicform_wrapper',
         'widgetBody' => '.container-items',
         'widgetItem' => '.item',
@@ -175,7 +202,7 @@ $cus = new CustomFunc();
         <?php endforeach; ?>
     </div>
 
-    <?php DynamicFormWidget::end(); ?>
+    <?php DynamicFormWidget::end(); */ ?>
 
     <?php if (!Yii::$app->request->isAjax) { ?>
         <div class="form-group">

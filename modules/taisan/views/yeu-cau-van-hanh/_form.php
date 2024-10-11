@@ -18,6 +18,7 @@ use wbraganca\dynamicform\DynamicFormAsset;
 use yii\bootstrap5\Button;
 use yii\web\View;
 use app\widgets\SummaryAlert;
+use app\modules\taisan\models\PhieuTraThietBiBase;
 
 DynamicFormAsset::register($this);
 
@@ -236,8 +237,8 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
         </div>
     </div>
     
-    <?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>    
-    <!-- chi tiet thiet bi sua -->
+    <?php if(!$model->isNewRecord || $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>    
+    <!-- chi tiet thiet bi -->
     <div class="row">
     	<div class="col-md-12 mt-2">
        		<?= !$model->details ? SummaryAlert::widget([

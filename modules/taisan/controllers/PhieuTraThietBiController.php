@@ -215,42 +215,7 @@ class PhieuTraThietBiController extends Controller
                         Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"])
 
                 ];
-            } else if ($model->load($request->post())) {
-
-                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname());
-                Model::loadMultiple($modelsDetail, $request->post());
-
-                $valid = $model->validate();
-                $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-
-                if ($valid) {
-                    $transaction = Yii::$app->db->beginTransaction();
-                    try {
-                        if ($flag = $model->save(false)) {
-                            foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
-                                if (!($flag = $modelDetail->save(false))) {
-                                    $transaction->rollBack();
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($flag) {
-                            $transaction->commit();
-                            return [
-                                'forceReload' => '#crud-datatable-pjax',
-                                'title' => "Thêm mới",
-                                'content' => '<span class="text-success">Tạo phiếu thành công</span>',
-                                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                                    Html::a('Tiếp tục thêm mới', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']),
-                            ];
-                        }
-                    } catch (\Exception $e) {
-                        $transaction->rollBack();
-                    }
-                }
+            } else if ($model->load($request->post()) & $model->save()) {
 
                 return [
                     'title' => "Thêm mới",
@@ -261,44 +226,18 @@ class PhieuTraThietBiController extends Controller
                     'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
+            } else {
+                return [
+                    'title' => "Thêm mới",
+                    'content' => $this->renderAjax('create', [
+                        'model' => $model,
+                        'modelsDetail' => $modelsDetail,
+                    ]),
+                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                    Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"])
+                    
+                ];
             }
-        } else {
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post())) {
-                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname());
-                Model::loadMultiple($modelsDetail, $request->post());
-
-                $valid = $model->validate();
-                $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-                if ($valid) {
-                    $transaction = Yii::$app->db->beginTransaction();
-                    try {
-                        if ($flag = $model->save(false)) {
-                            foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
-                                if (!($flag = $modelDetail->save(false))) {
-                                    $transaction->rollBack();
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($flag) {
-                            $transaction->commit();
-                            return $this->redirect(['view', 'id' => $model->id]);
-                        }
-                    } catch (\Exception $e) {
-                        $transaction->rollBack();
-                    }
-                }
-            }
-            return $this->render('create', [
-                'model' => $model,
-                'modelsDetail' => (empty($modelsDetail)) ? [new PhieuTraThietBiCt] : $modelsDetail,
-            ]);
         }
     }
 
@@ -328,11 +267,9 @@ class PhieuTraThietBiController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => "Cập nhật",
+                    'title' => "Cập nhật Phiếu trả thiết bị",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
-
                     ]),
                     'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Lưu lại', [
@@ -340,55 +277,7 @@ class PhieuTraThietBiController extends Controller
                             'hidden' => !$isDraft
                         ])
                 ];
-            } else if ($model->load($request->post())) {
-
-                $oldIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
-                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname(), $modelsDetail);
-                Model::loadMultiple($modelsDetail, Yii::$app->request->post());
-                $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsDetail, 'id', 'id')));
-
-                // validate all models
-                $valid = $model->validate();
-                $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-                if ($valid) {
-                    $transaction = Yii::$app->db->beginTransaction();
-                    try {
-                        if ($flag = $model->save(false)) {
-                            if (!empty($deletedIDs)) {
-                                PhieuTraThietBiCt::deleteAll(['id' => $deletedIDs]);
-                            }
-                            foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
-                                if (!($flag = $modelDetail->save(false))) {
-                                    $transaction->rollBack();
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($flag) {
-                            $transaction->commit();
-                            return [
-                                'forceReload' => '#crud-datatable-pjax',
-                                'title' => "Cập nhật thành công",
-                                'content' => $this->renderAjax('view', [
-                                    'model' => $model,
-                                    'modelsDetail' => $modelsDetail,
-
-                                ]),
-                                'tcontent' => 'Dữ liệu đã cập nhật!',
-                                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                                    Html::a('Cập nhật', ['update', 'id' => $id], [
-                                        'class' => 'btn btn-primary', 'role' => 'modal-remote',
-                                    ]),
-                            ];
-                        }
-                    } catch (\Exception $e) {
-                        $transaction->rollBack();
-                    }
-                }
-
+            } else if ($model->load($request->post()) && $model->save()) {
                 return [
 
                     'title' => "Cập nhật thành công",
@@ -401,7 +290,7 @@ class PhieuTraThietBiController extends Controller
                 ];
             } else {
                 return [
-                    'title' => "Cập nhật PhieuTraThietBi",
+                    'title' => "Cập nhật Phiếu trả thiết bị",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -412,47 +301,6 @@ class PhieuTraThietBiController extends Controller
                         ])
                 ];
             }
-        } else {
-            if ($model->load($request->post())) {
-                $oldIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
-                $modelsDetail = $this->createMultiple(PhieuTraThietBiCt::classname(), $modelsDetail);
-                Model::loadMultiple($modelsDetail, Yii::$app->request->post());
-                $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsDetail, 'id', 'id')));
-
-                // validate all models
-                $valid = $model->validate();
-                $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-                if ($valid) {
-                    $transaction = Yii::$app->db->beginTransaction();
-                    try {
-                        if ($flag = $model->save(false)) {
-                            if (!empty($deletedIDs)) {
-                                PhieuTraThietBi::deleteAll(['id' => $deletedIDs]);
-                            }
-                            foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_phieu_tra_thiet_bi = $model->id;
-                                if (!($flag = $modelDetail->save(false))) {
-                                    $transaction->rollBack();
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($flag) {
-                            $transaction->commit();
-                            return $this->redirect(['view', 'id' => $model->id]);
-                        }
-                    } catch (\Exception $e) {
-                        $transaction->rollBack();
-                    }
-                }
-            }
-
-            return $this->render('update', [
-                'model' => $model,
-                'modelsDetail' => $modelsDetail,
-            ]);
         }
     }
 

@@ -13,13 +13,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
-use yii\filters\AccessControl;
 use yii\base\Model;
-use yii\base\Request;
-use yii\db\ActiveRecord;
-
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -908,21 +903,60 @@ class YeuCauVanHanhController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $forceDelete=false)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
-
         if ($request->isAjax) {
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            $model = $this->findModel($id);
+            //check forceDelete valid
+            if($forceDelete){
+                if(User::hasRole('admin', true)){
+                    $forceDelete = true;
+                } else {
+                    $forceDelete = false;
+                }
+            }
+            if($model!=null){
+                if(!$forceDelete && ($model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET || $model->hieu_luc==$model->sauDuyet())){
+                    return [
+                        'title' => "Xóa yêu cầu vận hành thiết bị",
+                        'content' => '<span class="text-danger">Không thể xóa do yêu cầu vận hành đã được duyệt hoặc đang vận hành!</span>'
+                        . (User::hasRole('admin', true) ? ('<br/>' . Html::a('<i class="fas fa-trash-alt"></i>  Xóa quyền bằng quyền admin',[
+                                '/taisan/yeu-cau-van-hanh/delete', 'id'=>$id, 'forceDelete'=>1
+                            ], [
+                                'role'=>'modal-remote',
+                                'data-request-method'=>'post',
+                                'data-confirm-title'=>'Xác nhận xóa dữ liệu?',
+                                'data-confirm-message'=>'Bạn có chắc chắn thực hiện hành động này?',
+                                'data-bs-placement'=>'top',
+                                'data-bs-toggle'=>'tooltip-secondary',
+                                'class'=>'btn ripple btn-secondary btn-sm'
+                            ])) : ''),
+                        'footer' => Html::button('Đóng', [
+                            'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                        ])
+                    ];
+                } else {
+                    if($model->delete()){
+                        return [
+                            'forceClose' => true, 
+                            'forceReload' => '#crud-datatable-pjax',
+                            'tcontent' => 'Xóa yêu cầu thành công!',
+                        ];
+                    }
+                }
+            } else {
+                return [
+                    'title' => "Xóa yêu cầu vận hành thiết bị",
+                    'content' => 'Yêu cầu vận hành không tồn tại!',
+                    'footer' => Html::button('Đóng', [
+                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                    ])
+                ];
+            }
+            
         } else {
-            /*
-            *   Process for non-ajax request
-            */
             return $this->redirect(['index']);
         }
     }
@@ -941,26 +975,47 @@ class YeuCauVanHanhController extends Controller
     {
         $request = Yii::$app->request;
         $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-        $delOk = true;
-        $fList = array();
-        foreach ($pks as $pk) {
-            $model = $this->findModel($pk);
-            try {
-                $model->delete();
-            } catch (\Exception $e) {
-                $delOk = false;
-                $fList[] = $model->id;
-            }
-        }
 
         if ($request->isAjax) {
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
+            //check all data valid
+            $checkOk = true;
+            $listCheckNotOk = array();
+            foreach ($pks as $pk) {
+                $model = $this->findModel($pk);
+                if($model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET || $model->hieu_luc==$model->sauDuyet()){
+                    $checkOk = false;
+                    $listCheckNotOk[] = $model->id;
+                }
+            }
+            if(!$checkOk){
+                return [
+                    'title' => "Xóa danh sách yêu cầu vận hành thiết bị",
+                    'content' => '<span class="text-danger">Không thể xóa danh sách yêu cầu, Lỗi: P-' . implode(', P-', $listCheckNotOk) . '</span>',
+                    'tcontent' => 'Có lỗi xảy ra!',
+                    'footer' => Html::button('Đóng', [
+                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                    ])
+                ];
+            }
+            
+            //check ok delete real
+            $delOk = true;
+            $fList = array();
+            
+            foreach ($pks as $pk) {
+                $model = $this->findModel($pk);
+                try {
+                    $model->delete();
+                } catch (\Exception $e) {
+                    $delOk = false;
+                    $fList[] = $model->id;
+                }
+            }
+            
             return [
                 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax',
-                'tcontent' => $delOk == true ? 'Xóa thành công!' : ('Không thể xóa:' . implode('</br>', $fList)),
+                'tcontent' => $delOk == true ? 'Xóa thành công!' : ('Không thể xóa:' . implode('<br/>', $fList)),
             ];
         } else {
             /*
