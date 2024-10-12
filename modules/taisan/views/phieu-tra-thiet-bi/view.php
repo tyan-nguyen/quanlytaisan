@@ -47,8 +47,9 @@ use app\modules\user\models\User;
     ]) ?>
 
     <h3 class="mt-4">Chi tiết</h3>
-
-    <?= GridView::widget([
+	
+	<?= $this->render('_form_chi_tiet_view', ['model'=>$model, 'modelDetail'=>$model->details]) ?>
+    <?php /* GridView::widget([
         'dataProvider' => new ArrayDataProvider([
             'allModels' => $modelsDetail,
             'pagination' => [
@@ -71,7 +72,7 @@ use app\modules\user\models\User;
                 }
             ],
         ],
-    ]) ?>
+    ])*/ ?>
 
 
     <div class="row">

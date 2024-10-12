@@ -11,8 +11,6 @@ DynamicFormAsset::register($this);
 
     <?= $this->render('_form', [
         'model' => $model,
-        'modelsDetail' => $modelsDetail
-
     ]) ?>
 
 </div>

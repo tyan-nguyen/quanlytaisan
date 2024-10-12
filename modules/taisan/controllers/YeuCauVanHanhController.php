@@ -315,7 +315,6 @@ class YeuCauVanHanhController extends Controller
         $request = Yii::$app->request;
 
         $model = new YeuCauVanHanh();
-        $modelsDetail = [new YeuCauVanHanhCt()];
 
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -325,69 +324,29 @@ class YeuCauVanHanhController extends Controller
                     'title' => "Thêm mới",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
                     ]),
                     'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Lưu Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
-            } else if ($model->load($request->post())) {
-                $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname());
-                Model::loadMultiple($modelsDetail, $request->post());
-
-                /* Debugging */
-                // var_dump($request->post());
-                // var_dump($model->attributes); 
-                // var_dump($modelsDetail); 
-
-                $valid = $model->validate();
-                // $validDetail = Model::validateMultiple($modelsDetail);
-
-                $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-                /* Debugging */
-                // var_dump($valid);
-                // var_dump($model->errors);
-                // var_dump($modelsDetail);
-
-                if ($valid) {
-                    $transaction = Yii::$app->db->beginTransaction();
-                    try {
-                        if ($flag = $model->save(false)) {
-                            foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_yeu_cau_van_hanh = $model->id;
-                                if (!($flag = $modelDetail->save(false))) {
-                                    $transaction->rollBack();
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($flag) {
-                            $transaction->commit();
-                            return [
-                                'forceReload' => '#crud-datatable-pjax',
-                                'title' => "Thêm mới",
-                                'content' => '<span class="text-success">Tạo phiếu thành công</span>',
-                                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                                    Html::a('Tiếp tục thêm mới', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']),
-                            ];
-                        }
-                    } catch (\Exception $e) {
-                        $transaction->rollBack();
-                    }
-                }
-
+            } else if ($model->load($request->post()) && $model->save()) {
+                return [
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Thêm mới",
+                    'content' => '<span class="text-success">Tạo phiếu thành công</span>',
+                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                    Html::a('Tiếp tục thêm mới', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']),
+                ];
+            } else {                
                 return [
                     'title' => "Thêm mới",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
                     ]),
                     'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                        Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                    Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }
-        } else {
+        } /* else {
             if ($model->load($request->post())) {
 
                 $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname());
@@ -431,14 +390,14 @@ class YeuCauVanHanhController extends Controller
                 'model' => $model,
                 'modelsDetail' => (empty($modelsDetail)) ? [new YeuCauVanHanhCt] : $modelsDetail,
             ]);
-        }
+        } */
     }
 
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-        $modelsDetail = $model->details;
+       // $modelsDetail = $model->details;
 
         $hieuLuc = $model->hieu_luc ?? null;
         $isDraft = true;
@@ -457,7 +416,6 @@ class YeuCauVanHanhController extends Controller
                     'title' => "Cập nhật",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
                     ]),
                     'footer' => Html::button('Đóng', [
                         'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
@@ -469,74 +427,12 @@ class YeuCauVanHanhController extends Controller
 
                         ]),
                 ];
-            } else if ($model->load($request->post())) {
-
-                $oldIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
-                $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname(), $modelsDetail);
-                Model::loadMultiple($modelsDetail, Yii::$app->request->post());
-                $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsDetail, 'id', 'id')));
-
-                // validate all models
-                $valid = $model->validate();
-                $valid = Model::validateMultiple($modelsDetail) && $valid;
-
-                // $valid = true;
-
-                if ($valid) {
-                    $transaction = Yii::$app->db->beginTransaction();
-                    try {
-                        if ($flag = $model->save(false)) {
-                            if (!empty($deletedIDs)) {
-                                YeuCauVanHanhCt::deleteAll(['id' => $deletedIDs]);
-                            }
-                            foreach ($modelsDetail as $modelDetail) {
-                                $modelDetail->id_yeu_cau_van_hanh = $model->id;
-                                if (!($flag = $modelDetail->save(false))) {
-                                    $transaction->rollBack();
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($flag) {
-                            $transaction->commit();
-                            return [
-                                'forceReload' => '#crud-datatable-pjax',
-                                'title' => "Cập nhật thành công",
-                                'content' => $this->renderAjax('view', [
-                                    'model' => $model,
-                                    'modelsDetail' => $modelsDetail,
-
-                                ]),
-                                'tcontent' => 'Dữ liệu đã cập nhật!',
-                                'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                                    Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
-
-                                    . Html::a('Gửi yêu cầu', ['send-request', 'id' => $id], [
-                                        'class' => 'btn btn-primary',
-                                        'role' => 'modal-remote',
-                                        'hidden' => !$isDraft
-                                    ])
-
-                                // . Html::button('Gửi phê duyệt', [
-                                //     'class' => 'btn btn-warning',
-                                //     'id' => 'send-request-button',
-                                //     'data-id' => $model->id,
-                                //     'hidden' => !$isDraft
-                                // ]),
-                            ];
-                        }
-                    } catch (Exception $e) {
-                        $transaction->rollBack();
-                    }
-                }
-
+            } else if ($model->load($request->post()) && $model->save()) {
                 return [
 
                     'title' => "Cập nhật thành công",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
                     ]),
                     'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Sửa', ['class' => 'btn btn-primary', 'type' => "submit"])
@@ -547,8 +443,24 @@ class YeuCauVanHanhController extends Controller
                             'hidden' => !$isDraft
                         ]),
                 ];
+            } else {
+                return [
+                    'title' => "Cập nhật",
+                    'content' => $this->renderAjax('update', [
+                        'model' => $model,
+                    ]),
+                    'footer' => Html::button('Đóng', [
+                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                    ])
+                    . Html::button('Lưu nháp', [
+                        'class' => 'btn btn-primary', 'type' => "submit", 'id' => 'draft-button',
+                        'disabled' => !$isDraft,
+                        'hidden' => !$isDraft
+                        
+                    ]),
+                ];
             }
-        } else {
+        } /* else {
             if ($model->load($request->post())) {
                 $oldIDs = ArrayHelper::map($modelsDetail, 'id', 'id');
                 $modelsDetail = $this->createMultiple(YeuCauVanHanhCt::classname(), $modelsDetail);
@@ -589,7 +501,7 @@ class YeuCauVanHanhController extends Controller
                 'model' => $model,
                 'modelsDetail' => $modelsDetail,
             ]);
-        }
+        } */
     }
 
     public function actionSendRequest($id)

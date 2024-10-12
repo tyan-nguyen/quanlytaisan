@@ -14,6 +14,7 @@ use yii\helpers\Url;
 
 use app\widgets\forms\SwitchWidget;
 use yii\helpers\ArrayHelper;
+use app\modules\taisan\models\ThietBi;
 /* @var $this yii\web\View */
 /* @var $model app\models\TsYeuCauVanHanh */
 /* @var $form yii\widgets\ActiveForm */
@@ -47,7 +48,18 @@ $cus = new CustomFunc();
         ],
     ]); ?>
 
-
+	<?=$form->field($model, 'idThietBi')->widget(Select2::classname(), [
+	    'data' => ThietBi::getListWithStatus(),
+        'language' => 'vi',
+        'options' => [
+            'placeholder' => 'Chọn thiết bị...',
+            'data-dropdown-parent' => "#offcanvasRight"
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'width' => '100%',
+        ],
+    ])->label('Thiết bị');?>
 
     <?= $form->field($model, 'id_bo_phan_quan_ly')->widget(Select2::classname(), [
         'data' => (new BoPhan())->getListTree(),
@@ -59,7 +71,6 @@ $cus = new CustomFunc();
         'pluginOptions' => [
             'allowClear' => true,
             'width' => '100%'
-            //'dropdownParent' => new yii\web\JsExpression('$("#offcanvasRight")'), 
         ],
     ]);
     ?>

@@ -15,6 +15,7 @@ use app\modules\taisan\models\YeuCauVanHanh;
  */
 class YeuCauVanHanhSearch extends YeuCauVanHanh
 {
+    public $idThietBi; //use in form search
     /**
      * @inheritdoc
      */
@@ -22,7 +23,7 @@ class YeuCauVanHanhSearch extends YeuCauVanHanh
     {
         return [
             [
-                ['id', 'id_nguoi_lap', 'id_nguoi_gui', 'id_nguoi_duyet', 'id_nguoi_xuat', 'id_nguoi_nhan', 'id_nguoi_yeu_cau', 'id_bo_phan_quan_ly'],
+                ['id', 'id_nguoi_lap', 'id_nguoi_gui', 'id_nguoi_duyet', 'id_nguoi_xuat', 'id_nguoi_nhan', 'id_nguoi_yeu_cau', 'id_bo_phan_quan_ly', 'idThietBi'],
                 'integer'
             ],
             [
@@ -51,8 +52,8 @@ class YeuCauVanHanhSearch extends YeuCauVanHanh
     public function search($params, $cusomSearch = NULL)
     {
         $cus = new CustomFunc();
-        $query = YeuCauVanHanh::find();
-
+        $query = YeuCauVanHanh::find()->alias('t');
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -63,6 +64,11 @@ class YeuCauVanHanhSearch extends YeuCauVanHanh
         ]);
 
         $this->load($params);
+        
+        if($this->idThietBi){
+            $query->joinWith(['details as dt']);
+            $query->andFilterWhere(['dt.id_thiet_bi'=>$this->idThietBi]);
+        }
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

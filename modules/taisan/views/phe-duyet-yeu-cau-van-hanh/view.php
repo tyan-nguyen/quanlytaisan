@@ -80,7 +80,7 @@ use yii\helpers\Url;
             <div class="col-md-7">
 
                 <div class="row">
-                    <?= GridView::widget([
+                    <?php /* GridView::widget([
                         'dataProvider' => new ArrayDataProvider([
                             'allModels' => $modelsDetail,
                             'pagination' => [
@@ -110,7 +110,7 @@ use yii\helpers\Url;
                         ],
                         'summary' => ''
 
-                    ]) ?>
+                    ])*/ ?>
                 </div>
 
                 <hr>

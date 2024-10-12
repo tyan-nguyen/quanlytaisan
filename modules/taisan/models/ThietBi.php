@@ -22,6 +22,20 @@ class ThietBi extends ThietBiBase
     }
     
     /**
+     * lấy danh sách thiết bị fill dropdownlist
+     * @return array
+     */
+    public static function getListWithStatus()
+    {
+        $thietBis = self::find()->orderBy(['ten_thiet_bi' => SORT_ASC])->all();
+        
+        // Them trang thai hoat dong vao thiet bi
+        return ArrayHelper::map($thietBis, 'id', function($model) {
+            return $model->ten_thiet_bi . ' - ' . $model->getTenTrangThai($model->trang_thai);
+        });
+    }
+    
+    /**
      * get list data thong ke lich su hoat dong, sua chua, bao tri cua tai san
      */
     /* public function getLichSuHoatDong(){

@@ -237,7 +237,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
         </div>
     </div>
     
-    <?php if(!$model->isNewRecord || $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>    
+    <?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>    
     <!-- chi tiet thiet bi -->
     <div class="row">
     	<div class="col-md-12 mt-2">

@@ -80,17 +80,19 @@ class TheoDoiVanHanhController extends Controller
         $events = [];
 
         foreach ($requests as $detail) {
-            $eventColor = $detail->yeuCauVanHanh->hieu_luc == 'DATRA' ? 'red' : null;
+            //$eventColor = $detail->yeuCauVanHanh->hieu_luc == 'DATRA' ? 'red' : null;
+            $eventColor = $detail->ngay_tra_thuc_te!=NULL ? 'blue' : 'red';
 
             $events[] = [
                 'id' => $detail->id_yeu_cau_van_hanh,
                 'title' => $detail->thietBi->ten_thiet_bi,
                 'start' => $detail->ngay_bat_dau,
                 'end' => $detail->ngay_ket_thuc,
-                'url' => Yii::$app->urlManager->createUrl(['/taisan/theo-doi-van-hanh/view', 'id' => $detail->id_yeu_cau_van_hanh]),
+                'url' => Yii::$app->urlManager->createUrl(['/taisan/theo-doi-van-hanh/view','idItem'=>$detail->id , 'id' => $detail->id_yeu_cau_van_hanh ]),
                 'color' => $eventColor,
                 'backgroundColor' => $eventColor,
-                'eventColor' => '#378006'
+                //'eventColor' => '#378006'
+                'eventColor' => $eventColor
             ];
         }
         return $events;
@@ -107,7 +109,7 @@ class TheoDoiVanHanhController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $idItem)
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
@@ -119,6 +121,7 @@ class TheoDoiVanHanhController extends Controller
                 'content' => $this->renderAjax('view', [
                     'model' => $this->findModel($id),
                     'modelsDetail' => $model->details,
+                    'idItem'=>$idItem
                 ]),
                 'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
                 // .Html::a('Sửa', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])

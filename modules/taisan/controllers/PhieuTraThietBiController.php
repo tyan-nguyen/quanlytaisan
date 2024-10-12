@@ -196,7 +196,7 @@ class PhieuTraThietBiController extends Controller
     {
         $request = Yii::$app->request;
         $model = new PhieuTraThietBi();
-        $modelsDetail = [new PhieuTraThietBiCt()];
+        //$modelsDetail = [new PhieuTraThietBiCt()];
 
         if ($request->isAjax) {
             /*
@@ -209,29 +209,37 @@ class PhieuTraThietBiController extends Controller
                     'title' => "Thêm mới",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
+                        //'modelsDetail' => $modelsDetail,
                     ]),
                     'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                         Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"])
 
                 ];
             } else if ($model->load($request->post()) & $model->save()) {
-
+                $hieuLuc = $model->hieu_luc ?? null;
+                $isDraft = true;
+                if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
+                    $isDraft = false;
+                }
                 return [
-                    'title' => "Thêm mới",
-                    'content' => $this->renderAjax('create', [
+                    'forceReload'=>'#crud-datatable-pjax',
+                    'title' => "Cập nhật",
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
+                        //'modelsDetail' => $modelsDetail,
                     ]),
-                    'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
-                        Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                    'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
+                    Html::button('Lưu lại', [
+                        'class' => 'btn btn-primary', 'type' => "submit",
+                        'hidden' => !$isDraft
+                    ])
                 ];
             } else {
                 return [
                     'title' => "Thêm mới",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-                        'modelsDetail' => $modelsDetail,
+                        //'modelsDetail' => $modelsDetail,
                     ]),
                     'footer' => Html::button('Đóng lại', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"]) .
                     Html::button('Nháp', ['class' => 'btn btn-primary', 'type' => "submit"])
@@ -279,7 +287,7 @@ class PhieuTraThietBiController extends Controller
                 ];
             } else if ($model->load($request->post()) && $model->save()) {
                 return [
-
+                    'forceReload'=>'#crud-datatable-pjax',
                     'title' => "Cập nhật thành công",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,

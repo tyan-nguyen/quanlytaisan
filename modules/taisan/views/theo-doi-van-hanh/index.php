@@ -28,6 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
     .fc-list-event-title a {
         cursor: pointer;
     }
+    
+    .item-bold td{
+        font-weight:bold;
+        color:red!important;
+    }
 </style>
 
 
@@ -102,7 +107,8 @@ $(document).ready(function() {
             //     window.location.href = info.event.url; // Redirect to the request view page
             // }
 
-            var aClick = '<a href="/taisan/theo-doi-van-hanh/view?id='+ info.event.id +'" role="modal-remote">Click</a>';
+            //var aClick = '<a href="/taisan/theo-doi-van-hanh/view?id='+ info.event.id +'" role="modal-remote">Click</a>';
+            var aClick = '<a href="'+info.event.url+'" role="modal-remote">Click</a>';
 	        modal.open(aClick, null);
 
         },

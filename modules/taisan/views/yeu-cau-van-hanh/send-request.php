@@ -83,7 +83,7 @@ use yii\data\ArrayDataProvider;
                 <div class="row">
                     <div class="col">
                         <!-- <h3 class="mt-4">Chi tiết</h3> -->
-                        <?= GridView::widget([
+                        <?php /* GridView::widget([
                             'dataProvider' => new ArrayDataProvider([
                                 'allModels' => $modelsDetail,
                                 'pagination' => [
@@ -112,7 +112,7 @@ use yii\data\ArrayDataProvider;
                                 ],
                             ],
                             'summary' => ''
-                        ]) ?>
+                        ]) */ ?>
                     </div>
                 </div>
 

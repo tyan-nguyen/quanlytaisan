@@ -18,7 +18,7 @@ use app\widgets\SummaryAlert;
 /* @var $model app\models\TsPhieuTraThietBi */
 /* @var $form yii\widgets\ActiveForm */
 
-DynamicFormAsset::register($this);
+//DynamicFormAsset::register($this);
 
 $newArr = [];
 $cus = new CustomFunc();
@@ -40,40 +40,47 @@ $cus = new CustomFunc();
 
     <?php $form = ActiveForm::begin([
         'id' => 'dynamic-form',
+        'action'=>(!$model->isNewRecord?'/taisan/phieu-tra-thiet-bi/update?id='.$model->id:'/taisan/phieu-tra-thiet-bi/create'),
         'options' => ['class' => 'form-horizontal', 'data-return-id' => $model->isNewRecord ? '' : $model->id],
         'fieldConfig' => [
             'template' => '<div class="col-sm-12">{label}</div><div class="col-sm-12">{input}{error}</div>',
             'labelOptions' => ['class' => 'col-md-12 control-label'],
-        ]
+        ],
+        
     ]); ?>
 
     <div class="row">
-        <div class="col-6"></div>
+
         <fieldset class="border p-2" style="margin:3px;">
             <legend class="legend">
-                <p>Thông tin phiếu trả</p>
+                Thông tin phiếu trả
             </legend>
             <div class="row">
-                <div class="col-3">
-                    <?= $form->field($model, 'id_nguoi_tra')->widget(Select2::classname(), [
+            	<div class="col-4">
+            		<?= $form->field($model, 'id_nguoi_tra')->widget(Select2::classname(), [
                         'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
                         'language' => 'vi',
                         'options' => ['placeholder' => 'Chọn...'],
                         'pluginOptions' => [
                             'allowClear' => true,
+                            'width' => '100%'
                         ],
                     ]); ?>
-                </div>
-                <div class="col-3">
-                    <?= $form->field($model, 'id_nguoi_nhan')->widget(Select2::classname(), [
+                    
+                     <?= $form->field($model, 'id_nguoi_nhan')->widget(Select2::classname(), [
                         'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
                         'language' => 'vi',
                         'options' => ['placeholder' => 'Chọn...'],
                         'pluginOptions' => [
                             'allowClear' => true,
+                            'width' => '100%'
                         ],
                     ]); ?>
-                </div>
+                    
+            	</div>
+              
+                   
+               
                 <div class="col-3">
                     <?php
                     $requests = YeuCauVanHanh::find()
@@ -99,20 +106,20 @@ $cus = new CustomFunc();
                         'pluginOptions' => [
                             'allowClear' => true,
                             'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
-
+                            'width' => '100%'
                         ],
                     ]) ?>
                 </div>
 
-                <div class="col-3">
-                    <?= $form->field($model, 'noi_dung_tra')->textInput(['maxlength' => true]) ?>
+                <div class="col-8">
+                    <?= $form->field($model, 'noi_dung_tra')->textArea(['rows' => 5]) ?>
                 </div>
             </div>
         </fieldset>
     </div>
     
     
-     <?php if($model->isNewRecord || PhieuTraThietBiBase::STATUS_NHAP){ ?>      
+     <?php if(!$model->isNewRecord && $model->hieu_luc==PhieuTraThietBiBase::STATUS_NHAP){ ?>      
     <!-- chi tiet thiet bi sua -->
     <div class="row">
     	<div class="col-md-12 mt-2">
@@ -125,7 +132,7 @@ $cus = new CustomFunc();
         	<?= $this->render('_form_chi_tiet', ['model'=>$model, 'modelDetail'=>$model->details]) ?>
         </div>
     </div>
-	<?php } else if(!$model->isNewRecord && PhieuTraThietBiBase::STATUS_DATRA){ ?>    
+	<?php } else if($model->hieu_luc==PhieuTraThietBiBase::STATUS_DATRA){ ?>    
     <!-- chi tiet thiet bi -->
     <div class="row">  
     	<div class="col-md-12" id="chiTietBlock">

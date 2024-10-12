@@ -13,8 +13,6 @@ use yii\bootstrap5\Html;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'modelsDetail' => $modelsDetail
-
     ]) ?>
 
 </div>

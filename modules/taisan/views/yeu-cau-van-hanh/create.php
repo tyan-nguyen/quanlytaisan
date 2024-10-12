@@ -14,8 +14,7 @@ DynamicFormAsset::register($this);
 ?>
 <div class="ts-yeu-cau-van-hanh-create">
     <?= $this->render('_form', [
-        'model' => $model,
-        'modelsDetail' => $modelsDetail
+        'model' => $model
     ]) ?>
 </div>
 

@@ -7,8 +7,6 @@ use app\modules\dungchung\models\CustomFunc;
 
 $cus = new CustomFunc();
 
-/* @var $this yii\web\View */
-/* @var $model app\models\YeuCauVanHanh */
 ?>
 
 <div class="panel panel-primary">
@@ -123,15 +121,17 @@ $cus = new CustomFunc();
                                     <th>Tên thiết bị</th>
                                     <th>Ngày bắt đầu</th>
                                     <th>Ngày kết thúc</th>
+                                    <th>Ngày trả</th>
                                     <!-- Other relevant columns -->
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($modelsDetail as $detail) : ?>
-                                    <tr>
+                                    <tr <?= ($detail->id==$idItem?'class="item-bold"':'') ?>>
                                         <td><?= Html::encode($detail->thietBi->ten_thiet_bi) ?></td>
                                         <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_bat_dau)) ?></td>
                                         <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_ket_thuc)) ?></td>
+                                        <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_tra_thuc_te)) ?></td>
                                         <!-- Other relevant data -->
                                     </tr>
                                 <?php endforeach; ?>
