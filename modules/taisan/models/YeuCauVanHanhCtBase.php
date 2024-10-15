@@ -84,4 +84,9 @@ class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
     {
         return $this->hasOne(YeuCauVanHanh::class, ['id' => 'id_yeu_cau_van_hanh']);
     }
+    
+    public function getPhieuTraThietBiChiTiet()
+    {
+        return PhieuTraThietBiCt::findOne(['id_ycvhct'=>$this->id])->one();
+    }
 }

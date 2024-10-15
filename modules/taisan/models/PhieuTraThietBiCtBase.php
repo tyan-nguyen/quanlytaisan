@@ -17,6 +17,7 @@ use Yii;
  * @property string $created_at
  * @property string|null $updated_at
  * @property string|null $deleted_at
+ * @property int $id_ycvhct
  */
 class PhieuTraThietBiCtBase extends \app\models\TsPhieuTraThietBiCt
 {
@@ -29,8 +30,8 @@ class PhieuTraThietBiCtBase extends \app\models\TsPhieuTraThietBiCt
     public function rules()
     {
         return [
-            [['id_thiet_bi'], 'required'],
-            [['id_thiet_bi', 'id_phieu_tra_thiet_bi'], 'integer'],
+            [['id_ycvhct', 'ngay_tra'], 'required'],
+            [['id_thiet_bi', 'id_phieu_tra_thiet_bi', 'id_ycvhct'], 'integer'],
             [['ngay_tra', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['id_phieu_tra_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => PhieuTraThietBi::class, 'targetAttribute' => ['id_phieu_tra_thiet_bi' => 'id']],
             [['id_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => ThietBi::class, 'targetAttribute' => ['id_thiet_bi' => 'id']],
@@ -50,6 +51,7 @@ class PhieuTraThietBiCtBase extends \app\models\TsPhieuTraThietBiCt
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
             'deleted_at' => 'Deleted At',
+            'id_ycvhct'=>'Thiết bị'
         ];
     }
 
@@ -61,6 +63,11 @@ class PhieuTraThietBiCtBase extends \app\models\TsPhieuTraThietBiCt
     public function getPhieuTraThietBi()
     {
         return $this->hasOne(PhieuTraThietBi::className(), ['id' => 'id_phieu_tra_thiet_bi']);
+    }
+    
+    public function getChiTietVanHanh()
+    {
+        return $this->hasOne(YeuCauVanHanhCt::className(), ['id' => 'id_ycvhct']);
     }
     
     public function getNgayTra()

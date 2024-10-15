@@ -40,4 +40,6 @@ class YeuCauVanHanhCt extends YeuCauVanHanhCtBase
 
         return parent::beforeSave($insert);
     }
+    
+    
 }

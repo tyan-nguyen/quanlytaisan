@@ -34,6 +34,19 @@ class ThietBi extends ThietBiBase
             return $model->ten_thiet_bi . ' - ' . $model->getTenTrangThai($model->trang_thai);
         });
     }
+    /**
+     * lấy danh sách thiết bị đang trong phiếu yêu cầu vận hành nhưng chưa trả để fill dropdownlist
+     * @return array
+     */
+    public static function getListThietBiDangVanHanh(){
+        $query = YeuCauVanHanhCt::find()->alias('t')
+        ->joinWith(['thietBi tb'])
+        ->where('t.ngay_tra_thuc_te IS NULL')->orderBy(['tb.ten_thiet_bi'=>SORT_ASC])->all();
+        // Them trang thai hoat dong vao thiet bi
+        return ArrayHelper::map($query, 'id_thiet_bi', function($model) {
+            return $model->thietBi->ten_thiet_bi . ' - ' . $model->thietBi->getTenTrangThai($model->thietBi->trang_thai);
+        });
+    }
     
     /**
      * get list data thong ke lich su hoat dong, sua chua, bao tri cua tai san
@@ -308,4 +321,5 @@ class ThietBi extends ThietBiBase
             'type' => $type
         ]) : '';
     }
+   
 }

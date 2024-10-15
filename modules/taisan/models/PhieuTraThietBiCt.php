@@ -35,7 +35,17 @@ class PhieuTraThietBiCt extends PhieuTraThietBiCtBase
 
         if ($this->ngay_tra != null)
             $this->ngay_tra = $cus->convertDMYToYMD($this->ngay_tra);
+        
+        if($this->id_ycvhct){
+            $ycvhct = YeuCauVanHanhCt::findOne($this->id_ycvhct);
+            if($ycvhct){
+                $this->id_thiet_bi = $ycvhct->id_thiet_bi;
+            } else {
+                $this->id_ycvhct = NULL;
+            }
+        }
+        
 
-            return parent::beforeSave($insert);
+        return parent::beforeSave($insert);
     }
 }

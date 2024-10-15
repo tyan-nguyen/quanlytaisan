@@ -21,12 +21,27 @@ use yii\widgets\ActiveForm;
             'class' => 'myFilterForm'
         ]
     ]); ?>
+    
+    <?= $form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
+        'data' => ThietBi::getListWithStatus(),
+        'language' => 'vi',
+        'options' => [
+            'placeholder' => 'Chọn...',
+            'data-dropdown-parent' => "#offcanvasRight"
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'width' => '100%'
+        ],
+    ])->label('Thiết bị');
+    ; ?>
 
     <?= $form->field($model, 'id_nguoi_tra')->widget(Select2::classname(), [
         'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
         'language' => 'vi',
         'options' => [
             'placeholder' => 'Chọn...',
+            'data-dropdown-parent' => "#offcanvasRight"
         ],
         'pluginOptions' => [
             'allowClear' => true,
@@ -39,31 +54,20 @@ use yii\widgets\ActiveForm;
         'language' => 'vi',
         'options' => [
             'placeholder' => 'Chọn...',
+            'data-dropdown-parent' => "#offcanvasRight"
         ],
         'pluginOptions' => [
             'allowClear' => true,
             'width' => '100%'
         ],
     ]); ?>
-
-    <?= $form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
-        'language' => 'vi',
-        'options' => [
-            'placeholder' => 'Chọn...',
-        ],
-        'pluginOptions' => [
-            'allowClear' => true,
-            'width' => '100%'
-        ],
-    ])->label('Thiết bị');
-    ; ?>
     
      <?= $form->field($model, 'nguoi_tao')->widget(Select2::classname(), [
         'data' => ArrayHelper::map(NhanVien::find()->all(), 'id', 'ten_nhan_vien'),
         'language' => 'vi',
         'options' => [
             'placeholder' => 'Chọn...',
+            'data-dropdown-parent' => "#offcanvasRight"
         ],
         'pluginOptions' => [
             'allowClear' => true,

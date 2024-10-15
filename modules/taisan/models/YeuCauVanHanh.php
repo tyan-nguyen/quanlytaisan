@@ -9,6 +9,7 @@ use app\widgets\views\StatusWithIconWidget;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 class YeuCauVanHanh extends YeuCauVanHanhBase
 {
@@ -64,5 +65,22 @@ class YeuCauVanHanh extends YeuCauVanHanhBase
         //        return false;
 
         return parent::beforeSave($insert);
+    }
+    
+    /**
+     * lấy danh sách thiết bị theo id yêu cầu vận hành chi tiết
+     *  đang trong phiếu yêu cầu vận hành nhưng chưa trả để fill dropdownlist
+     * @return array
+     */
+    public static function getListThietBiByIDChiTiet(){
+        $query = YeuCauVanHanhCt::find()
+        //->joinWith(['thietBi tb'])
+        ->where('ngay_tra_thuc_te IS NULL')
+        //->orderBy(['tb.ten_thiet_bi'=>SORT_ASC])
+        ->all();
+        // Them trang thai hoat dong vao thiet bi
+        return ArrayHelper::map($query, 'id', function($model) {
+            return $model->thietBi->ten_thiet_bi . ' - ' . $model->thietBi->getTenTrangThai($model->thietBi->trang_thai);
+        });
     }
 }

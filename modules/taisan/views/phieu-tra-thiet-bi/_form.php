@@ -81,7 +81,7 @@ $cus = new CustomFunc();
               
                    
                
-                <div class="col-3">
+                <!-- <div class="col-3">
                     <?php
                     $requests = YeuCauVanHanh::find()
                     ->where(['hieu_luc' => 'VANHANH'])
@@ -109,7 +109,7 @@ $cus = new CustomFunc();
                             'width' => '100%'
                         ],
                     ]) ?>
-                </div>
+                </div> -->
 
                 <div class="col-8">
                     <?= $form->field($model, 'noi_dung_tra')->textArea(['rows' => 5]) ?>

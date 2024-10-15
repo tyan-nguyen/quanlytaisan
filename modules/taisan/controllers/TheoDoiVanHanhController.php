@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
+use app\modules\dungchung\models\CustomFunc;
 
 /**
  * TheoDoiVanHanhController implements the CRUD actions for YeuCauVanHanh model.
@@ -65,9 +66,48 @@ class TheoDoiVanHanhController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function getColorByNgayTra($ngayTraThucTe, $ngayTra){
+        $color = 'green';
+        if($ngayTraThucTe != null){//da tra
+            $ngayTraThucTe = date('Y-m-d', strtotime($ngayTraThucTe));
+            $ngayTra = date('Y-m-d', strtotime($ngayTra));
+            if($ngayTraThucTe > $ngayTra){
+                $color = 'orange'; //da tra nhung tre han
+            }else{
+                $color = '#ddd'; //da tra dung han
+            }
+        } else {//chua tra
+            $today = date('Y-m-d');
+            $ngayTra = date('Y-m-d', strtotime($ngayTra));
+            if($today > $ngayTra){//tre han
+                $color = 'yellow';
+            } else {
+                $color = 'green';//con trong han
+            }
+        }
+        return $color;
+    }
+    
+    public function getNgayKetThuc($ngayTraThucTe, $ngayTra){
+        $ngayKT = NULL;
+        if($ngayTraThucTe != NULL){//da tra
+            $ngayKT = date('Y-m-d', strtotime($ngayTra));
+        } else {
+            $today = date('Y-m-d');
+            $ngayTra = date('Y-m-d', strtotime($ngayTra));
+            if($today <= $ngayTra){
+                $ngayKT = $ngayTra;
+            } else {
+                $ngayKT = $today;
+            }
+        }
+        return $ngayKT;
+    }
 
     public function actionEvents()
     {
+        $custom = new CustomFunc();
         Yii::$app->response->format = Response::FORMAT_JSON;
         $requests = YeuCauVanHanhCt::find()
             // ->joinWith('YeuCauVanHanh')
@@ -81,15 +121,17 @@ class TheoDoiVanHanhController extends Controller
 
         foreach ($requests as $detail) {
             //$eventColor = $detail->yeuCauVanHanh->hieu_luc == 'DATRA' ? 'red' : null;
-            $eventColor = $detail->ngay_tra_thuc_te!=NULL ? 'blue' : 'red';
-
+            //$eventColor = $detail->ngay_tra_thuc_te!=NULL ? 'yellow' : 'red';
+            $eventColor = $this->getColorByNgayTra($detail->ngay_tra_thuc_te??NULL, $detail->ngay_ket_thuc);
             $events[] = [
                 'id' => $detail->id_yeu_cau_van_hanh,
                 'title' => $detail->thietBi->ten_thiet_bi,
-                'start' => $detail->ngay_bat_dau,
-                'end' => $detail->ngay_ket_thuc,
-                'url' => Yii::$app->urlManager->createUrl(['/taisan/theo-doi-van-hanh/view','idItem'=>$detail->id , 'id' => $detail->id_yeu_cau_van_hanh ]),
+                'start' => $custom->convertYMDHISToYMD($detail->ngay_bat_dau),
+                //'end' => $custom->convertYMDHISToYMD($detail->ngay_ket_thuc),
+                'end'=>$this->getNgayKetThuc($detail->ngay_tra_thuc_te??NULL, $detail->ngay_ket_thuc),
+                'url' => Yii::$app->urlManager->createUrl(['/taisan/theo-doi-van-hanh/view','id' => $detail->id_yeu_cau_van_hanh, 'idItem'=>$detail->id ]),
                 'color' => $eventColor,
+                'textColor' => 'black',
                 'backgroundColor' => $eventColor,
                 //'eventColor' => '#378006'
                 'eventColor' => $eventColor

@@ -29,10 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         cursor: pointer;
     }
     
-    .item-bold td{
-        font-weight:bold;
-        color:red!important;
-    }
 </style>
 
 

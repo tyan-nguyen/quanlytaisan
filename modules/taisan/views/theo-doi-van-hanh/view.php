@@ -33,7 +33,7 @@ $cus = new CustomFunc();
         <div class="tab-content">
             <div class="tab-pane  active show" id="tab1" role="tabpanel">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-5">
                         <?= DetailView::widget([
                             'model' => $model,
                             'options' => ['class' => 'table table-striped table-bordered detail-view'],
@@ -112,9 +112,10 @@ $cus = new CustomFunc();
 
 
                             ],
+                            'template' => "<tr><th style='width: 40%;'>{label}</th><td class='align-middle'>{value}</td></tr>"
                         ]) ?>
                     </div>
-                    <div class="col">
+                    <div class="col-md-7">
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
@@ -151,7 +152,8 @@ $cus = new CustomFunc();
                         'noi_dung_duyet',
                         'noi_dung_xuat',
                         'noi_dung_nhan',
-                    ]
+                    ],
+                    'template' => "<tr><th style='width: 30%;'>{label}</th><td class='align-middle'>{value}</td></tr>"
                 ])
                 ?>
             </div>

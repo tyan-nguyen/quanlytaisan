@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use \yii\web\Response;
 use yii\helpers\Html;
 use app\modules\taisan\models\PhieuTraThietBiCt;
+use app\modules\taisan\models\YeuCauVanHanhCt;
 
 /**
  * YeuCauVanHanhCtController implements the CRUD actions for TsYeuCauVanHanhCt model.
@@ -155,13 +156,21 @@ class YcttbAjaxController extends Controller
                     Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
                 ];
             }else if($model->load($request->post())){
-                if($oldModel->id_thiet_bi != $model->id_thiet_bi){
+                //if($oldModel->id_thiet_bi != $model->id_thiet_bi){
+                $idThietBi = NULL;
+                if($oldModel->id_ycvhct != $model->id_ycvhct){
+                    $ycvhct = YeuCauVanHanhCt::findOne($model->id_ycvhct);
+                    if($ycvhct){
+                        $idThietBi = $ycvhct->id_thiet_bi;
+                    }
+                }
+                if($idThietBi != NULL){
                     //check exist thiet bi
                     $check = PhieuTraThietBiCt::find()->where(['id_phieu_tra_thiet_bi'=>$model->id_phieu_tra_thiet_bi, 'id_thiet_bi'=>$model->id_thiet_bi])->one();
                     if($check){
-                        $model->addError('id_thiet_bi', 'Thiết bị thay đổi đã tồn tại trong danh sách, vui lòng kiểm tra lại!');
+                        $model->addError('id_ycvhct', 'Thiết bị thay đổi đã tồn tại trong danh sách, vui lòng kiểm tra lại!');
                         return [
-                            'title'=> "Thêm mới Chi tiết yêu cầu",
+                            'title'=> "Cập nhật Chi tiết yêu cầu",
                             'content'=>$this->renderAjax('update', [
                                 'model' => $model,
                             ]),
@@ -224,7 +233,7 @@ class YcttbAjaxController extends Controller
                 'dungChungReload'=>'#chiTietBlock',
                 'tcontent'=>'Cập nhật thành công!',
                 'dungChungType'=>'vanHanh',
-                'dungChungContent'=>$this->renderAjax('@app/modules/taisan/views/yeu-cau-van-hanh/_form_chi_tiet', ['model'=>$model->yeuCauVanHanh]),
+                'dungChungContent'=>$this->renderAjax('@app/modules/taisan/views/phieu-tra-thiet-bi/_form_chi_tiet', ['model'=>$model->phieuTraThietBi]),
             ];
         }else{
             /*

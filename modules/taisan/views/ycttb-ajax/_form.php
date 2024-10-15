@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use app\modules\taisan\models\ThietBi;
 use kartik\date\DatePicker;
 use app\modules\dungchung\models\CustomFunc;
+use app\modules\taisan\models\YeuCauVanHanh;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsYeuCauVanHanhCt */
@@ -20,8 +21,22 @@ if(!$model->isNewRecord){
 
     <?php $form = ActiveForm::begin(); ?>
     
-    <?=$form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(ThietBi::find()->where(['trang_thai' => 'VANHANH'])->all(), 'id', 'ten_thiet_bi'),
+    <?php /*$form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
+        //'data' => ArrayHelper::map(ThietBi::find()->where(['trang_thai' => 'VANHANH'])->all(), 'id', 'ten_thiet_bi'),
+        'data' => ThietBi::getListThietBiDangVanHanh(),
+        'language' => 'vi',
+        'options' => [
+            'placeholder' => 'Chọn thiết bị...',
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'width' => '100%',
+            'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal2")'),
+        ],
+    ]); */ ?>
+    
+    <?=$form->field($model, 'id_ycvhct')->widget(Select2::classname(), [
+        'data' => YeuCauVanHanh::getListThietBiByIDChiTiet(),
         'language' => 'vi',
         'options' => [
             'placeholder' => 'Chọn thiết bị...',
