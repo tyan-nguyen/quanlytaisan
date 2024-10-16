@@ -123,7 +123,7 @@ class BaoGiaSuaChuaController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm mới báo giá".json_encode($model->getErrors()[0]),
+                    'title'=> "Thêm mới báo giá",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),

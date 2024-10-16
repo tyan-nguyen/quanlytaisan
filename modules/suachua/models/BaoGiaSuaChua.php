@@ -109,7 +109,7 @@ class BaoGiaSuaChua extends \yii\db\ActiveRecord
         if ($this->isNewRecord) {
             $phieuSuaChua=$this->phieuSuaChua;
             //chỉ cho tạo báo giá mua sắm ở trạng thái đã duyệt hoặc đã gửi báo giá
-            if(!in_array($phieuSuaChua->trang_thai,['approved','quote_sent']))
+            if(!in_array($phieuSuaChua->trang_thai,['new','quote_sent']))
             return;
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->ngay_bao_gia = date('Y-m-d H:i:s');
