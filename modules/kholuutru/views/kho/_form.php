@@ -94,7 +94,7 @@ if($model->isNewRecord){
                                         'id'=>'id-nhan-vien',
                                         'placeholder' => 'Select ...'
                                     ],
-                                    'data' => $model->isNewRecord?$newArr:[$model->id_nguoi_quan_ly=>$model->nguoiQuanLy->ten_nhan_vien],
+                                    'data' => $model->isNewRecord?$newArr:[$model->id_nguoi_quan_ly=>$model->nguoiQuanLy?$model->nguoiQuanLy->ten_nhan_vien:''],
                                     //'data' => $model->isNewRecord?$newArr:NhanVien::getListThuocBoPhan($model->id_nguoi_quan_ly),
                                     'type'=>DepDrop::TYPE_SELECT2,
                                     'select2Options'=>[
@@ -117,7 +117,7 @@ if($model->isNewRecord){
                                     ] */
                                 ]);
                            ?>
-                            <?= $form->field($model, 'gia_tri_toi_da')->textInput() ?>
+                            <?php // $form->field($model, 'gia_tri_toi_da')->textInput() ?>
                         
                             
                         

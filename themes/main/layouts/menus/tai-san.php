@@ -25,8 +25,9 @@
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a></li>
 							<li><a href="/taisan/thiet-bi/index-user?menu=ts5" class="slide-item" data-menu="ts5">Tài sản cá nhân quản lý</a></li>
 							<li><a href="/taisan/thiet-bi/index-bo-phan?menu=ts6" class="slide-item" data-menu="ts6">Tài sản Bộ phận quản lý</a></li>
-							<li><a href="/taisan/thiet-bi?menu=ts1" class="slide-item" data-menu="ts1">Quản lý thiết bị/tài sản</a></li>
-							<li><a href="/taisan/loai-thiet-bi?menu=ts2" class="slide-item" data-menu="ts2">Loại thiết bị/tài sản</a></li>
+							<li><a href="/taisan/thiet-bi?menu=ts1" class="slide-item" data-menu="ts1">Quản lý thiết bị, máy móc</a></li>
+							<li><a href="/kholuutru/dm-vat-tu?menu=ts7" class="slide-item" data-menu="ts7">Quản lý vật tư</a></li>
+							<li><a href="/taisan/loai-thiet-bi?menu=ts2" class="slide-item" data-menu="ts2">Loại thiết bị, máy móc</a></li>
 							<li><a href="/taisan/he-thong?menu=ts3" class="slide-item" data-menu="ts3">Hệ thống</a></li>
 							<li><a href="/taisan/vi-tri?menu=ts4" class="slide-item" data-menu="ts4">Vị trí </a></li>
 							<li class="sub-slide is-expanded">
@@ -35,33 +36,10 @@
     								<i class="sub-angle fe fe-chevron-right"></i>
     							</a>
     							<ul class="sub-slide-menu open" style="display: block;">
-    								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-mua-sam?menu=ts8" data-menu="ts8">Thống kê tài sản mua sắm</a></li>
-    								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-hoat-dong?menu=ts9" data-menu="ts9">Thống kê hoạt động tài sản</a></li>
+    								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-mua-sam?menu=ts8" data-menu="ts8">Thống kê mua sắm</a></li>
+    								<li><a class="sub-side-menu__item" href="/taisan/thong-ke/thong-ke-tai-san-hoat-dong?menu=ts9" data-menu="ts9">Thống kê hoạt động thiết bị, máy móc</a></li>
     							</ul>
     						</li>
-							<!-- 
-							<li><a href="/taisan/lop-hu-hong?menu=ts5" class="slide-item" data-menu="ts5">Lớp hư hỏng</a></li>
-							 -->
-
-							<!-- <li class="sub-slide">
-								<a class="slide-item side-menu__item-sub" data-bs-toggle="sub-slide" href="javascript:void(0)">
-									<span class="sub-side-menu__label">Điều chuyển thiết bị</span>
-									<i class="sub-angle fe fe-chevron-right"></i>
-								</a>
-								<ul class="sub-slide-menu">
-									<li><a class="sub-side-menu__item" href="/taisan/yeu-cau-van-hanh?menu=ts7" data-menu="ts7">Tạo phiếu</a></li>
-									<li><a class="sub-side-menu__item" href="/taisan/gui-yeu-cau-van-hanh?menu=ts8" data-menu="ts8">Gửi phê duyệt</a></li>
-									<li><a class="sub-side-menu__item" href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=ts9" data-menu="ts9">Phê duyệt</a></li>
-									<li><a class="sub-side-menu__item" href="/taisan/xuat-yeu-cau-van-hanh?menu=ts10" data-menu="ts10">Xuất và vận hành</a></li>
-									<li><a class="sub-side-menu__item" href="/taisan/phieu-tra-thiet-bi?menu=ts11" data-menu="ts11">Phiếu trả thiết bị</a></li>
-									<li><a class="sub-side-menu__item" href="/taisan/theo-doi-van-hanh?menu=ts12" data-menu="ts12">Theo dõi thiết bị</a></li>
-									<li><a class="sub-side-menu__item" href="/taisan/theo-doi-van-hanh/list-calendar/?menu=ts13" data-menu="ts13">Theo dõi thiết bị (List)</a></li>
-								</ul>
-							</li> -->
-							
-							<!-- <li><a href="/taisan/yeu-cau-van-hanh?menu=ts7" class="slide-item" data-menu="ts7">Tạo phiếu Điều chuyển</a></li> -->
-							<!-- <li><a href="/taisan/phe-duyet-yeu-cau-van-hanh?menu=ts8" class="slide-item" data-menu="ts8">Phê duyệt phiếu Điều chuyển</a></li> -->
-							<!-- <li><a href="/taisan/duyet-yeu-cau-van-hanh?menu=ts9" class="slide-item" data-menu="ts8">Phê duyệt Điều chuyển</a></li> -->
 
 						</ul>
 						<div class="menutabs-content px-0">

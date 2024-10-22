@@ -34,6 +34,8 @@
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/bophan/nhom-doi-tac?menu=pbbp4') ?>" class="slide-item" data-menu="pbbp4">Nhóm Đối tác</a>
 							</li>
+							<li class=""><a href="<?= Yii::getAlias('@web/kholuutru/kho?menu=pbbp6') ?>" class="slide-item" data-menu="pbbp6">Danh mục kho</a>
+							</li>
 						</ul>
 						<div class="menutabs-content px-0">
 							<!-- menu tab here -->
