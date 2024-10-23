@@ -196,6 +196,10 @@ use app\widgets\views\ImageWithButtonWidget;
                                     'attribute' => 'ngay_ngung_hoat_dong',
                                     'value' => $model->ngayNgungHoatDong
                                 ],
+                                [
+                                    'attribute' => 'id_kho',
+                                    'value' => ($model->khoLuuTru?$model->khoLuuTru->ten_kho:'')
+                                ],
                             ],
                             'template' => "<tr><th style='width: 40%;'>{label}</th><td>{value}</td></tr>"
                         ]) ?>

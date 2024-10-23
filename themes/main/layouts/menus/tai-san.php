@@ -23,10 +23,10 @@
 					<div class="tab-pane active" id="side3">
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a></li>
-							<li><a href="/taisan/thiet-bi/index-user?menu=ts5" class="slide-item" data-menu="ts5">Tài sản cá nhân quản lý</a></li>
-							<li><a href="/taisan/thiet-bi/index-bo-phan?menu=ts6" class="slide-item" data-menu="ts6">Tài sản Bộ phận quản lý</a></li>
-							<li><a href="/taisan/thiet-bi?menu=ts1" class="slide-item" data-menu="ts1">Quản lý thiết bị, máy móc</a></li>
+							<li><a href="/taisan/thiet-bi?menu=ts1" class="slide-item" data-menu="ts1">Quản lý tài sản</a></li>
 							<li><a href="/kholuutru/dm-vat-tu?menu=ts7" class="slide-item" data-menu="ts7">Quản lý vật tư</a></li>
+							<li><a href="/taisan/thiet-bi/index-user?menu=ts5" class="slide-item" data-menu="ts5">Cá nhân quản lý</a></li>
+							<li><a href="/taisan/thiet-bi/index-bo-phan?menu=ts6" class="slide-item" data-menu="ts6">Bộ phận quản lý</a></li>
 							<li><a href="/taisan/loai-thiet-bi?menu=ts2" class="slide-item" data-menu="ts2">Loại thiết bị, máy móc</a></li>
 							<li><a href="/taisan/he-thong?menu=ts3" class="slide-item" data-menu="ts3">Hệ thống</a></li>
 							<li><a href="/taisan/vi-tri?menu=ts4" class="slide-item" data-menu="ts4">Vị trí </a></li>

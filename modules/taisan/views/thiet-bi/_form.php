@@ -18,6 +18,7 @@ use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
 use app\widgets\forms\RadioWidget;
 use app\modules\dungchung\models\CustomFunc;
+use app\modules\kholuutru\models\KhoLuuTru;
 
 $newArr = [];
 if($model->isNewRecord){
@@ -85,6 +86,7 @@ if($model->ngay_dua_vao_su_dung != null)
                         'options' => ['placeholder' => 'Chọn thiết bị...'],
                         'pluginOptions' => [
                             'allowClear' => true,
+                            'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
                         ],
                     ]);?>
                 </div>
@@ -321,6 +323,22 @@ if($model->ngay_dua_vao_su_dung != null)
             		<div class="invalid-feedback "></div></div>
                 </div>
     
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <?= $form->field($model, 'id_kho')->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map(KhoLuuTru::find()->all(), 'id', 'ten_kho'),
+                        'language' => 'vi',
+                        'options' => ['placeholder' => 'Chọn kho lưu trữ...'],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'width'=>'100%',
+                            'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
+                        ],
+                        
+                    ]);?>
+                </div>
             </div>
             
             <div class="row">
