@@ -9,6 +9,7 @@ use app\modules\taisan\models\LoaiThietBi;
 use app\modules\taisan\models\ThietBi;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
+use app\modules\kholuutru\models\KhoLuuTru;
 //use kartik\form\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -91,6 +92,7 @@ use yii\helpers\Url;
                    ?>
     	
     	<?= $form->field($model, 'trang_thai')->dropDownList(ThietBi::getDmTrangThai(), ['prompt'=>'--Chọn--']) ?>
+    	<?= $form->field($model, 'id_kho')->dropDownList(ArrayHelper::map(KhoLuuTru::find()->all(), 'id', 'ten_kho'), ['prompt'=>'--Chọn--']) ?>
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

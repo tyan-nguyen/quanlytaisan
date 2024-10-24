@@ -34,6 +34,13 @@ class DmVatTuController extends Controller
     			],
 		];
 	}
+	
+	public function beforeAction($action)
+	{
+	    Yii::$app->params['moduleID'] = 'Module Quản lý tài sản';
+	    Yii::$app->params['modelID'] = 'Quản lý Vật tư';
+	    return parent::beforeAction($action);
+	}
 
     /**
      * Lists all DmVatTu models.

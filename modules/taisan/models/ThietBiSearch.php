@@ -18,7 +18,7 @@ class ThietBiSearch extends ThietBi
     public function rules()
     {
         return [
-            [['id', 'id_vi_tri', 'id_he_thong', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao'], 'integer'],
+            [['id', 'id_vi_tri', 'id_he_thong', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao', 'id_kho'], 'integer'],
             [['ma_thiet_bi', 'ten_thiet_bi', 'nam_san_xuat', 'serial', 'model', 'xuat_xu', 'dac_tinh_ky_thuat', 'ngay_mua', 'han_bao_hanh', 'ngay_dua_vao_su_dung', 'trang_thai', 'ngay_ngung_hoat_dong', 'ghi_chu', 'thoi_gian_tao'], 'safe'],
         ];
     }
@@ -86,6 +86,7 @@ class ThietBiSearch extends ThietBi
                 'ngay_ngung_hoat_dong' => $this->ngay_ngung_hoat_dong,
                 'thoi_gian_tao' => $this->thoi_gian_tao,
                 'nguoi_tao' => $this->nguoi_tao,
+                'id_kho' => $this->id_kho
             ]);
             
             //search người quản lý thì ko search bo phan

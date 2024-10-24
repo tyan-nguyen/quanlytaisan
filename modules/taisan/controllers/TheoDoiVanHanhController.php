@@ -81,7 +81,7 @@ class TheoDoiVanHanhController extends Controller
             $today = date('Y-m-d');
             $ngayTra = date('Y-m-d', strtotime($ngayTra));
             if($today > $ngayTra){//tre han
-                $color = 'yellow';
+                $color = 'red';
             } else {
                 $color = 'green';//con trong han
             }
