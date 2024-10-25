@@ -41,6 +41,13 @@ class PhieuMuaSamController extends Controller
     			],
 		];
 	}
+	
+	public function beforeAction($action)
+	{
+	    Yii::$app->params['moduleID'] = 'Module Quản lý tài sản';
+	    Yii::$app->params['modelID'] = 'Quản lý phiếu mua sắm thiết bị';
+	    return parent::beforeAction($action);
+	}
 
     /**
      * Lists all PhieuMuaSam models.
