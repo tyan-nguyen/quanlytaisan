@@ -84,7 +84,8 @@ class ThietBi extends ThietBiBase
                 'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuBaoTri->thoi_gian_bat_dau)),
                 'noi_dung' => $phieuBaoTri->keHoach->ten_cong_viec,
                 'loai'=>KeHoachBaoTri::MODEL_ID,
-                'tham_chieu'=>$phieuBaoTri->id
+                'tham_chieu'=>$phieuBaoTri->id,
+                'status'=>'Đã thực hiện',
             ];
         }
         return $result;
@@ -92,7 +93,7 @@ class ThietBi extends ThietBiBase
     public function getLichSuSuaChua($tuNgay, $denNgay){
         $custom = new CustomFunc();
         $result = array();
-        $query = PhieuSuaChua::find()->where(['id_thiet_bi'=>$this->id])->andWhere(['=','trang_thai','completed']);
+        $query = PhieuSuaChua::find()->where(['id_thiet_bi'=>$this->id])->andWhere(['=','trang_thai','completed'])->orWhere(['=','trang_thai','processing']);
         if($tuNgay && $denNgay){
             $tuNgay = $custom->convertDMYToYMD($tuNgay);
             $denNgay = $custom->convertDMYToYMD($denNgay);
@@ -107,12 +108,19 @@ class ThietBi extends ThietBiBase
         }
         $phieuSuaChuas = $query->all();
         foreach ($phieuSuaChuas as $phieuSuaChua){
+            $status = '';
+            if($phieuSuaChua->trang_thai == 'completed'){
+                $status = 'Đã hoàn thành';
+            } else if($phieuSuaChua->trang_thai == 'processing'){
+                $status = 'Đang sửa chữa';
+            }
             $result[] = [
                 'ngay' => $custom->convertYMDHISToDMY($phieuSuaChua->ngay_sua_chua),
                 'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuSuaChua->ngay_sua_chua)),
                 'noi_dung' => 'Địa điểm: ' . $phieuSuaChua->dia_chi . '. Tình trạng: ' . $phieuSuaChua->ghi_chu1,
                 'loai'=>PhieuSuaChua::MODEL_ID,
-                'tham_chieu'=>$phieuSuaChua->id
+                'tham_chieu'=>$phieuSuaChua->id,
+                'status'=>$status
             ];
         }
         return $result;
@@ -120,7 +128,7 @@ class ThietBi extends ThietBiBase
     public function getLichSuVanHanh($tuNgay, $denNgay){
         $custom = new CustomFunc();
         $result = array();
-        $query = YeuCauVanHanhCt::find()->where(['id_thiet_bi'=>$this->id]);
+        $query = YeuCauVanHanhCt::find()->joinWith(['yeuCauVanHanh as ycvh'])->where(['=','ycvh.hieu_luc','VANHANH'])->orWhere(['=','ycvh.hieu_luc','DATRA'])->orWhere(['=','ycvh.hieu_luc','DADUYET'])->andWhere(['id_thiet_bi'=>$this->id]);
         if($tuNgay && $denNgay){
             $tuNgay = $custom->convertDMYToYMD($tuNgay);
             $denNgay = $custom->convertDMYToYMD($denNgay);
@@ -135,6 +143,16 @@ class ThietBi extends ThietBiBase
         }
         $yeuCauVanHanhCts = $query->all();
         foreach ($yeuCauVanHanhCts as $phieuVanHanh){
+            $status = '';
+            if($phieuVanHanh->ngay_tra_thuc_te !=null){
+                $status = 'Đã trả';
+            } else {
+                if($phieuVanHanh->yeuCauVanHanh->hieu_luc == "VANHANH"){
+                    $status = 'Đang vận hành';
+                } else if($phieuVanHanh->yeuCauVanHanh->hieu_luc == "DADUYET"){
+                    $status = 'Đã duyệt';
+                }
+            }
             $result[] = [
                 'ngay' => $custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau),
                 'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuVanHanh->ngay_bat_dau)),
@@ -144,7 +162,8 @@ class ThietBi extends ThietBiBase
                     .'. Địa điểm: ' . $phieuVanHanh->yeuCauVanHanh->cong_trinh . 
                     '. Nội dung: ' . $phieuVanHanh->yeuCauVanHanh->ly_do,
                 'loai'=>YeuCauVanHanh::MODEL_ID,
-                'tham_chieu'=>$phieuVanHanh->id
+                'tham_chieu'=>$phieuVanHanh->id,
+                'status'=>$status
             ];
         }
         return $result;

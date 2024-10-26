@@ -40,6 +40,10 @@ body .select2-container {
             <tr>
             	<td width="50">STT</td>
             	<td width="75"></td>
+            	<?php if(!isset($idThietBi) || !$idThietBi): ?>
+            	<td width="300">Tên thiết bị</td>
+            	<?php endif ?>
+            	<td width="150">Trạng thái</td>
             	<td width="150">Loại hoạt động</td>
             	<td width="120">Ngày</td>
             	<td>Nội dung</td>
@@ -63,6 +67,13 @@ body .select2-container {
         		}
         		?>
         	</td>
+        	
+        	<?php if(!isset($idThietBi) || !$idThietBi): ?>
+            	<td><?= $ls['ten_thiet_bi'] ?></td>
+            <?php endif ?>
+            
+            <td><?= $ls['status'] ?></td>	
+            
         	<td><?php 
         	if($ls['loai'] == KeHoachBaoTri::MODEL_ID){
         	    echo '<span class="badge bg-secondary">Bảo trì định kỳ</span>';
@@ -72,6 +83,7 @@ body .select2-container {
         	    echo '<span class="badge bg-primary">Vận hành thiết bị</span>';
         	}
         	?></td>
+        	
         	<td><?= $ls['ngay'] ?></td>
         	<td><?= $ls['noi_dung'] ?></td>
         </tr>
@@ -83,7 +95,7 @@ body .select2-container {
     	} else {
         ?>
         <div class="alert alert-default" role="alert">
-			<span class="alert-inner--text">Vui lòng chọn tài sản cần thống kê</span>
+			<span class="alert-inner--text">Vui lòng nhập thông tin cần thống kê</span>
 		</div>
         <?php } ?>
     </div>

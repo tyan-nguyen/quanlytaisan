@@ -68,13 +68,19 @@ use yii\helpers\Html;
      <div class="col-md-4">
      	<br/>
      	<label>Hiển thị lịch sử bảo trì</label>
-     	<?= Html::checkbox('showBaoTri', !$idThietBi?true:$showBaoTri) ?>
+     	<?php 
+     	  $firstLoad = false;
+     	  if(!$showBaoTri && !$showSuaChua && !$showVanHanh){
+     	      $firstLoad = true;
+     	  }
+     	?>
+     	<?= Html::checkbox('showBaoTri', $firstLoad?true:$showBaoTri) ?>
     
      	<label>Hiển thị lịch sử sửa chữa</label>
-     	<?= Html::checkbox('showSuaChua', !$idThietBi?true:$showSuaChua) ?>
+     	<?= Html::checkbox('showSuaChua', $firstLoad?true:$showSuaChua) ?>
      
      	<label>Hiển thị lịch sử vận hành</label>
-     	<?= Html::checkbox('showVanHanh', !$idThietBi?true:$showVanHanh) ?>
+     	<?= Html::checkbox('showVanHanh', $firstLoad?true:$showVanHanh) ?>
      </div>
      <div class="col-md-2">
      	<br/>

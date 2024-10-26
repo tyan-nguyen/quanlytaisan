@@ -6,6 +6,10 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\taisan\models\ThietBi;
+use app\modules\dungchung\models\CustomFunc;
+use app\modules\baotri\models\PhieuBaoTri;
+use app\modules\baotri\models\KeHoachBaoTri;
+use app\modules\suachua\models\PhieuSuaChua;
 
 /**
  * ThietBiSearch represents the model behind the search form about `app\modules\taisan\models\ThietBi`.
@@ -126,5 +130,133 @@ class ThietBiSearch extends ThietBi
         }
 
         return $dataProvider;
+    }
+    /**
+     * get lich su bao tri tat ca thiet bi tu ngay-den ngay
+     * {@inheritDoc}
+     * @see \app\modules\taisan\models\ThietBi::getLichSuBaoTri()
+     */
+    public function getLichSuBaoTri($tuNgay, $denNgay){
+        $custom = new CustomFunc();
+        $result = array();
+        $query = PhieuBaoTri::find()->alias('t')
+        ->joinWith(['keHoach as kh'])
+        ->where([
+            't.da_hoan_thanh' => 1
+        ]);
+        if($tuNgay && $denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['>=','thoi_gian_bat_dau', $tuNgay]);
+            $query->andWhere(['<=','thoi_gian_bat_dau', $denNgay]);
+        } else if($tuNgay && !$denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $query->andWhere(['>=','thoi_gian_bat_dau', $tuNgay]);
+        } else if(!$tuNgay && $denNgay){
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['<=','thoi_gian_bat_dau', $denNgay]);
+        }
+        $phieuBaoTris = $query->all();
+        foreach ($phieuBaoTris as $phieuBaoTri){
+            $result[] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuBaoTri->thoi_gian_bat_dau),
+                'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuBaoTri->thoi_gian_bat_dau)),
+                'noi_dung' => $phieuBaoTri->keHoach->ten_cong_viec,
+                'loai'=>KeHoachBaoTri::MODEL_ID,
+                'tham_chieu'=>$phieuBaoTri->id,
+                'id_thiet_bi'=>$phieuBaoTri->keHoach?$phieuBaoTri->keHoach->id_thiet_bi:'',
+                'ten_thiet_bi'=>$phieuBaoTri->keHoach->thietBi?$phieuBaoTri->keHoach->thietBi->ten_thiet_bi:'',
+                'status'=>'Đã thực hiện',
+            ];
+        }
+        return $result;
+    }
+    /**
+     * get lich su sua chua tat ca thiet bi tu ngay-den ngay
+     */
+    public function getLichSuSuaChua($tuNgay, $denNgay){
+        $custom = new CustomFunc();
+        $result = array();
+        $query = PhieuSuaChua::find()->where(['=','trang_thai','completed'])->orWhere(['=','trang_thai','processing']);
+        if($tuNgay && $denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['>=','ngay_sua_chua', $tuNgay]);
+            $query->andWhere(['<=','ngay_sua_chua', $denNgay]);
+        } else if($tuNgay && !$denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $query->andWhere(['>=','ngay_sua_chua', $tuNgay]);
+        } else if(!$tuNgay && $denNgay){
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['<=','ngay_sua_chua', $denNgay]);
+        }
+        $phieuSuaChuas = $query->all();
+        foreach ($phieuSuaChuas as $phieuSuaChua){
+            $status = '';
+            if($phieuSuaChua->trang_thai == 'completed'){
+                $status = 'Đã hoàn thành';
+            } else if($phieuSuaChua->trang_thai == 'processing'){
+                $status = 'Đang sửa chữa';
+            }
+            $result[] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuSuaChua->ngay_sua_chua),
+                'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuSuaChua->ngay_sua_chua)),
+                'noi_dung' => 'Địa điểm: ' . $phieuSuaChua->dia_chi . '. Tình trạng: ' . $phieuSuaChua->ghi_chu1,
+                'loai'=>PhieuSuaChua::MODEL_ID,
+                'tham_chieu'=>$phieuSuaChua->id,
+                'id_thiet_bi'=>$phieuSuaChua->id_thiet_bi,
+                'ten_thiet_bi'=>$phieuSuaChua->thietBi?$phieuSuaChua->thietBi->ten_thiet_bi:'',
+                'status'=>$status
+            ];
+        }
+        return $result;
+    }
+    /**
+     * get lich su van hanh tat ca thiet bi tu ngay-den ngay
+     */
+    public function getLichSuVanHanh($tuNgay, $denNgay){
+        $custom = new CustomFunc();
+        $result = array();
+        $query = YeuCauVanHanhCt::find()->joinWith(['yeuCauVanHanh as ycvh'])->where(['=','ycvh.hieu_luc','VANHANH'])->orWhere(['=','ycvh.hieu_luc','DATRA'])->orWhere(['=','ycvh.hieu_luc','DADUYET']);
+        if($tuNgay && $denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['>=','DATE(ngay_bat_dau)', $tuNgay]);
+            $query->andWhere(['<=','DATE(ngay_bat_dau)', $denNgay]);
+        } else if($tuNgay && !$denNgay){
+            $tuNgay = $custom->convertDMYToYMD($tuNgay);
+            $query->andWhere(['>=','DATE(ngay_bat_dau)', $tuNgay]);
+        } else if(!$tuNgay && $denNgay){
+            $denNgay = $custom->convertDMYToYMD($denNgay);
+            $query->andWhere(['<=','DATE(ngay_bat_dau)', $denNgay]);
+        }
+        $yeuCauVanHanhCts = $query->all();
+        foreach ($yeuCauVanHanhCts as $phieuVanHanh){
+            $status = '';
+            if($phieuVanHanh->ngay_tra_thuc_te !=null){
+                $status = 'Đã trả';
+            } else {
+                if($phieuVanHanh->yeuCauVanHanh->hieu_luc == "VANHANH"){
+                    $status = 'Đang vận hành';
+                } else if($phieuVanHanh->yeuCauVanHanh->hieu_luc == "DADUYET"){
+                    $status = 'Đã duyệt';
+                }
+            }
+            $result[] = [
+                'ngay' => $custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau),
+                'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuVanHanh->ngay_bat_dau)),
+                'noi_dung' => 'Thời gian: '.$custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau)
+                . ' - '
+                .$custom->convertYMDHISToDMY($phieuVanHanh->ngay_ket_thuc)
+                .'. Địa điểm: ' . $phieuVanHanh->yeuCauVanHanh->cong_trinh .
+                '. Nội dung: ' . $phieuVanHanh->yeuCauVanHanh->ly_do,
+                'loai'=>YeuCauVanHanh::MODEL_ID,
+                'tham_chieu'=>$phieuVanHanh->id,
+                'id_thiet_bi'=>$phieuVanHanh->id_thiet_bi,
+                'ten_thiet_bi'=>$phieuVanHanh->thietBi?$phieuVanHanh->thietBi->ten_thiet_bi:'',
+                'status'=>$status
+            ];
+        }
+        return $result;
     }
 }
