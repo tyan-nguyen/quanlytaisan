@@ -15,7 +15,10 @@ use app\modules\user\models\User;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            [
+                'label'=>'Mã phiếu',
+                'value'=>'PT-' . substr("0000000{$model->id}", -6)
+            ],
             [
                 'attribute' => 'id_nguoi_tra',
                 'value' => $model->nguoiTra ? $model->nguoiTra->ten_nhan_vien : '-',
@@ -90,6 +93,22 @@ use app\modules\user\models\User;
             <?php ActiveForm::end(); ?>
         <?php endif; ?>
     </div>
+    
+    <div class="row">
+    	<div class="col-md-12">
+            <!-- print phieu -->
+            <div style="display:none">
+                <div id="print">
+                	<?php $this->render('_print_phieu', compact('model')) ?>
+                </div>
+            </div>
+             
+             <?php if($model->details){?>      
+            <a href="#" onClick="InPhieu()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In Phiếu (A5, A4)</a>
+            <?php } ?>
+        </div>
+    </div>
+    
 </div>
 
 <?php
@@ -121,3 +140,28 @@ use app\modules\user\models\User;
 // JS;
 // $this->registerJs($script);
 ?>
+
+<script>
+function InPhieu(){
+	//load lai phieu in (tranh bi loi khi chinh sua du lieu chua update noi dung in)
+	$.ajax({
+        type: 'post',
+        url: '/taisan/phieu-tra-thiet-bi/get-phieu-tra-thiet-bi-in-ajax?idPhieu=' + <?= $model->id ?>,
+        //data: frm.serialize(),
+        success: function (data) {
+            console.log('Submission was successful.');
+            console.log(data);            
+            if(data.status == 'success'){
+            	$('#print').html(data.content);
+            	printPhieu();//call from script.js
+            } else {
+            	alert('Vật tư không còn tồn tại trên hệ thống!');
+            }
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+            console.log(data);
+        },
+    });	
+}
+</script>

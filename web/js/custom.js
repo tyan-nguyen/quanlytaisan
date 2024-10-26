@@ -32,7 +32,7 @@ function printPhieu(){
 	$('#print').printThis({
 		 //debug: false,               // show the iframe for debugging
 		 importCSS: false,            // import parent page css
-		 loadCSS: ['/css/print-phieu.css?v=2'],
+		 loadCSS: ['/css/print-phieu.css?v=3'],
 		 //printDelay: 333,
     });
 }

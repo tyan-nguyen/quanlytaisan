@@ -47,6 +47,29 @@ class PhieuTraThietBiController extends Controller
             ],
         ];
     }
+    
+    /**
+     * load in phieu
+     * @return mixed
+     */
+    public function actionGetPhieuTraThietBiInAjax($idPhieu)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = PhieuTraThietBi::findOne($idPhieu);
+        if($model !=null){
+            return [
+                'status'=>'success',
+                'content' => $this->renderAjax('_print_phieu', [
+                    'model' => $model
+                ])
+            ];
+        } else {
+            return [
+                'status'=>'failed',
+                'content' => 'Phiếu trả thiết bị không tồn tại!'
+            ];
+        }
+    }
 
     /**
      * Lists all PhieuTraThietBi models.

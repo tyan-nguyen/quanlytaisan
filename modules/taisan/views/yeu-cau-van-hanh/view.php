@@ -52,7 +52,11 @@ use app\widgets\SummaryAlert;
                             'template' => '<tr><th>{label}</th><td>{value}</td></tr>',
                             'attributes' => [
 
-                                'id',
+                                //'id',
+                                [
+                                    'label'=>'Mã phiếu',
+                                    'value'=>'P-' . substr("0000000{$model->id}", -6)
+                                ],
                                 [
                                     'attribute' => 'id_nguoi_lap',
                                     'value' => $model->nguoiLap ? $model->nguoiLap->ten_nhan_vien : '-',

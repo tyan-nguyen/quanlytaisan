@@ -46,7 +46,7 @@ class ViboonAsset extends AssetBundle
         'assets/plugins/fullcalendar/locales/vi.js',
         //'assets/js/fullcalendar.js',
         
-        'assets/js/custom.js',
+        'assets/js/custom.js?v=1',
         //'assets/js/custom-switcher.js',
         //'assets/switcher/js/switcher.js',        
         'assets/js/tooltip.js',
