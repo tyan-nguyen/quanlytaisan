@@ -2,12 +2,7 @@
 
 use yii\widgets\ActiveForm;
 use app\modules\user\models\User;
-use app\modules\muasam\models\PhieuMuaSam;
-use app\modules\suachua\models\BaoGiaSuaChua;
 
-$phieuMuaSamNew=PhieuMuaSam::getListMuaSamByStatus(['submited']);
-$phieuSuaChua=BaoGiaSuaChua::getBaoGiaByStatus('submited');
-$phieuSuaChuaCount=BaoGiaSuaChua::getBaoGiaByStatus('submited')->count();;
 $countPhieuMuaSam=0;
 ?>
 <!--Main Header -->
@@ -48,47 +43,6 @@ $countPhieuMuaSam=0;
             <div class="navbar navbar-expand-lg navbar-collapse responsive-navbar p-0">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                     <ul class="nav nav-item header-icons navbar-nav-right ms-auto">
-                        <!-- Country-selector-->
-                        <!-- <li class="dropdown header-language-selection">
-							<a href="javascript:void(0);" class="nav-link icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-								<i class="bi bi-translate"></i>
-							</a>
-							<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-								<ul class="header-dropdown-list">
-									<li>
-										<div class="dropdown-item d-flex align-items-center position-relative">
-											<a href="#;" class="stretched-link"></a>
-											<span>French</span>
-										</div>
-									</li>
-									<li>
-										<div class="dropdown-item d-flex align-items-center position-relative">
-											<a href="#;" class="stretched-link"></a>
-											<span>Germany</span>
-										</div>
-									</li>
-									<li>
-										<div class="dropdown-item d-flex align-items-center position-relative">
-											<a href="#;" class="stretched-link"></a>
-											<span>Italy</span>
-										</div>
-									</li>
-									<li>
-										<div class="dropdown-item d-flex align-items-center position-relative">
-											<a href="#;" class="stretched-link"></a>
-											<span>Russia</span>
-										</div>
-									</li>
-									<li>
-										<div class="dropdown-item d-flex align-items-center position-relative">
-											<a href="#;" class="stretched-link"></a>
-											<span>Spain</span>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</li>-->
-                        <!-- Country-selector-->
 
 						    <!-- Yeu cau van hanh -->
 							<li class="dropdown  d-flex shopping-cart main-header-notification">

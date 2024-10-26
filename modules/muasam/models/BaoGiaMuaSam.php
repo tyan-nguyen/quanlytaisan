@@ -289,4 +289,7 @@ class BaoGiaMuaSam extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_duyet_bg']);
     }
+    public static function getCountNewByStatus($status){
+        return BaoGiaMuaSam::find()->where(['in','trang_thai',$status])->count();
+    }
 }

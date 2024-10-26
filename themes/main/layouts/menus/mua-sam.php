@@ -1,7 +1,11 @@
+<?php 
+$phieuMuaSamNewCount = count($phieuMuaSamNew);
+$phieuTotal = $baoGiaMuaSamNewCount + $phieuMuaSamNewCount;
+?>
 <li class="slide">
 	<a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);">
 		<span class="side-menu__icon"><i class="bi bi-pin-map side_menu_img"></i></span>
-		<span class="side-menu__label">Mua sắm</span><i class="angle fe fe-chevron-right"></i>
+		<span class="side-menu__label">Mua sắm <?= $phieuTotal>0?'<span class="badge bg-warning ms-2">'.$phieuTotal.'</span>':'' ?></span><i class="angle fe fe-chevron-right"></i>
 	</a>
 	<ul class="slide-menu" data-menu="pms">
 		<li class="panel sidetab-menu">
@@ -28,9 +32,9 @@
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam/list-mua-sam-vat-tu?menu=pms4') ?>" class="slide-item" data-menu="pms4">Mua sắm vật tư</a>
 							</li>
-							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam/duyet-phieu-mua-sam?menu=pms3') ?>" class="slide-item" data-menu="pms3">Duyệt phiếu mua sắm</a>
+							<li class=""><a href="<?= Yii::getAlias('@web/muasam/phieu-mua-sam/duyet-phieu-mua-sam?menu=pms3') ?>" class="slide-item" data-menu="pms3">Duyệt phiếu mua sắm <?= $phieuMuaSamNewCount>0?'<span class="badge bg-warning ms-2">'.$phieuMuaSamNewCount.'</span>':'' ?></a>
 							</li>
-                            <li class=""><a href="<?= Yii::getAlias('@web/muasam/bao-gia-mua-sam?menu=pms2') ?>" class="slide-item" data-menu="pms2">Báo giá mua sắm</a>
+                            <li class=""><a href="<?= Yii::getAlias('@web/muasam/bao-gia-mua-sam?menu=pms2') ?>" class="slide-item" data-menu="pms2">Báo giá mua sắm <?= $baoGiaMuaSamNewCount>0?'<span class="badge bg-warning ms-2">'.$baoGiaMuaSamNewCount.'</span>':'' ?></a>
 							</li>
 							
 						</ul>

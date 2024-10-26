@@ -1,7 +1,7 @@
 <li class="slide">
 	<a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);">
 		<span class="side-menu__icon"><i class="bi bi-pin-map side_menu_img"></i></span>
-		<span class="side-menu__label">Sửa chữa</span><i class="angle fe fe-chevron-right"></i>
+		<span class="side-menu__label">Sửa chữa <?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?> </span><i class="angle fe fe-chevron-right"></i>
 	</a>
 	<ul class="slide-menu" data-menu="psc">
 		<li class="panel sidetab-menu">
@@ -26,7 +26,7 @@
 							</li>
 							<li class=""><a href="<?= Yii::getAlias('@web/suachua/phieu-sua-chua?menu=psc1') ?>" class="slide-item" data-menu="psc1">Phiếu sửa chữa</a>
 							</li>
-                            <li class=""><a href="<?= Yii::getAlias('@web/suachua/bao-gia-sua-chua?menu=psc2') ?>" class="slide-item" data-menu="psc2">Báo giá sửa chữa</a>
+                            <li class=""><a href="<?= Yii::getAlias('@web/suachua/bao-gia-sua-chua?menu=psc2') ?>" class="slide-item" data-menu="psc2">Báo giá sửa chữa <?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?></a>
 							</li>
 							<!-- <li class=""><a href="<?= Yii::getAlias('@web/suachua/dm-tt-sua-chua?menu=psc3') ?>" class="slide-item" data-menu="psc3">Trung tâm sửa chữa</a>
 							</li> -->

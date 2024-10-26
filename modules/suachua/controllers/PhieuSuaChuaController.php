@@ -37,6 +37,14 @@ class PhieuSuaChuaController extends Controller
     			],
 		];
 	}
+	
+	public function beforeAction($action)
+	{
+	    Yii::$app->params['moduleID'] = 'Module Sửa chữa';
+	    Yii::$app->params['modelID'] = 'Quản lý Phiếu sửa chữa';
+	    
+	    return parent::beforeAction($action);
+	}
 
     /**
      * Lists all PhieuSuaChua models.

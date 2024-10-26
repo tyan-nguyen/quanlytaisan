@@ -20,7 +20,6 @@
 				</svg>
 			</div>
 			
-
 			<ul class="side-menu">
 				<li class="side-item side-item-category">Dashboard</li>
 				<li>
@@ -41,9 +40,9 @@
 				<?php // $this->render('menus/kho-luu-tru') ?>
 				
 				<?= $this->render('menus/bao-tri') ?>
-				<?= $this->render('menus/sua-chua') ?>
-				<?= $this->render('menus/mua-sam') ?>
-				<?= $this->render('menus/tai-khoan') ?>				
+				<?= $this->render('menus/sua-chua',compact('phieuSuaChua', 'phieuSuaChuaCount')) ?>
+				<?= $this->render('menus/mua-sam',compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount')) ?>
+				<?= $this->render('menus/tai-khoan') ?>
 				
 				<li class="side-item side-item-category">Tùy chỉnh</li>
 				<li>

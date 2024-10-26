@@ -5,6 +5,9 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use app\modules\taisan\models\ThietBi;
 use yii\bootstrap5\ActiveForm;
+use app\modules\muasam\models\PhieuMuaSam;
+use app\modules\suachua\models\BaoGiaSuaChua;
+use app\modules\muasam\models\BaoGiaMuaSam;
 
 ViboonAsset::register($this);
 
@@ -14,6 +17,12 @@ $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, 
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/assets/images/brand/favicon.ico')]);
+
+$phieuMuaSamNew=PhieuMuaSam::getListMuaSamByStatus(['submited']);
+$baoGiaMuaSamNewCount=BaoGiaMuaSam::getCountNewByStatus(['submited']);
+$phieuSuaChua=BaoGiaSuaChua::getBaoGiaByStatus('submited');
+$phieuSuaChuaCount=BaoGiaSuaChua::getBaoGiaByStatus('submited')->count();
+
 ?>
 <?php $this->beginPage() ?>
 <!doctype html>
@@ -43,9 +52,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 	<!-- Page -->
 	<div class="page">
 
-		<?= $this->render('_top') ?>
+		<?= $this->render('_top', compact('phieuMuaSamNew', 'phieuSuaChua', 'phieuSuaChuaCount')) ?>
 
-		<?= $this->render('_left') ?>
+		<?= $this->render('_left', compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount', 'phieuSuaChua', 'phieuSuaChuaCount')) ?>
 
 		<!-- Main Content-->
 		<div class="main-content side-content pt-0">
@@ -215,8 +224,15 @@ $(document).ready(function() {
                 
                 notificationList.empty();
                 notificationCount.text(data.length);
-
+                //for left
                 if (data.length > 0) {
+                    $('.notification-count-left').text(data.length);
+                    $('.notification-count-left').addClass('badge bg-warning ms-2');
+                }
+
+                
+                if (data.length > 0) {
+
                     data.forEach(function(request) {
                         var listItem = '<div  class="dropdown-item d-flex border-bottom pb-1 align-items-center">' 
 						// + '<a href="$approveUrl?id=' + request.id + '">' +
