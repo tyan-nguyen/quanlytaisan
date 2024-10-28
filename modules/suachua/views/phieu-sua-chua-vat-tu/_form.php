@@ -56,7 +56,7 @@ $vatTu=$model->vatTu;
         </div>
         <div class="col-5">
         <?= $form->field($model, 'id_vat_tu')->widget(Select2::classname(), [
-            'data' => $model->getVatTuByKho(),
+            'data' => $model->isNewRecord?($model->getVatTuByNew($model->id_vat_tu)):$model->getVatTuByKho(),
             'options' => [
                 'placeholder' => 'Chọn vật tư',
                 'id' => 'id_vat_tu',

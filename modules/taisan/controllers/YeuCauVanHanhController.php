@@ -47,6 +47,29 @@ class YeuCauVanHanhController extends Controller
 
         return parent::beforeAction($action);
     }
+    
+    /**
+     * load in phieu
+     * @return mixed
+     */
+    public function actionGetPhieuYeuCauVanHanhInAjax($idPhieu)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = YeuCauVanHanh::findOne($idPhieu);
+        if($model !=null){
+            return [
+                'status'=>'success',
+                'content' => $this->renderAjax('_print_phieu', [
+                    'model' => $model
+                ])
+            ];
+        } else {
+            return [
+                'status'=>'failed',
+                'content' => 'Phiếu yêu cầu vận hành không tồn tại!'
+            ];
+        }
+    }
 
     /**
      * Lists all YeuCauVanHanh models.
@@ -133,13 +156,21 @@ class YeuCauVanHanhController extends Controller
                         'class' => 'btn btn-primary',
                         'role' => 'modal-remote',
                         'hidden' => !$isApproved
-                    ])
-                    . Html::button('Print', [
+                    ]).
+                   /*  . Html::button('Print', [
                         'class' => 'btn btn-primary',
                         'id' => 'print-button',
                         // 'hidden' => !$isPrint
 
-                    ]),
+                    ]), */
+                    ($model->details!=null?Html::a(
+                        '<i class="fa fa-print"></i> In Phiếu (A5, A4)',
+                        '#',
+                        [
+                            'onClick'=>'InPhieu()',
+                            'data-pjax'=>0,
+                            'class' => 'btn btn-primary'
+                        ]) : '')
 
 
                 // . Html::button('<span class="fe fe-external-link"></span>Gửi phê duyệt', [

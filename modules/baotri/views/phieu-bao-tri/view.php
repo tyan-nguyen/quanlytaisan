@@ -104,8 +104,8 @@ $custom = new CustomFunc();
                 	<?php $this->render('_print_phieu', compact('model')) ?>
                 </div>
            </div>
-                   
-            <a href="#" onClick="InPhieu()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In Phiếu</a>
+                 
+            <!--  <a href="#" onClick="InPhieu()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In Phiếu</a>  -->
             </div>
            
             

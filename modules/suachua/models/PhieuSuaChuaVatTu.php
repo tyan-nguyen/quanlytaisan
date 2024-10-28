@@ -4,6 +4,7 @@ namespace app\modules\suachua\models;
 
 use Yii;
 use app\modules\kholuutru\models\DmVatTu;
+use app\modules\taisan\models\ThietBiVatTu;
 /**
  * This is the model class for table "ts_phieu_sua_chua_vat_tu".
  *
@@ -17,6 +18,7 @@ use app\modules\kholuutru\models\DmVatTu;
  * @property int|null $nguoi_tao
  * @property string|null $ngay_cap_nhat
  * @property int|null $nguoi_cap_nhat
+ * @property int|null $id_tb_vt
  *
  * @property TsPhieuSuaChua $phieuSuaChua
  * @property TsDmVatTu $vatTu
@@ -41,7 +43,7 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
             [['id_vat_tu'], 'required', 'when' => function ($model) {
                 return $model->trang_thai === 'new';
             }],
-            [['id_phieu_sua_chua', 'id_vat_tu', 'so_luong', 'nguoi_tao', 'nguoi_cap_nhat','id_kho_luu_tru'], 'integer'],
+            [['id_phieu_sua_chua', 'id_vat_tu', 'so_luong', 'nguoi_tao', 'nguoi_cap_nhat', 'id_kho_luu_tru', 'id_tb_vt'], 'integer'],
             [['ghi_chu','trang_thai'], 'string'],
             [['ngay_tao', 'ngay_cap_nhat'], 'safe'],
             [['don_vi_tinh','ten_vat_tu','trang_thai','hang_san_xuat'], 'string', 'max' => 255],
@@ -71,6 +73,7 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
             'nguoi_tao' => 'Người tạo',
             'ngay_cap_nhat' => 'Ngày cập nhật',
             'nguoi_cap_nhat' => 'Người cập nhật',
+            'id_tb_vt' => 'Vật tư thuộc tài sản'
         ];
     }
 
@@ -92,6 +95,15 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
     public function getVatTu()
     {
         return $this->hasOne(DmVatTu::class, ['id' => 'id_vat_tu']);
+    }
+    /**
+     * Gets query for [[ThietBiVatTu]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTbVatTu()
+    {
+        return $this->hasOne(ThietBiVatTu::class, ['id' => 'id_tb_vt']);
     }
     public function beforeSave($insert) {
         if ($this->isNewRecord) {
@@ -137,5 +149,36 @@ class PhieuSuaChuaVatTu extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
         return [];
+    }
+    public function getVatTuByNew($idVatTu=NULL){
+        if($idVatTu==null){
+            return [];
+        }else{
+            $vtModel = DmVatTu::findOne($idVatTu);
+            return [$idVatTu=>$vtModel?$vtModel->ten_vat_tu:'Không tìm thấy'];
+        }
+    }
+    
+    /*virtual attribute for gridview and views*/
+    public function getVtTenVatTu(){
+        if($this->trang_thai == 'damaged-tb'){
+            return $this->tbVatTu->vatTu->ten_vat_tu;
+        }else{
+            return $this->ten_vat_tu;
+        }
+    }
+    public function getVtSoLuong(){
+        if($this->trang_thai == 'damaged-tb'){
+            return 1;
+        }else{
+            return $this->so_luong;
+        }
+    }
+    public function getVtDonViTinh(){
+        if($this->trang_thai == 'damaged-tb'){
+            return $this->tbVatTu->vatTu->don_vi_tinh;
+        }else{
+            return $this->don_vi_tinh;
+        }
     }
 }

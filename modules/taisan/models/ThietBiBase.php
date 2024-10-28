@@ -224,7 +224,33 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return $this->id_nguoi_quan_ly != NULL ? $this->hasOne(NhanVien::class, ['id' => 'id_nguoi_quan_ly']) : NULL;
     }
-
+    /**
+     * Gets query for [[ThietBiVatTu]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVatTus()
+    {
+        return $this->hasMany(ThietBiVatTu::class, ['id_thiet_bi' => 'id']);
+    }
+    /**
+     * Gets query for [[ThietBiVatTu]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVatTuKhongHoatDongs()
+    {
+        return $this->hasMany(ThietBiVatTu::class, ['id_thiet_bi' => 'id'])->andWhere("trang_thai IN ('HONG','THANHLY')");
+    }
+    /**
+     * Gets query for [[ThietBiVatTu]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVatTuHoatDongs()
+    {
+        return $this->hasMany(ThietBiVatTu::class, ['id_thiet_bi' => 'id'])->andWhere("trang_thai IN ('HOATDONG','SUACHUA')");
+    }
     /**
      * Gets query for [[TsKeHoachBaoTris]].
      *

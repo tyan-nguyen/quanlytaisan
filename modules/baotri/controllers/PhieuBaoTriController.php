@@ -95,7 +95,15 @@ class PhieuBaoTriController extends Controller
                         'model' => $this->findModel($id),
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote']).
+                            Html::a(
+                                '<i class="fa fa-print"></i> In Phiếu (A5, A4)',
+                                '#',
+                                [
+                                    'onClick'=>'InPhieu()',
+                                    'data-pjax'=>0,
+                                    'class' => 'btn btn-primary'
+                                ])
                 ];    
         }else{
             return $this->render('view', [

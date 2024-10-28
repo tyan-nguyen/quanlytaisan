@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 return [
     [
@@ -21,10 +22,16 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ten_vat_tu',
+        'value'=>function($model){
+            return $model->vtTenVatTu;
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'so_luong',
+        'value'=>function($model){
+            return $model->vtSoLuong;
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -33,6 +40,9 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'don_vi_tinh',
+        'value'=>function($model){
+            return $model->vtDonViTinh;
+        }
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
@@ -56,6 +66,34 @@ return [
         'vAlign'=>'middle',
         'width' => '200px',
         'visible'=>$isCheckUpdate,
+        'template'=>'{viewhh} {view} {update} {delete}',
+        'visibleButtons' => [
+            'update' => function ($model) {
+                return $model->id_tb_vt==NULL;
+            },
+            'view' => function ($model) {
+               return $model->id_tb_vt==NULL;
+            },
+            'viewhh' => function ($model) {
+                return $model->id_tb_vt!=NULL;
+            },
+        ],
+        'buttons' => [
+            'viewhh' => function ($url, $model, $key) {
+            $options = [
+                'title' => Yii::t('yii', 'Xem thông tin'),
+                'aria-label' => Yii::t('yii', 'Xem thông tin'),
+                'data-pjax' => '0',
+                'role'=>'modal-remote-2',
+                'class'=>'btn ripple btn-primary btn-sm',
+                'data-bs-placement'=>'top',
+                'data-bs-toggle'=>'tooltip-primary'
+            ];
+            $url = Url::toRoute(['/taisan/thiet-bi-vat-tu-ajax/view', 'id' => $model->id_tb_vt]);
+            
+            return Html::a('<i class="fa fa-eye"></i>', $url, $options);
+            }
+        ],
         'urlCreator' => function($action, $model, $key, $index) { 
                 if($action=="update")
                 return Url::to(["/suachua/phieu-sua-chua-vat-tu/".$action.'2','id'=>$key]);

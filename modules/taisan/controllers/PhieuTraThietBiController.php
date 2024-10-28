@@ -172,7 +172,15 @@ class PhieuTraThietBiController extends Controller
                         'id' => 'confirm-button',
                         'form' => 'confirm-form',
                         'hidden' => !$isDraft
-                    ])
+                    ]).
+                    ($model->details!=null?Html::a(
+                        '<i class="fa fa-print"></i> In Phiếu (A5, A4)',
+                        '#',
+                        [
+                            'onClick'=>'InPhieu()',
+                            'data-pjax'=>0,
+                            'class' => 'btn btn-primary'
+                        ]) : '')
             ];
         } else {
             return $this->render('view', [

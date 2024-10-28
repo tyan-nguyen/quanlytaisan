@@ -24,6 +24,9 @@ use app\widgets\views\ImageWithButtonWidget;
                     <li><a href="#tab2" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
                             Thông tin quản lý
                         </a></li>
+                    <li><a href="#tab7" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
+                            Vật tư/Phụ tùng
+                        </a></li>
                     <li><a href="#tab3" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
                             Tài liệu
                         </a></li>
@@ -230,6 +233,13 @@ use app\widgets\views\ImageWithButtonWidget;
                         'searchModel' => $searchModelBaoTri,
                         'dataProvider' => $dataProviderBaoTri,
                     ]) ?>
+                </div>
+                <div class="tab-pane" id="tab7" role="tabpanel">
+                	<div id="chiTietBlock">
+                    <?= $this->render('_form_ds_vat_tu', [
+                        'model'=>$model
+                    ]) ?>
+                    </div>
                 </div>
             </div>
         </div>

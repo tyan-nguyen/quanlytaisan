@@ -2,6 +2,12 @@
 use yii\helpers\Html;
 use app\modules\dungchung\models\CustomFunc;
 $custom = new CustomFunc();
+$baoGia=$model->baoGiaSuaChua;
+$thietBi=$model->thietBi;
+$ngaySuaChua="";
+if ($model->ngay_sua_chua != null) {
+    $ngaySuaChua = $custom->convertYMDToDMY($model->ngay_sua_chua);
+}
 ?>
 <!-- <link href="/css/print-hoa-don.css" rel="stylesheet"> -->
 <div class="row text-center" style="width: 100%">
@@ -21,60 +27,75 @@ $custom = new CustomFunc();
     				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10pt">0903.794.533 - 0903.794.534 - 0903.794.535</span> 				
     			</td>
     			<td width="100px">
-    				<div><?= 'PT-' . substr("0000000{$model->id}", -6) ?> </div>
+    				<div>
+    				Số phiếu: P-<?= substr("0000000{$model->id}", -6) ?>
+    				<br/>
+    				(<?= $baoGia!=null?$baoGia->getDmTrangThai()[$baoGia->trang_thai]:'Không có BG'  ?>)
+    				</div>
     			</td>
     		</tr>
     	</table>
     	
     	<table style="width: 100%">
     		<tr>
-    			<td style="text-align: center"><span class="phieu-h1">PHIẾU GIAO TRẢ THIẾT BỊ/TÀI SẢN</span></td>
+    			<td style="text-align: center"><span class="phieu-h1">PHIẾU XUẤT KHO VẬT TƯ</span></td>
     		</tr>
     	</table>
     	
     	<table id="table-info" style="width: 100%; margin-top:30px;">
     		<tr>
-    			<td>Người giao trả thiết bị/tài sản: <strong><?= $model->nguoiTra ? $model->nguoiTra->ten_nhan_vien : '' ?></strong></td>
+    			<td>Tên hệ thống, thiết bị: <?= $thietBi->ten_thiet_bi ?></td>
     		</tr>
     		<tr>
-    			<td>Người nhận thiết bị/tài sản: <strong><?= $model->nguoiNhan ? $model->nguoiNhan->ten_nhan_vien : '' ?></strong></td>
+    			<td>Địa điểm: <?= $model->dia_chi ?></td>
     		</tr>
-    	
     		<tr>
-    			<td colspan="2">
-    				<strong>Nội dung: </strong> <?= $model->noi_dung_tra ?>
-    			</td>
+    			<td>Bộ phận yêu cầu: <?= $thietBi->boPhanQuanLy ? $thietBi->boPhanQuanLy->ten_bo_phan : "" ?></td>
+    		</tr>
+    		<tr>
+    			<td>Người chịu trách nhiệm: <?= $thietBi->nguoiQuanLy ? $thietBi->nguoiQuanLy->ten_nhan_vien : "" ?></td>
+    		</tr>
+    		<tr>
+    			<td>Lý do: <?= $model->ghi_chu1 ?></td>
     		</tr>
     		
     	</table>
     	
+    	<p style="margin:5px 0px"><strong>Vật tư đề nghị (nếu có):</strong></p>
     	<table class="table-content" style="width: 100%; margin-top:5px;">
     		<thead>
         		<tr>
         			<th width="50">STT</th>
-        			<th width="150">Tên thiết bị</th>
-        			<th width="70">Ngày bắt đầu</th>
-        			<th width="70">Ngày trả dự kiến</th>
-        			<th width="70">Ngày trả thực tế</th>
+        			<th width="150">Tên vật tư</th>
+        			<th width="70">Hãng sản xuất</th>
+        			<th width="70">Đơn vị tính</th>
+        			<th width="70">Số lượng</th>
         			<th width="100">Ghi chú</th>
         		</tr>   
     		</thead> 
     		<tbody>
 
     		<?php 
-    		foreach ($model->details as $indexCt => $ct){
+    		if(!$model->vatTus){
+    		?>
+    		 <tr>
+            	<td colspan="6" style="text-align:center">Không đề nghị vật tư</td>
+            </tr>
+    		<?php     
+    		} else {
+    		foreach ($model->vatTus as $indexCt => $item){
             ?>
             <tr>
             	<td style="text-align:center"><?= ($indexCt+1) ?></td>
-            	<td style="text-align:left"><?= $ct->thietBi?$ct->thietBi->ten_thiet_bi:'' ?></td>
-            	<td style="text-align:center"><?= $ct->chiTietVanHanh?$custom->convertYMDHISToDMY($ct->chiTietVanHanh->ngay_bat_dau):'' ?></td>
-            	<td style="text-align:left"><?= $ct->chiTietVanHanh?$custom->convertYMDHISToDMY($ct->chiTietVanHanh->ngay_ket_thuc):'' ?></td>
-            	<td style="text-align:left"><?= $ct->chiTietVanHanh?$custom->convertYMDHISToDMY($ct->ngay_tra):'' ?></td>
-            	<td></td>
+            	<td style="text-align:left"><?= $item->vatTu->ten_vat_tu ?></td>
+            	<td style="text-align:right"><?= $item->vatTu->hang_san_xuat ?></td>
+            	<td style="text-align:center"><?= $item->don_vi_tinh ?></td>
+            	<td style="text-align:right"><?= $item->so_luong ?></td>
+            	<td><?= $item->ghi_chu ?></td>
             </tr>
-            <?php } ?>	
+            <?php } } ?>	
             </tbody>
-    </table>
+    	</table>
     	
     	<table id="table-ky-ten" style="width: 100%; margin-top:10px;">
     		<tr>
@@ -84,8 +105,8 @@ $custom = new CustomFunc();
     	
     	<table id="table-ky-ten" style="width: 100%; margin-top:10px;">
     		<tr>
-    			<td style="text-align:left;font-weight:bold;">NGƯỜI NHẬN</td>
-    			<td style="text-align:right;font-weight:bold;">NGƯỜI BÀN GIAO</td>
+    			<td style="text-align:left;font-weight:bold;">TRUNG TÂM SỬA CHỮA</td>
+    			<td style="text-align:right;font-weight:bold;">THỦ KHO</td>
     		</tr>
     	</table>
     	

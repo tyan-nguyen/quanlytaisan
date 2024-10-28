@@ -1,5 +1,4 @@
 <?php
-
 use yii\grid\GridView;
 use yii\data\ArrayDataProvider;
 use yii\widgets\DetailView;
@@ -103,9 +102,9 @@ use app\modules\user\models\User;
                 </div>
             </div>
              
-             <?php if($model->details){?>      
+             <?php /*if($model->details){?>      
             <a href="#" onClick="InPhieu()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In Phiếu (A5, A4)</a>
-            <?php } ?>
+            <?php } */?>
         </div>
     </div>
     

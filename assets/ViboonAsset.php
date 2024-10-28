@@ -46,7 +46,7 @@ class ViboonAsset extends AssetBundle
         'assets/plugins/fullcalendar/locales/vi.js',
         //'assets/js/fullcalendar.js',
         
-        'assets/js/custom.js?v=1',
+        'assets/js/custom.js?v=2',
         //'assets/js/custom-switcher.js',
         //'assets/switcher/js/switcher.js',        
         'assets/js/tooltip.js',
@@ -55,7 +55,7 @@ class ViboonAsset extends AssetBundle
         'assets/js/carousel.js',
         'js/print-this/printThis.js',
 
-        'js/custom.js',
+        'js/custom.js?v=1',
         //'assets/plugins/tabs/jquery.multipurpose_tabcontent.js',
         //'assets/plugins/tabs/tab-content.js'
     ];

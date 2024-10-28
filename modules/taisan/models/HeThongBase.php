@@ -4,6 +4,7 @@ namespace app\modules\taisan\models;
 
 use Yii;
 use app\modules\dungchung\models\History;
+use app\modules\dungchung\models\DungChung;
 
 
 class HeThongBase extends \app\models\TsHeThong
@@ -67,5 +68,17 @@ class HeThongBase extends \app\models\TsHeThong
     public function afterSave( $insert, $changedAttributes ){
         parent::afterSave($insert, $changedAttributes);
         History::addHistory($this::MODEL_ID, $changedAttributes, $this, $insert);
+    }
+    
+    /**
+     * {@inheritdoc}
+     * xoa file anh, tai lieu, lich su sau khi xoa du lieu
+     */
+    public function afterDelete()
+    {
+        //xoa tham chieu
+        DungChung::xoaThamChieu($this::MODEL_ID, $this->id);
+        
+        return parent::afterDelete();
     }
 }

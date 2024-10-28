@@ -395,6 +395,52 @@ class PhieuSuaChuaController extends Controller
             'model'=>$this->findModel($id)
         ]);
     }
+    
+    /**
+     * load in phieu
+     * @return mixed
+     */
+    public function actionGetPhieuSuaChuaInAjax($idPhieu)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($idPhieu);
+        if($model !=null){
+            return [
+                'status'=>'success',
+                'content' => $this->renderAjax('_print_phieu_sua_chua', [
+                    'model' => $model
+                ])
+            ];
+        } else {
+            return [
+                'status'=>'failed',
+                'content' => 'Phiếu sửa chữa không tồn tại!'
+            ];
+        }
+    }
+    /**
+     * load in phieu
+     * @return mixed
+     */
+    public function actionGetPhieuXuatKhoInAjax($idPhieu)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($idPhieu);
+        if($model !=null){
+            return [
+                'status'=>'success',
+                'content' => $this->renderAjax('_print_phieu_xuat_kho', [
+                    'model' => $model
+                ])
+            ];
+        } else {
+            return [
+                'status'=>'failed',
+                'content' => 'Phiếu xuất kho không tồn tại!'
+            ];
+        }
+    }
+    
     public function actionGuiBaoGia($id_phieu_sua_chua)
     {
         $request = Yii::$app->request;

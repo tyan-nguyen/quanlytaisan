@@ -9,6 +9,8 @@ use app\modules\dungchung\models\CustomFunc;
 use app\modules\user\models\User;
 use app\modules\bophan\models\BoPhan;
 use app\modules\kholuutru\models\DmVatTu;
+use app\modules\bophan\models\DoiTac;
+use app\modules\taisan\models\ThietBiVatTu;
 
 /**
  * This is the model class for table "ts_phieu_sua_chua".
@@ -118,6 +120,10 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PhieuSuaChuaVatTu::class, ['id_phieu_sua_chua' => 'id'])->where(['trang_thai'=>'damaged']);
     }
+    public function getVatTuHHTBs()
+    {
+        return $this->hasMany(PhieuSuaChuaVatTu::class, ['id_phieu_sua_chua' => 'id'])->where(['trang_thai'=>'damaged-tb']);
+    }
     public function getBaoGiaSuaChua()
     {
         return $this->hasOne(BaoGiaSuaChua::class, ['id_phieu_sua_chua' => 'id'])->where(["flag_index"=>0]);
@@ -181,6 +187,24 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
                 $phieuSuaChuaVatTu->vatTu->so_luong=$phieuSuaChuaVatTu->vatTu->so_luong - $phieuSuaChuaVatTu->so_luong;
                 $phieuSuaChuaVatTu->vatTu->ghiChuThayDoi="Sửa chữa thiết bị ".$phieuSuaChuaVatTu->phieuSuaChua->thietBi->ten_thiet_bi;
                 $phieuSuaChuaVatTu->vatTu->save();
+                //them vao kho
+                if($phieuSuaChuaVatTu->so_luong >=2){
+                    for($sl=1;$sl<=$phieuSuaChuaVatTu->so_luong;$sl++){
+                        $tbvtModel = new ThietBiVatTu();
+                        $tbvtModel->id_thiet_bi = $this->id_thiet_bi;
+                        $tbvtModel->id_vat_tu = $phieuSuaChuaVatTu->id_vat_tu;
+                        $tbvtModel->id_phieu_sua_chua = $this->id;
+                        $tbvtModel->tru_ton_kho = 0;
+                        $tbvtModel->save(false);
+                    }
+                } else  if($phieuSuaChuaVatTu->so_luong == 1){
+                    $tbvtModel = new ThietBiVatTu();
+                    $tbvtModel->id_thiet_bi = $this->id_thiet_bi;
+                    $tbvtModel->id_vat_tu = $phieuSuaChuaVatTu->id_vat_tu;
+                    $tbvtModel->id_phieu_sua_chua = $this->id;
+                    $tbvtModel->tru_ton_kho = 0;
+                    $tbvtModel->save(false);
+                }
             }
             foreach($this->vatTuHHs as $key=>$phieuSuaChuaVatTu){
                 $vatTu=new DmVatTu([
@@ -195,6 +219,15 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
                 $phieuSuaChuaVatTu->id_vat_tu=$vatTu->id;
                 $phieuSuaChuaVatTu->save();
             }
+            //set thietbi-vattu hong
+            foreach($this->vatTuHHTBs as $key=>$phieuSuaChuaVatTu){
+                if($phieuSuaChuaVatTu->tbVatTu != null){
+                    $phieuSuaChuaVatTu->tbVatTu->trang_thai = ThietBiVatTu::STATUS_HONG;
+                    $phieuSuaChuaVatTu->tbVatTu->id_phieu_sua_chua = $this->id;
+                    $phieuSuaChuaVatTu->tbVatTu->save(false);
+                }
+            }
+            
             $thietBi=$this->thietBi;
             $thietBi->trang_thai=ThietBiBase::STATUS_HOATDONG;
             $thietBi->save();

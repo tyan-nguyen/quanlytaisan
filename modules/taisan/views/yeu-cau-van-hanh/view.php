@@ -263,6 +263,17 @@ use app\widgets\SummaryAlert;
 <div id="print-yeu-cau-van-hanh-content" class="print-yeu-cau-van-hanh-content">
 </div>
 
+<div class="row">
+	<div class="col-md-12">
+        <!-- print phieu -->
+        <div style="display:none">
+            <div id="print">
+            	<?php $this->render('_print_phieu', compact('model')) ?>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 
 $js = <<< JS
@@ -305,3 +316,28 @@ $this->registerJsFile("@web/assets/plugins/tabs/tab-content.js", [
     ]
 ]);
 ?>
+
+<script>
+function InPhieu(){
+	//load lai phieu in (tranh bi loi khi chinh sua du lieu chua update noi dung in)
+	$.ajax({
+        type: 'post',
+        url: '/taisan/yeu-cau-van-hanh/get-phieu-yeu-cau-van-hanh-in-ajax?idPhieu=' + <?= $model->id ?>,
+        //data: frm.serialize(),
+        success: function (data) {
+            console.log('Submission was successful.');
+            console.log(data);            
+            if(data.status == 'success'){
+            	$('#print').html(data.content);
+            	printPhieu();//call from script.js
+            } else {
+            	alert('Vật tư không còn tồn tại trên hệ thống!');
+            }
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+            console.log(data);
+        },
+    });	
+}
+</script>

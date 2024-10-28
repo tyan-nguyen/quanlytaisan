@@ -32,7 +32,15 @@ function printPhieu(){
 	$('#print').printThis({
 		 //debug: false,               // show the iframe for debugging
 		 importCSS: false,            // import parent page css
-		 loadCSS: ['/css/print-phieu.css?v=3'],
+		 loadCSS: ['/css/print-phieu.css?v=4'],
+		 //printDelay: 333,
+    });
+}
+function printPhieu2(){
+	$('#print2').printThis({
+		 //debug: false,               // show the iframe for debugging
+		 importCSS: false,            // import parent page css
+		 loadCSS: ['/css/print-phieu.css?v=4'],
 		 //printDelay: 333,
     });
 }

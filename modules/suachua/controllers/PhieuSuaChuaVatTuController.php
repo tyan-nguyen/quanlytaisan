@@ -12,6 +12,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
 use app\modules\suachua\models\PhieuSuaChua;
+use app\modules\kholuutru\models\DmVatTu;
 
 /**
  * PhieuSuaChuaVatTuController implements the CRUD actions for PhieuSuaChuaVatTu model.
@@ -70,10 +71,11 @@ class PhieuSuaChuaVatTuController extends Controller
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = $this->findModel($id);
             return [
-                    'title'=> "PhieuSuaChuaVatTu",
+                    'title'=> $model->trang_thai=='new'?'Vật tư từ kho':'Vật tư hư hỏng khác ngoài vật tư thiết bị',
                     'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
+                        'model' => $model,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
                             Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -111,16 +113,44 @@ class PhieuSuaChuaVatTuController extends Controller
                                 Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax-vat-tu',
-                    'title'=> "Thêm vật tư lấy từ kho",
-                    'content'=>'<span class="text-success">Thêm mới thành công</span>',
-                    'tcontent'=>'Thêm mới thành công!',
-                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Tiếp tục thêm',['create',"phieu_sua_chua"=>$phieu_sua_chua],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
-        
-                ];         
+            }else if($model->load($request->post())){
+                //check kho neu tuy chon tru kho
+                if($model->id_vat_tu){
+                    $check = DmVatTu::findOne($model->id_vat_tu);
+                    if($check->so_luong < $model->so_luong){
+                        $model->addError('id_vat_tu', 'Số lượng tồn kho của vật tư không đủ, chỉ còn lại '.$check->so_luong.', vui lòng kiểm tra lại!');
+                        return [
+                            'title'=> "Thêm vật tư lấy từ kho",
+                            'content'=>$this->renderAjax('create', [
+                                'model' => $model,
+                            ]),
+                            'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                            Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                            
+                        ]; 
+                    }
+                }
+                if($model->save()){
+                    return [
+                        'forceReload'=>'#crud-datatable-pjax-vat-tu',
+                        'title'=> "Thêm vật tư lấy từ kho",
+                        'content'=>'<span class="text-success">Thêm mới thành công</span>',
+                        'tcontent'=>'Thêm mới thành công!',
+                        'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                                Html::a('Tiếp tục thêm',['create',"phieu_sua_chua"=>$phieu_sua_chua],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
+            
+                    ]; 
+                }else{
+                    return [
+                        'title'=> "Thêm vật tư lấy từ kho",
+                        'content'=>$this->renderAjax('create', [
+                            'model' => $model,
+                        ]),
+                        'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                        Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                        
+                    ]; 
+                }
             }else{           
                 return [
                     'title'=> "Thêm vật tư lấy từ kho",
@@ -152,6 +182,7 @@ class PhieuSuaChuaVatTuController extends Controller
         $model = new PhieuSuaChuaVatTu();  
         $model->trang_thai='damaged';
         $model->id_phieu_sua_chua=$phieu_sua_chua;
+
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -159,7 +190,7 @@ class PhieuSuaChuaVatTuController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Thêm vật tư lấy từ kho",
+                    'title'=> "Thêm vật tư hư hỏng (vật tư khác)",
                     'content'=>$this->renderAjax('create2', [
                         'model' => $model,
                     ]),
@@ -170,7 +201,7 @@ class PhieuSuaChuaVatTuController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax-vat-tu-2',
-                    'title'=> "Thêm vật tư lấy từ kho",
+                    'title'=> "Thêm vật tư hư hỏng (khác)",
                     'content'=>'<span class="text-success">Thêm mới thành công</span>',
                     'tcontent'=>'Thêm mới thành công!',
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
@@ -179,7 +210,7 @@ class PhieuSuaChuaVatTuController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> "Thêm vật tư lấy từ kho",
+                    'title'=> "Thêm vật tư hư hỏng (khác)",
                     'content'=>$this->renderAjax('create2', [
                         'model' => $model,
                     ]),
@@ -201,6 +232,65 @@ class PhieuSuaChuaVatTuController extends Controller
             }
         }
        
+    }
+    public function actionCreateFromThietBi($phieu_sua_chua)
+    {
+        $request = Yii::$app->request;
+        $model = new PhieuSuaChuaVatTu();
+        $model->trang_thai='damaged-tb';
+        $model->id_phieu_sua_chua=$phieu_sua_chua;
+        $modelSuaChua = PhieuSuaChua::findOne($phieu_sua_chua);
+        if($request->isAjax){
+            /*
+             *   Process for ajax request
+             */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Thêm vật tư hư hỏng từ thiết bị",
+                    'content'=>$this->renderAjax('create-from-thiet-bi', [
+                        'model' => $model,
+                        'modelSuaChua' => $modelSuaChua
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                    Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                    
+                ];
+            }else if($model->load($request->post()) && $model->save()){
+                return [
+                    'forceReload'=>'#crud-datatable-pjax-vat-tu-2',
+                    'title'=> "Thêm vật tư hư hỏng",
+                    'content'=>'<span class="text-success">Thêm mới thành công</span>',
+                    'tcontent'=>'Thêm mới thành công!',
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                    Html::a('Tiếp tục thêm',['create-from-thiet-bi',"phieu_sua_chua"=>$phieu_sua_chua],['class'=>'btn btn-primary','role'=>'modal-remote-2'])
+                    
+                ];
+            }else{
+                return [
+                    'title'=> "Thêm vật tư hư hỏng từ thiết bị",
+                    'content'=>$this->renderAjax('create-from-thiet-bi', [
+                        'model' => $model,
+                        'modelSuaChua' => $modelSuaChua
+                    ]),
+                    'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
+                    Html::button('Lưu lại',['class'=>'btn btn-primary','type'=>"submit"])
+                    
+                ];
+            }
+        }else{
+            /*
+             *   Process for non-ajax request
+             */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
+        
     }
     /**
      * Updates an existing PhieuSuaChuaVatTu model.

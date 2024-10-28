@@ -66,16 +66,23 @@ class PhieuSuaChuaVatTuSearch extends PhieuSuaChuaVatTu
  
 		} else {
         	$query->andFilterWhere([
-            'id' => $this->id,
-            'id_phieu_sua_chua' => $this->id_phieu_sua_chua,
-            'id_vat_tu' => $this->id_vat_tu,
-            'so_luong' => $this->so_luong,
-            'ngay_tao' => $this->ngay_tao,
-            'nguoi_tao' => $this->nguoi_tao,
-            'ngay_cap_nhat' => $this->ngay_cap_nhat,
-            'nguoi_cap_nhat' => $this->nguoi_cap_nhat,
-            'trang_thai' => $this->trang_thai,
-        ]);
+                'id' => $this->id,
+                'id_phieu_sua_chua' => $this->id_phieu_sua_chua,
+                'id_vat_tu' => $this->id_vat_tu,
+                'so_luong' => $this->so_luong,
+                'ngay_tao' => $this->ngay_tao,
+                'nguoi_tao' => $this->nguoi_tao,
+                'ngay_cap_nhat' => $this->ngay_cap_nhat,
+                'nguoi_cap_nhat' => $this->nguoi_cap_nhat,
+            ]);
+        	
+        	if($this->trang_thai == 'damaged'){
+            	$query->andWhere("trang_thai IN ('damaged', 'damaged-tb')");
+        	} else {
+        	    $query->andFilterWhere([
+        	        'trang_thai' => $this->trang_thai,
+        	    ]);
+        	}
 
         $query->andFilterWhere(['like', 'ghi_chu', $this->ghi_chu])
             ->andFilterWhere(['like', 'don_vi_tinh', $this->don_vi_tinh]);

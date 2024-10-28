@@ -159,18 +159,22 @@ if(!$model->isNewRecord){
         <?=Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
         <?php } ?>
         <?php if (!Yii::$app->request->isAjax) {?>
-        <?= Html::a('Print phiếu sửa chữa', null, [
+        <?php /* Html::a('Print phiếu sửa chữa', null, [
                 'class' => 'btn btn-info',
                 'id'=>"print-button",
                 'style'=>"margin-left:5px"
-            ]);
+            ]);*/
         ?>
-        <?= Html::a('Print phiếu xuất kho', null, [
+        <?php /* Html::a('Print phiếu xuất kho', null, [
                 'class' => 'btn btn-info',
                 'id'=>"print-button-phieu-xuat-kho",
                 'style'=>"margin-left:5px"
-            ]);
+            ]);*/
         ?>
+        <a href="#" onClick="InPhieuSuaChua()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu sửa chữa (A4)</a>
+        <?php if($model->vatTus){ ?>
+        <a href="#" onClick="InPhieuXuatKho()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu xuất kho (A4)</a>
+        <?php }?>
         <?php } ?>
     </div>
     
@@ -184,6 +188,24 @@ if(!$model->isNewRecord){
 </div>
 <div id="print-phieu-xuat-kho-content" class="print-phieu-sua-chua-content">
 </div>
+
+<div class="row">
+    	<div class="col-md-12">
+            <!-- print phieu -->
+            <div style="display:none">
+                <div id="print">
+                	<?php //$this->render('_print_phieu_sua_chua', compact('model')) ?>
+                </div>
+                <div id="print2">
+                	<?php //$this->render('_print_phieu_xua_kho', compact('model')) ?>
+                </div>
+            </div>
+             
+             <?php /*if($model->details){?>      
+            <a href="#" onClick="InPhieu()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In Phiếu (A5, A4)</a>
+            <?php } */?>
+        </div>
+    </div>
 <?php
 
 
@@ -223,4 +245,51 @@ $(document).ready(function() {
 JS;
     $this->registerJs($js, \yii\web\View::POS_READY);
 ?>
+
+<script>
+function InPhieuSuaChua(){
+	//load lai phieu in (tranh bi loi khi chinh sua du lieu chua update noi dung in)
+	$.ajax({
+        type: 'post',
+        url: '/suachua/phieu-sua-chua/get-phieu-sua-chua-in-ajax?idPhieu=' + <?= $model->id ?>,
+        //data: frm.serialize(),
+        success: function (data) {
+            console.log('Submission was successful.');
+            console.log(data);            
+            if(data.status == 'success'){
+            	$('#print').html(data.content);
+            	printPhieu();//call from script.js
+            } else {
+            	alert('Phiếu không còn tồn tại trên hệ thống!');
+            }
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+            console.log(data);
+        },
+    });	
+}
+function InPhieuXuatKho(){
+	//load lai phieu in (tranh bi loi khi chinh sua du lieu chua update noi dung in)
+	$.ajax({
+        type: 'post',
+        url: '/suachua/phieu-sua-chua/get-phieu-xuat-kho-in-ajax?idPhieu=' + <?= $model->id ?>,
+        //data: frm.serialize(),
+        success: function (data) {
+            console.log('Submission was successful.');
+            console.log(data);            
+            if(data.status == 'success'){
+            	$('#print2').html(data.content);
+            	printPhieu2();//call from script.js
+            } else {
+            	alert('Phiếu không còn tồn tại trên hệ thống!');
+            }
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+            console.log(data);
+        },
+    });	
+}
+</script>
 
