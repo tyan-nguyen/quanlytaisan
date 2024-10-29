@@ -10,10 +10,13 @@ use webvimark\modules\UserManagement\models\rbacDB\Role;
 use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use app\modules\user\models\User;
 
 BootstrapPluginAsset::register($this);
 $this->title = 'Phân quyền cho tài khoản: '. $user->username;
 $checkRoleName = false;
+
+$listRoleOfUser = ArrayHelper::map(Role::getUserRoles($user->id), 'name', 'name');
 ?>
 
 <div class="user-permission-form container-fluid formInput">    
@@ -27,6 +30,7 @@ $checkRoleName = false;
     	<div class="col-md-12">
         	<div class="card custom-card">
         		<div class="row">
+        			
         			<div class="col-md-4">
             			<div class="card-body pd-20 pd-md-40 shadow-none">
                         	<h5 class="card-title mg-b-20">Nhóm quyền</h5>
@@ -35,10 +39,26 @@ $checkRoleName = false;
                         	</p>
     
     				<?= Html::beginForm(['set-roles', 'id'=>$user->id]) ?>
-    
+    				
+    				<p class="h4 text-success">Nhóm theo vị trí</p>
+    				<label>
+    				<input type="checkbox" <?= (in_array('nLanhDao', $listRoleOfUser)?'checked':'') ?> name="roles[]" value="nLanhDao"> Lãnh đạo
+    				</label>
+    				<br/>
+    				<label>
+    				<input type="checkbox" <?= (in_array('nQuanLy', $listRoleOfUser)?'checked':'') ?> name="roles[]" value="nQuanLy"> Quản lý
+    				</label>
+    				<br/>
+    				<label>
+    				<input type="checkbox" <?= (in_array('nNhanVien', $listRoleOfUser)?'checked':'') ?> name="roles[]" value="nNhanVien"> Nhân viên
+    				</label>
+    				
+    				
+    				<p class="h4 text-success">Nhóm theo chức năng</p>
+    				
     				<?php foreach (Role::getAvailableRoles() as $aRole): ?>
     					<?php if( $aRole['name']==$user->userRoleName){$checkRoleName = true;}?>
-    					<?php if( $aRole['name']==$user->userRoleName || !str_starts_with($aRole['name'], 'user_') ):?>
+    					<?php if( $aRole['name']==$user->userRoleName || (!str_starts_with($aRole['name'], 'user_') && $aRole['name']!='nNhanVien' && $aRole['name']!='nQuanLy' && $aRole['name']!='nLanhDao' ) ):?>
     					<label>
     						<?php $isChecked = in_array($aRole['name'], ArrayHelper::map(Role::getUserRoles($user->id), 'name', 'name')) ? 'checked' : '' ?>
     

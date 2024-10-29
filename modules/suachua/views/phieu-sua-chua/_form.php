@@ -75,25 +75,29 @@ if(!$model->isNewRecord){
     <div class="row">
         <div class="col">
             <?=$form->field($model, 'ngay_sua_chua')->widget(DatePicker::classname(), [
-    'options' => [
-        'placeholder' => 'Chọn ngày...',
-    ],
-    'pluginOptions' => [
-        'autoclose' => true,
-        'format' => 'dd/mm/yyyy',
-    ],
-]);?>
+                'options' => [
+                    'placeholder' => 'Chọn ngày...',
+                ],
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd/mm/yyyy',
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
+                ],
+            ]);?>
         </div>
         <div class="col">
             <?=$form->field($model, 'ngay_du_kien_hoan_thanh')->widget(DatePicker::classname(), [
-    'options' => [
-        'placeholder' => 'Chọn ngày...',
-    ],
-    'pluginOptions' => [
-        'autoclose' => true,
-        'format' => 'dd/mm/yyyy',
-    ],
-]);?>
+                'options' => [
+                    'placeholder' => 'Chọn ngày...',
+                ],
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd/mm/yyyy',
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
+                ],
+            ]);?>
         </div>
         <?php if (!$model->isNewRecord) {?>
         <div class="col">
@@ -104,6 +108,8 @@ if(!$model->isNewRecord){
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'dd/mm/yyyy',
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
                 ],
             ]);?>
         </div>

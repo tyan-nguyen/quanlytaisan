@@ -1,3 +1,7 @@
+/*form*/
+.datepicker-days table{
+	width: 100%;
+}
 /** ycvh for tr **/
 .item-bold td{
     font-weight:bold;
