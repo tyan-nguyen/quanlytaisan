@@ -1,4 +1,7 @@
-<li class="slide">
+<?php
+use app\modules\user\models\User;
+?>
+<li class="slide menu-ul-header">
 	<a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);">
 		<span class="side-menu__icon"><i class="fe fe-lock side_menu_img"></i></span>
 		<span class="side-menu__label">Tài khoản - Phân quyền</span><i class="angle fe fe-chevron-right"></i>
@@ -24,8 +27,10 @@
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a>
 							</li>
+							<?php if(User::canRoute('user/user-ajax/index')) :?>
 							<li><a href="<?= Yii::getAlias('@web/user/user-ajax?menu=tk1') ?>" class="slide-item" data-menu="tk1">Quản lý tài khoản</a>
 							</li>
+							<?php endif;?>
 						</ul>
 						<div class="menutabs-content px-0">
 							<!-- menu tab here -->

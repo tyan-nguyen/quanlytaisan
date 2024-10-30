@@ -44,7 +44,7 @@ return [
                 $actionCustom="update-content";
                 return Url::to(['/suachua/bao-gia-sua-chua/'.$actionCustom,'id'=>$key]);
         },
-        'updateOptions'=>['role'=>'modal-remote-3','title'=>'Cập nhật dữ liệu', 
+        'updateOptions'=>['role'=>'modal-remote','title'=>'Cập nhật dữ liệu', 
             'class'=>'btn ripple btn-info btn-sm',
             'data-bs-placement'=>'top',
             'data-bs-toggle'=>'tooltip-info'],

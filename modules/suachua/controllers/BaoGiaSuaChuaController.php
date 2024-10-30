@@ -12,6 +12,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
 use app\modules\user\models\User;
+use yii\web\ForbiddenHttpException;
 
 /**
  * BaoGiaSuaChuaController implements the CRUD actions for BaoGiaSuaChua model.
@@ -150,7 +151,10 @@ class BaoGiaSuaChuaController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
-        
+        //check quyền truy cập phiếu
+        if(User::canRoute($this->route, false) && $model->nguoi_tao != Yii::$app->user->id){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $dvBaoGia=$model->dvBaoGia;
         if($request->isAjax){

@@ -45,6 +45,7 @@ $countPhieuMuaSam=0;
                     <ul class="nav nav-item header-icons navbar-nav-right ms-auto">
 
 						    <!-- Yeu cau van hanh -->
+						    <?php if(User::hasPermission('qDuyetDieuChuyenThietBi',false)) :?>
 							<li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="bi bi-arrow-left-right"></i> <span class="icon-text-top">Điều chuyển</span>
@@ -70,9 +71,9 @@ $countPhieuMuaSam=0;
                                 </div>
                             </div>
                         </li>
+                        <?php endif;?>
                         <!-- Yeu cau van hanh -->
-
-
+						
                         <li class="dropdown header-search">
                             <a class="nav-link icon header-search" data-bs-toggle="dropdown" href="#">
                                 <i class="fe fe-search"></i>
@@ -85,6 +86,7 @@ $countPhieuMuaSam=0;
                             </div>
                         </li>
                         <!-- CART -->
+                        <?php if(User::hasPermission('qDuyetPhieuMuaSam',false)) :?>
                         <li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="bi-bag-check"></i> <span class="icon-text-top">Mua sắm</span>
@@ -109,9 +111,11 @@ $countPhieuMuaSam=0;
                                 </div>
                             </div>
                         </li>
+                        <?php endif;?>
                         <!-- CART -->
 
                         <!-- sửa chữa -->
+                         <?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
                         <li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="bi bi-gear"></i> <span class="icon-text-top">Sửa chữa</span>
@@ -131,11 +135,15 @@ $countPhieuMuaSam=0;
                                 </div>
                             </div>
                         </li>
+                        <?php endif;?>
                         <!-- sửa chữa -->
                     	
+                    	<?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)
+                    	    || User::hasPermission('qDuyetPhieuMuaSam',false) || User::hasPermission('qDuyetDieuChuyenThietBi',false)) :?>
                     	 <li class="dropdown d-none d-md-flex">
                     	 	&nbsp;&nbsp;|&nbsp;&nbsp;
                     	 </li>
+                    	 <?php endif;?>
                         <!-- Theme-Layout -->
                         <li class="dropdown d-none d-md-flex">
                             <a class="nav-link icon theme-layout nav-link-bg layout-setting" href="javascript:void(0);">

@@ -1,4 +1,7 @@
-<li class="slide">
+<?php
+use app\modules\user\models\User;
+?>
+<li class="slide menu-ul-header">
 	<a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);">
 		<span class="side-menu__icon"><i class="ion-settings side_menu_img"></i></span>
 		<span class="side-menu__label">Bảo trì - Bảo dưỡng</span><i class="angle fe fe-chevron-right"></i>
@@ -24,11 +27,24 @@
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a>
 							</li>
+							
+							<?php if(User::canRoute('baotri/lich-bao-tri/baotri')) :?>
 							<li><a href="/baotri/lich-bao-tri/baotri?menu=btbd0" class="slide-item" data-menu="btbd0">Danh sách đến hạn bảo trì</a></li>
+							<?php endif;?>
+							
+							<?php if(User::canRoute('baotri/lich-bao-tri/index')) :?>
 							<li><a href="/baotri/lich-bao-tri?menu=btbd1" class="slide-item" data-menu="btbd1">Lịch bảo trì</a></li>
-							<li><a href="/baotri/ke-hoach-bao-tri?menu=btbd2" class="slide-item" data-menu="btbd2">Kế hoạch bảo trì</a>
+							<?php endif;?>
+							
+							<?php if(User::canRoute('baotri/ke-hoach-bao-tri/index')) :?>
+							<li><a href="/baotri/ke-hoach-bao-tri?menu=btbd2" class="slide-item" data-menu="btbd2">Kế hoạch bảo trì</a></li>
+							<?php endif;?>
+							
+							<?php if(User::canRoute('baotri/loai-bao-tri/index')) :?>
 							<li><a href="/baotri/loai-bao-tri?menu=btbd3" class="slide-item" data-menu="btbd3">Danh mục loại bảo trì</a>
 							</li>
+							<?php endif;?>
+							
 						</ul>
 						<div class="menutabs-content px-0">
 							<!-- menu tab here -->

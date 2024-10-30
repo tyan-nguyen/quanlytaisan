@@ -1,7 +1,14 @@
-<li class="slide">
+<?php
+use app\modules\user\models\User;
+?>
+<li class="slide menu-ul-header">
 	<a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);">
 		<span class="side-menu__icon"><i class="bi bi-pin-map side_menu_img"></i></span>
-		<span class="side-menu__label">Sửa chữa <?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?> </span><i class="angle fe fe-chevron-right"></i>
+		<span class="side-menu__label">Sửa chữa 
+		<?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
+		<?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?>
+		<?php endif;?>
+		</span><i class="angle fe fe-chevron-right"></i>
 	</a>
 	<ul class="slide-menu" data-menu="psc">
 		<li class="panel sidetab-menu">
@@ -24,10 +31,15 @@
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a>
 							</li>
+							<?php if(User::canRoute('suachua/phieu-sua-chua/index')) :?>
 							<li class=""><a href="<?= Yii::getAlias('@web/suachua/phieu-sua-chua?menu=psc1') ?>" class="slide-item" data-menu="psc1">Phiếu sửa chữa</a>
 							</li>
+							<?php endif;?>
+							
+							<?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
                             <li class=""><a href="<?= Yii::getAlias('@web/suachua/bao-gia-sua-chua?menu=psc2') ?>" class="slide-item" data-menu="psc2">Báo giá sửa chữa <?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?></a>
 							</li>
+							<?php endif;?>
 							<!-- <li class=""><a href="<?= Yii::getAlias('@web/suachua/dm-tt-sua-chua?menu=psc3') ?>" class="slide-item" data-menu="psc3">Trung tâm sửa chữa</a>
 							</li> -->
 						</ul>

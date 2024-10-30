@@ -2,6 +2,9 @@
 .datepicker-days table{
 	width: 100%;
 }
+.no-display{
+	display: none!important;
+}
 /** ycvh for tr **/
 .item-bold td{
     font-weight:bold;

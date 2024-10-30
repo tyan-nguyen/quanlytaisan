@@ -1,3 +1,6 @@
+<?php
+use app\modules\user\models\User;
+?>
 <!-- Sidemenu -->
 <div class="sticky">
 	<div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
@@ -45,6 +48,7 @@
 				<?= $this->render('menus/tai-khoan') ?>
 				
 				<li class="side-item side-item-category">Tùy chỉnh</li>
+				<?php if(User::canRoute('user/giao-dien/index')) :?>
 				<li>
 					<a class="side-menu__item help-support" href="<?= Yii::getAlias('@web/user/giao-dien?menu=gdtb') ?>" data-menu="gdtb">
 						<span class="side-menu__icon">
@@ -52,6 +56,8 @@
 						</span>
 						<span class="side-menu__label">Giao diện thiết bị</span></a>
 				</li>
+				<?php endif;?>
+				<?php if(User::canRoute('user/user/activity')) :?>
 				<li>
 					<a class="side-menu__item help-support" href="<?= Yii::getAlias('@web/user/user/activity?menu=gdtb2') ?>" data-menu="gdtb2">
 						<span class="side-menu__icon">
@@ -59,6 +65,7 @@
 						</span>
 						<span class="side-menu__label">Lịch sử hoạt động</span></a>
 				</li>
+				<?php endif;?>
 				<li>
 					<a class="side-menu__item help-support" href="<?= Yii::getAlias('@web/user/auth/logout?menu=gdtb3') ?>" data-menu="gdtb3">
 						<span class="side-menu__icon">

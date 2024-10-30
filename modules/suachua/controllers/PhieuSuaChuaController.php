@@ -15,6 +15,8 @@ use app\modules\suachua\models\PhieuSuaChuaVatTuSearch;
 use app\modules\suachua\models\CtBaoGiaSuaChuaSearch;
 use app\modules\suachua\models\BaoGiaSuaChuaSearch;
 use app\modules\suachua\models\BaoGiaSuaChua;
+use app\modules\user\models\User;
+use yii\web\ForbiddenHttpException;
 
 /**
  * PhieuSuaChuaController implements the CRUD actions for PhieuSuaChua model.
@@ -66,11 +68,27 @@ class PhieuSuaChuaController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    /**
+     * action xem chi tiết phiếu sửa chữa
+     * đã phân quyền, nếu nhân viên chỉ được xem phiếu của mình tạo
+     */
     public function actionChiTietPhieuSuaChua($id_phieu_sua_chua)
-    {    
+    {         
         $request = Yii::$app->request;
         $phieuSuaChua = $this->findModel($id_phieu_sua_chua);
-
+        //check null model
+        if($phieuSuaChua == null){
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
+        }
+        //check quyền truy cập phiếu
+        /* if(User::hasRole('nNhanVien', false) && $phieuSuaChua->nguoi_tao != Yii::$app->user->id){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        } */
+        if(User::hasRole('nNhanVien',false) && $phieuSuaChua->nguoi_tao != Yii::$app->user->id){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+        
+        
         if ($phieuSuaChua->load($request->post()) && $phieuSuaChua->save()) {
             return $this->redirect(['detail', 'id_phieu_sua_chua' => $phieuSuaChua->id]);
         } else {
@@ -445,6 +463,12 @@ class PhieuSuaChuaController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id_phieu_sua_chua);
+        
+        //check quyền truy cập phiếu
+        if(User::canRoute($this->route, false) && $model->nguoi_tao != Yii::$app->user->id){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+        
         $sendOk = false;
         $fList = array();
         foreach ( $model->baoGiaSuaChuas as $baoGia ) {

@@ -87,3 +87,14 @@ function setMenuActive(){
 	}
 }
 setMenuActive();
+
+function setHiddenMenuNoChild(){
+	var headerMenu= $('.menu-ul-header');
+	for (var i = 0; i < headerMenu.length; i++) {
+	  // Using $() to re-wrap the element.
+	  if($(headerMenu[i]).find('.sidemenu-list li').length == 1 ){
+	  	$(headerMenu[i]).addClass('no-display');
+	  }
+	}
+}
+setHiddenMenuNoChild();

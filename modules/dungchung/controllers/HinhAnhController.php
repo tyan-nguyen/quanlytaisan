@@ -12,6 +12,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
+use yii\web\ForbiddenHttpException;
+use app\modules\user\models\User;
 
 /**
  * HinhAnhController implements the CRUD actions for HinhAnh model.
@@ -384,6 +386,12 @@ class HinhAnhController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        
+        //check quyền
+        if(User::canRoute($this->route, false) && $model->nguoi_tao != Yii::$app->user->id){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+        
         $loai = $model->loai;
         $thamchieu = $model->id_tham_chieu;
         $model->delete();
