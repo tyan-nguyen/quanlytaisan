@@ -1,6 +1,6 @@
 <?php
 namespace app\modules\user\models;
-
+use Yii;
 use app\modules\dungchung\models\History;
 use yii\helpers\ArrayHelper;
 use PhpParser\Node\Stmt\Expression;
@@ -26,6 +26,35 @@ class User extends UserBase{
         $listUsed = ArrayHelper::getColumn($query,'ten_truy_cap');
         $list = User::find()->where(['NOT IN','username',$listUsed])->all();
         return ArrayHelper::map($list, 'username', 'username');
+    }
+    /**
+     * lay user id co lien ket voi tai khoan
+     * @return \yii\db\ActiveRecord|array|NULL
+     */
+    /* public static function getUserIDbyNhanVien($idNhanVien){
+        $idUser = null;
+        $nv = NhanVien::findOne($idNhanVien);
+        if($nv!=null){
+            if($nv->ten_truy_cap!=''){
+                $user = User::findByUsername($nv->ten_truy_cap);
+                if($user != null){
+                    $idUser = $user->id;
+                }
+            }
+        }
+        return $idUser;
+    } */
+    /**
+     * get current user id nhan vien
+     * @return \yii\db\ActiveRecord|array|NULL
+     */
+    public static function getCurrentNhanVienID(){
+        $idNhanVien = null;
+        $nv = NhanVien::findOne(['ten_truy_cap'=>Yii::$app->user->username]);
+        if($nv!=null){
+            $idNhanVien = $nv->id;
+        }
+        return $idNhanVien;
     }
     
     /**

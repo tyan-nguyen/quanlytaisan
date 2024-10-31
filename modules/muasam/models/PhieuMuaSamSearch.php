@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\muasam\models\PhieuMuaSam;
 use app\modules\dungchung\models\CustomFunc;
+use app\modules\user\models\User;
 
 /**
  * PhieuMuaSamSearch represents the model behind the search form about `app\modules\muasam\models\PhieuMuaSam`.
@@ -60,6 +61,13 @@ class PhieuMuaSamSearch extends PhieuMuaSam
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
+        }
+        //lọc nếu quyền nhân viên chỉ xem được phiếu do mình tạo
+        //nếu là quản lý hoặc lãnh đạo thì cho xem hết
+        if(User::hasRole('nNhanVien', false)){
+            $query->andFilterWhere([
+                'nguoi_tao' => Yii::$app->user->id,
+            ]);
         }
 		if($cusomSearch != NULL){
 			$query->andFilterWhere ( [ 'OR' ,['like', 'trang_thai', $cusomSearch],

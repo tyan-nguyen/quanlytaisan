@@ -19,6 +19,7 @@ use yii\bootstrap5\Button;
 use yii\web\View;
 use app\widgets\SummaryAlert;
 use app\modules\taisan\models\PhieuTraThietBiBase;
+use app\modules\user\models\User;
 
 DynamicFormAsset::register($this);
 
@@ -43,6 +44,9 @@ $hieuLuc = $model->hieu_luc ?? null;
 $isDraft = true;
 if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
     $isDraft = false;
+}
+if($model->isNewRecord){
+    $model->id_nguoi_lap = User::getCurrentNhanVienID();
 }
 ?>
 
@@ -102,7 +106,7 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                             'language' => 'vi',
                             'options' => [
                                 'placeholder' => 'Chọn...',
-                                'disabled' => !$isDraft
+                                'disabled' => (!$isDraft || User::hasRole('nNhanVien',false))
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
@@ -122,7 +126,8 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
                                 'autoclose' => true,
                                 'width' => '100%',
                                 'format' => 'dd/mm/yyyy',
-                                'todayHighlight' => true
+                                'todayHighlight' => true,
+                                'todayBtn' => true,
                             ]
                         ]);
                         ?>

@@ -133,6 +133,8 @@ if (Yii::$app->session->hasFlash('error')) {
             'pluginOptions' => [
                 'autoclose' => true,
                 'format' => 'dd/mm/yyyy',
+                'todayHighlight' => true,
+                'todayBtn' => true,
             ],
         ]);?>
 

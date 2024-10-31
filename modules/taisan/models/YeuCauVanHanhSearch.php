@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 
 // use app\models\TsYeuCauVanHanh;
 use app\modules\taisan\models\YeuCauVanHanh;
+use app\modules\user\models\User;
 
 /**
  * YeuCauVanHanhSearch represents the model behind the search form about `app\models\TsYeuCauVanHanh`.
@@ -75,6 +76,14 @@ class YeuCauVanHanhSearch extends YeuCauVanHanh
             // $query->where('0=1');
             return $dataProvider;
         }
+        //lọc nếu quyền nhân viên chỉ xem được phiếu do mình tạo
+        //nếu là quản lý hoặc lãnh đạo thì cho xem hết
+        if(User::hasRole('nNhanVien', false)){
+            $query->andFilterWhere([
+                'id_nguoi_lap' => User::getCurrentNhanVienID(),
+            ]);
+        }
+        
         if ($cusomSearch != NULL) {
             $query->andFilterWhere([
                 'OR', ['like', 'ly_do', $cusomSearch],
