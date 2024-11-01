@@ -12,14 +12,15 @@ use app\modules\kholuutru\models\DmVatTu;
  */
 class DmVatTuSearch extends DmVatTu
 {
+    public $trangThaiSoLuong;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'so_luong', 'id_kho', 'nguoi_tao'], 'integer'],
-            [['ten_vat_tu', 'don_vi_tinh', 'trang_thai', 'ngay_tao','hang_san_xuat'], 'safe'],
+            [['id', 'id_kho', 'nguoi_tao', 'so_luong'], 'integer'],
+            [['ten_vat_tu', 'don_vi_tinh', 'trang_thai', 'ngay_tao', 'hang_san_xuat', 'trangThaiSoLuong'], 'safe'],
             [['don_gia'], 'number'],
         ];
     }
@@ -78,6 +79,13 @@ class DmVatTuSearch extends DmVatTu
         $query->andFilterWhere(['like', 'ten_vat_tu', $this->ten_vat_tu])
             ->andFilterWhere(['like', 'don_vi_tinh', $this->don_vi_tinh])
             ->andFilterWhere(['like', 'trang_thai', $this->trang_thai]);
+		}
+		
+		if($this->trangThaiSoLuong){
+		    if($this->trangThaiSoLuong == 'LON')
+		      $query->andWhere('so_luong > 0');
+		    else if($this->trangThaiSoLuong == 'NHO')
+		      $query->andWhere('so_luong <= 0');
 		}
         return $dataProvider;
     }

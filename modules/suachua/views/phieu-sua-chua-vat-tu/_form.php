@@ -36,7 +36,7 @@ $vatTu=$model->vatTu;
                 'change' => new JsExpression("
                     function() {
                         $.ajax({
-                            url: '" . Url::to(['/kholuutru/kho/get-vat-tu-list']) . "',
+                            url: '" . Url::to(['/kholuutru/kho/get-vat-tu-list?locVatTuHong=1']) . "',
                             type: 'POST',
                             data: {kho_vat_tu: $(this).val()},
                             success: function(data) {

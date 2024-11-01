@@ -1,6 +1,9 @@
 <?php
 use yii\bootstrap5\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
+use app\modules\kholuutru\models\KhoLuuTru;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\kholuutru\models\DmVatTu */
@@ -18,20 +21,44 @@ use yii\widgets\ActiveForm;
       	]); ?>
 
     <?= $form->field($model, 'ten_vat_tu')->textInput(['maxlength' => true]) ?>
+    
+    <label>Kho lưu trữ</label>
+    <?= $form->field($model, 'id_kho')->widget(Select2::classname(), [
+                'data' => ArrayHelper::map(KhoLuuTru::find()->all(), 'id', 'ten_kho'),
+                'options' => [
+                    'placeholder' => 'Chọn kho lưu trữ',
+                    'id' => 'id_kho',
+                    'data-dropdown-parent'=>"#offcanvasRight"
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width'=>'100%'
+                ],
+            ])->label(false) ?>
+            
+    <div class="row">
+    	<div class="col-md-6">
+    		 <?= $form->field($model, 'trangThaiSoLuong')->dropDownList([
+                    'LON'=>'Có số lượng (>0)',
+                    'NHO'=>'Không có tồn kho (<=0)'
+                ],[
+                    'prompt'=>'-Chọn-'
+                ])->label('Số lượng') ?>
+    	</div>
+    	<div class="col-md-6">
+    		 <?= $form->field($model, 'trang_thai')->dropDownList($model->getDmTrangThai(),[
+                'prompt'=>'-Chọn-'
+            ]) ?>
+    	</div>
+    </div>
 
-    <?= $form->field($model, 'so_luong')->textInput() ?>
+    <?php // $form->field($model, 'don_vi_tinh')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'id_kho')->textInput() ?>
+    <?php // $form->field($model, 'don_gia')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'don_vi_tinh')->textInput(['maxlength' => true]) ?>
+    <?php // $form->field($model, 'ngay_tao')->textInput() ?>
 
-    <?= $form->field($model, 'trang_thai')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'don_gia')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'ngay_tao')->textInput() ?>
-
-    <?= $form->field($model, 'nguoi_tao')->textInput() ?>
+    <?php // $form->field($model, 'nguoi_tao')->textInput() ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

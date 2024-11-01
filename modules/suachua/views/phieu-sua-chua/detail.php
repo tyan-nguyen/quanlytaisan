@@ -15,8 +15,8 @@ $this->title = 'Phiếu sửa chữa '.$phieuSuaChua->thietBi->ten_thiet_bi;
 $this->params['breadcrumbs'][] = $this->title;
 
 //CrudAsset::register($this);
-Yii::$app->params['showSearch'] = true;
-Yii::$app->params['showExport'] = true;
+Yii::$app->params['showSearch'] = false;
+Yii::$app->params['showExport'] = false;
 $model=$phieuSuaChua;
 ?>
 

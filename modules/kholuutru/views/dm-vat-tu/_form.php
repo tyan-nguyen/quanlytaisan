@@ -18,15 +18,15 @@ use kartik\select2\Select2;
         </div>
         <div class="col-5">
             <?= $form->field($model, 'id_kho')->widget(Select2::classname(), [
-            'data' => ArrayHelper::map(KhoLuuTru::find()->all(), 'id', 'ten_kho'),
-            'options' => [
-                'placeholder' => 'Chọn kho lưu trữ',
-                'id' => 'id_kho',
-            ],
-            'pluginOptions' => [
-                'allowClear' => true,
-            ],
-        ]) ?>
+                'data' => ArrayHelper::map(KhoLuuTru::find()->all(), 'id', 'ten_kho'),
+                'options' => [
+                    'placeholder' => 'Chọn kho lưu trữ',
+                    'id' => 'id_kho',
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ],
+            ]) ?>
         </div>
         <div class="col-2">
             <?= $form->field($model, 'so_luong')->textInput(['type'=>'number']) ?>
