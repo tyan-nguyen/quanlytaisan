@@ -68,6 +68,14 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'ngay_dua_vao_su_dung',
+        'value'=>function($model){
+        $custom = new CustomFunc();
+            return $custom->convertYMDToDMY($model->ngay_dua_vao_su_dung);
+        }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_phieu_mua_sam',
         
         'format'=>'raw',
