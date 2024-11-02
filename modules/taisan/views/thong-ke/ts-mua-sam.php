@@ -8,6 +8,7 @@ use cangak\ajaxcrud\BulkButtonWidget;
 use app\widgets\FilterFormWidget;
 use yii\widgets\Pjax;
 use app\modules\taisan\models\ThietBi;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TsThietBiSearch */
@@ -25,6 +26,12 @@ $conditionShowTree = ($tsLayout>0 && $tsLayout<=3);
 $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchModel, 'tsLayout'=>$tsLayout]):0;
 ?>
 
+<style>
+.btn-toolbar ul{
+    padding:10px;
+}
+</style>
+
 <div class="row">
 	<?php if($conditionShowTree==true):?>
     <div class="col-md-4">
@@ -40,9 +47,55 @@ $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchMod
 ]); ?>
 
 <div class="ts-thiet-bi-index">
-	
+
+
 	
     <div id="ajaxCrudDatatable">
+    
+    <?php 
+    $exp = ExportMenu::widget([
+        
+        'columnBatchToggleSettings'=>['label'=>'Tất cả'],
+        
+        'dropdownOptions' =>
+        [
+            'label' => 'Xuất dữ liệu',
+            'class' => 'btn btn-wkm'
+        ],
+        
+        'columnSelectorOptions'=>
+        [
+            'label' => 'Chọn dữ liệu',
+            'class' => 'btn btn-default dropdown-toggle',
+            'scrollable'=> true,
+        ],
+        
+        'columnSelectorMenuOptions' =>
+        [
+            'class' => 'dropdown-menu scrollable-menu',
+            'role'=> 'menu'
+        ],
+        
+        'dataProvider' => $dataProvider,
+        'columns' => require(__DIR__.'/ts-mua-sam-columns.php'),
+        
+        'exportConfig' =>
+        [
+            ExportMenu::FORMAT_TEXT => false,
+            ExportMenu::FORMAT_HTML => false,
+            ExportMenu::FORMAT_EXCEL => false,
+            ExportMenu::FORMAT_PDF => false,
+            
+            ExportMenu::FORMAT_EXCEL_X =>
+            [
+                'label' => 'EXCEL',
+            ]
+        ],
+        
+        'container'=>['class'=>'btn-group pull-left', 'style'=> 'margin: 5px']
+    ]);
+    ?>	
+
         <?=GridView::widget([
             'id'=>'crud-datatable',
             'dataProvider' => $dataProvider,
@@ -51,9 +104,12 @@ $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchMod
             'columns' => require(__DIR__.'/ts-mua-sam-columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [Yii::$app->controller->action->id . '?layout='.$tsLayout],
-                    ['data-pjax'=>1, 'class'=>'btn btn-outline-primary', 'title'=>'Tải lại']).
-                    '{export}'
+                    /* Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [Yii::$app->controller->action->id . '?layout='.$tsLayout],
+                    ['data-pjax'=>1, 'class'=>'btn btn-default btn-outline-secondary', 'title'=>'Tải lại',
+                        'style'=>'padding:0;margin:0'
+                    ]) . */
+                    //'{export}' 
+                    $exp
                 ],
             ], 
             'striped' => false,
@@ -78,7 +134,14 @@ $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchMod
                 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Tài sản/Thiết bị',
                 'before'=>'Danh sách Tài sản/Thiết bị',
                 'after'=>'<div class="clearfix"></div>',
-            ]
+            ],
+            'exportConfig' => [
+                GridView::EXCEL =>[
+                    'filename' => 'DanhSachTaiSanExport'
+                ], 
+                
+            ],
+            //'options' => [ 'style' => 'table-layout:fixed;' ],
         ])?>
     </div><!-- #ajaxCrudDatatable -->
     

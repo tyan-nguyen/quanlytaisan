@@ -27,7 +27,7 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ten_thiet_bi',
-        'width'=> '30%',
+        'width'=> '35%',
     ],
     /* [
      'class'=>'\kartik\grid\DataColumn',
@@ -55,7 +55,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_bo_phan_quan_ly',
         'value'=>'boPhanQuanLy.ten_bo_phan',
-        
+        'width'=> '20%',
     ],
     
     [
@@ -64,32 +64,36 @@ return [
         'value'=>function($model){
             $custom = new CustomFunc();
             return $custom->convertYMDToDMY($model->ngay_mua);
-        }
+        },
+        'width'=> '15%',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ngay_dua_vao_su_dung',
+        'label'=>'Ngày sử dụng',
         'value'=>function($model){
-        $custom = new CustomFunc();
+            $custom = new CustomFunc();
             return $custom->convertYMDToDMY($model->ngay_dua_vao_su_dung);
-        }
+        },
+        'width'=> '15%',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_phieu_mua_sam',
-        
         'format'=>'raw',
         'value'=>function($model){
         $html=$model->id_phieu_mua_sam?Html::a('P'.str_pad($model->id_phieu_mua_sam, 6, '0', STR_PAD_LEFT), ['/muasam/phieu-mua-sam/chi-tiet-phieu-mua-sam','id_phieu_mua_sam'=>$model->id_phieu_mua_sam],
                 ['data-pjax'=>0, 'target'=>'_blank', 'title'=> 'Chi tiết phiếu sửa chữa', 'class'=>"text-primary"]):'';
             return $html;
-        }
+        },
+        'width'=> '15%',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'trang_thai',
         'format'=>'raw',
-        'value'=>'tenTrangThaiWithBadge'
+        'value'=>'tenTrangThaiWithBadge',
+        'width'=> '20%',
     ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
