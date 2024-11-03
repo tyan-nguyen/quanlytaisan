@@ -12,6 +12,8 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
+use app\modules\user\models\User;
+use yii\web\ForbiddenHttpException;
 
 /**
  * PheDuyetYeuCauVanHanhController implements the CRUD actions for YeuCauVanHanh model.
@@ -140,6 +142,9 @@ class PheDuyetYeuCauVanHanhController extends Controller
 
     public function actionApprove($id)
     {
+        if(!User::hasPermission('qDuyetDieuChuyenThietBi',false)){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
         $request = Yii::$app->request;
         $model = $this->findModel($id);
         $modelsDetail = $model->details;

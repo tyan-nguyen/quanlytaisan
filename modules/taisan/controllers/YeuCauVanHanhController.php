@@ -16,6 +16,7 @@ use \yii\web\Response;
 use yii\base\Model;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use yii\web\ForbiddenHttpException;
 
 /**
  * YeuCauVanHanhController implements the CRUD actions for YeuCauVanHanh model.
@@ -103,6 +104,15 @@ class YeuCauVanHanhController extends Controller
         $request = Yii::$app->request;
         $model = $this->findModel($id);
         $modelsDetail = $model->details;
+        
+        //check null model
+        if($model == null){
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
+        }
+        //check quyền truy cập phiếu
+        if(User::hasRole('nNhanVien',false) && $model->id_nguoi_lap != User::getCurrentNhanVienID()){
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $isDraft = false;
         $isPending = false;
@@ -146,17 +156,17 @@ class YeuCauVanHanhController extends Controller
                         'hidden' => !$isDraft
                     ])
 
-                    . Html::a('Phê duyệt', ['approve', 'id' => $id], [
+                . (User::hasPermission('qDuyetDieuChuyenThietBi',false)?Html::a('Phê duyệt', ['approve', 'id' => $id], [
                         'class' => 'btn btn-warning',
                         'role' => 'modal-remote',
                         'hidden' => !$isPending
-                    ])
+                    ]):'')
 
-                    . Html::a('Xuất', ['operate', 'id' => $id], [
+                . (User::hasPermission('qXuatDieuChuyenThietBi',false)?Html::a('Xuất', ['operate', 'id' => $id], [
                         'class' => 'btn btn-primary',
                         'role' => 'modal-remote',
                         'hidden' => !$isApproved
-                    ]).
+                    ]):'').
                    /*  . Html::button('Print', [
                         'class' => 'btn btn-primary',
                         'id' => 'print-button',
@@ -854,7 +864,7 @@ class YeuCauVanHanhController extends Controller
             $model = $this->findModel($id);
             //check forceDelete valid
             if($forceDelete){
-                if(User::hasRole('admin', true)){
+                if(User::hasRole('nLanhDao')){
                     $forceDelete = true;
                 } else {
                     $forceDelete = false;
@@ -922,24 +932,26 @@ class YeuCauVanHanhController extends Controller
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             //check all data valid
-            $checkOk = true;
-            $listCheckNotOk = array();
-            foreach ($pks as $pk) {
-                $model = $this->findModel($pk);
-                if($model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET || $model->hieu_luc==$model->sauDuyet()){
-                    $checkOk = false;
-                    $listCheckNotOk[] = $model->id;
+            if(!User::hasRole('nLanhDao')){
+                $checkOk = true;
+                $listCheckNotOk = array();
+                foreach ($pks as $pk) {
+                    $model = $this->findModel($pk);
+                    if($model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET || $model->hieu_luc==$model->sauDuyet()){
+                        $checkOk = false;
+                        $listCheckNotOk[] = $model->id;
+                    }
                 }
-            }
-            if(!$checkOk){
-                return [
-                    'title' => "Xóa danh sách yêu cầu vận hành thiết bị",
-                    'content' => '<span class="text-danger">Không thể xóa danh sách yêu cầu, Lỗi: P-' . implode(', P-', $listCheckNotOk) . '</span>',
-                    'tcontent' => 'Có lỗi xảy ra!',
-                    'footer' => Html::button('Đóng', [
-                        'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
-                    ])
-                ];
+                if(!$checkOk){
+                    return [
+                        'title' => "Xóa danh sách yêu cầu vận hành thiết bị",
+                        'content' => '<span class="text-danger">Không thể xóa danh sách yêu cầu đã duyệt và đang vận hành, Lỗi: P-' . implode(', P-', $listCheckNotOk) . '</span>',
+                        'tcontent' => 'Có lỗi xảy ra!',
+                        'footer' => Html::button('Đóng', [
+                            'class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal",
+                        ])
+                    ];
+                }
             }
             
             //check ok delete real

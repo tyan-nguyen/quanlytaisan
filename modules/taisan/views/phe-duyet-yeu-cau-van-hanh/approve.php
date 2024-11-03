@@ -10,6 +10,9 @@ use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use app\modules\dungchung\models\CustomFunc;
+
+$custom = new CustomFunc();
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsYeuCauVanHanh */
@@ -49,8 +52,14 @@ use yii\helpers\Url;
                         // 'id_bo_phan_quan_ly',
                         // 'ngay_xuat',
                         // 'ngay_nhan',
-                        'ngay_duyet',
-                        'ngay_lap',
+                        [
+                            'attribute' => 'ngay_duyet',
+                            'value' => $custom->convertYMDHISToDMY($model->ngay_duyet),
+                        ],
+                        [
+                            'attribute' => 'ngay_lap',
+                            'value' => $custom->convertYMDHISToDMY($model->ngay_lap),
+                        ],
                         'ly_do',
                         // 'hieu_luc',
                         [
@@ -64,12 +73,12 @@ use yii\helpers\Url;
 
                         [
                             'attribute' => 'created_at',
-                            'value' => $model->createdAt ? $model->createdAt : '-',
+                            'value' => $model->createdAt ? $custom->convertYMDHISToDMY($model->createdAt) : '-',
                             'label' => 'Ngày tạo',
                         ],
                         [
                             'attribute' => 'updated_at',
-                            'value' => $model->updatedAt ? $model->updatedAt : '-',
+                            'value' => $model->updatedAt ? $custom->convertYMDHISToDMY($model->updatedAt) : '-',
                             'label' => 'Ngày cập nhật',
                         ],
                     ],

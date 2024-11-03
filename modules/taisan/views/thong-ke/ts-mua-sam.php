@@ -59,8 +59,11 @@ $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchMod
         
         'dropdownOptions' =>
         [
-            'label' => 'Xuất dữ liệu',
-            'class' => 'btn btn-wkm'
+            'label' => 'Tất cả',
+            'class' => 'btn btn-outline-secondary btn-default',
+            'itemsBefore' => [
+                '<div class="dropdown-header">Xuất tất cả dữ liệu</div>',
+            ],
         ],
         
         'columnSelectorOptions'=>
@@ -78,38 +81,43 @@ $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchMod
         
         'dataProvider' => $dataProvider,
         'columns' => require(__DIR__.'/ts-mua-sam-columns.php'),
-        
         'exportConfig' =>
-        [
-            ExportMenu::FORMAT_TEXT => false,
-            ExportMenu::FORMAT_HTML => false,
-            ExportMenu::FORMAT_EXCEL => false,
-            ExportMenu::FORMAT_PDF => false,
-            
+        [                    
+            ExportMenu::FORMAT_PDF => [
+                'label' => 'PDF',
+            ],
+            ExportMenu::FORMAT_EXCEL =>
+            [
+                'label' => 'EXCEL (*.xls)',
+            ],
             ExportMenu::FORMAT_EXCEL_X =>
             [
-                'label' => 'EXCEL',
-            ]
-        ],
-        
-        'container'=>['class'=>'btn-group pull-left', 'style'=> 'margin: 5px']
+                'label' => 'EXCEL (*.xlsx)',                
+            ],
+            ExportMenu::FORMAT_TEXT => [
+                'label' => 'TEXT',
+            ],
+            ExportMenu::FORMAT_HTML => [
+                'label' => 'HTML',
+            ],    
+        ],   
+        'filename' => 'DanhSachTaiSanExport',
+        'container'=>['class'=>'btn-group pull-left', 'style'=> '']
     ]);
     ?>	
 
         <?=GridView::widget([
             'id'=>'crud-datatable',
             'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
+            'filterModel' => $searchModel,
             'pjax'=>true,
             'columns' => require(__DIR__.'/ts-mua-sam-columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    /* Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [Yii::$app->controller->action->id . '?layout='.$tsLayout],
-                    ['data-pjax'=>1, 'class'=>'btn btn-default btn-outline-secondary', 'title'=>'Tải lại',
-                        'style'=>'padding:0;margin:0'
-                    ]) . */
-                    //'{export}' 
-                    $exp
+                    Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', [Yii::$app->controller->action->id . '?layout='.$tsLayout],
+                    ['data-pjax'=>1, 'class'=>'btn btn-outline-secondary', 'title'=>'Tải lại'
+                    ]).
+                    '{export}' . $exp
                 ],
             ], 
             'striped' => false,
@@ -135,10 +143,20 @@ $tree = $conditionShowTree==true ? $this->render('_tree', ["model" => $searchMod
                 'before'=>'Danh sách Tài sản/Thiết bị',
                 'after'=>'<div class="clearfix"></div>',
             ],
-            'exportConfig' => [
-                GridView::EXCEL =>[
+            // set a label for default menu
+            'export' => [
+                'label' => 'Đang xem',
+            ],
+            'exportConfig' => [               
+                GridView::CSV => [],
+                GridView::HTML => [],
+                GridView::TEXT => [],
+                GridView::PDF =>[
                     'filename' => 'DanhSachTaiSanExport'
                 ], 
+                GridView::EXCEL =>[
+                    'filename' => 'DanhSachTaiSanExport'
+                ],                
                 
             ],
             //'options' => [ 'style' => 'table-layout:fixed;' ],

@@ -46,7 +46,9 @@ if ($hieuLuc !== null && $hieuLuc !== 'NHAP') {
     $isDraft = false;
 }
 if($model->isNewRecord){
-    $model->id_nguoi_lap = User::getCurrentNhanVienID();
+    if(User::hasRole('nNhanVien') && $model->id_nguoi_lap == NULL){
+        $model->id_nguoi_lap = User::getCurrentNhanVienID();
+    }
 }
 ?>
 
@@ -106,7 +108,7 @@ if($model->isNewRecord){
                             'language' => 'vi',
                             'options' => [
                                 'placeholder' => 'Chọn...',
-                                'disabled' => (!$isDraft || User::hasRole('nNhanVien',false))
+                                //'disabled' => (!$isDraft || User::hasRole('nNhanVien',false))
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
@@ -242,7 +244,7 @@ if($model->isNewRecord){
         </div>
     </div>
     
-    <?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>    
+    <?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET && User::hasPermission('qSapXepThietBi',false) ){ ?>    
     <!-- chi tiet thiet bi -->
     <div class="row">
     	<div class="col-md-12 mt-2">
@@ -255,7 +257,7 @@ if($model->isNewRecord){
         	<?= $this->render('_form_chi_tiet', ['model'=>$model]) ?>
         </div>
     </div>
-	<?php } else if(!$model->isNewRecord && $model->sauDuyet()){ ?>    
+	<?php } else if( (!$model->isNewRecord && $model->sauDuyet()) || !User::hasPermission('qSapXepThietBi',false) && $model->sauDuyet()){ ?>    
     <!-- chi tiet thiet bi sua -->
     <div class="row">  
     	<div class="col-md-12" id="chiTietBlock">

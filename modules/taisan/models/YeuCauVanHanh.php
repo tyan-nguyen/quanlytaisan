@@ -83,4 +83,23 @@ class YeuCauVanHanh extends YeuCauVanHanhBase
             return $model->thietBi->ten_thiet_bi . ' - ' . $model->thietBi->getTenTrangThai($model->thietBi->trang_thai);
         });
     }
+    
+    /**
+     * check ycvh chi tiet da tra het thi trang thai la da tra
+     */
+    public function setTrangThaiDaTra(){
+        if($this->hieu_luc == self::STATUS_VANHANH){
+            $coThietBiChuaTra = false;
+            foreach ($this->details as $dt){
+                if($dt->ngay_tra_thuc_te == NULL){
+                    $coThietBiChuaTra = true;
+                    break;
+                }
+            }
+            if($coThietBiChuaTra == false){
+                $this->hieu_luc = self::STATUS_DATRA;
+                $this->save();
+            }
+        }
+    }
 }

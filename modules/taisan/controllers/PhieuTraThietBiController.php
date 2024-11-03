@@ -120,34 +120,63 @@ class PhieuTraThietBiController extends Controller
 
                 $post = $request->post();
                 foreach($modelsDetail as $returnDetail) {
-                    $requestDetail = YeuCauVanHanhCt::find()
+                    //vu
+                    /* $requestDetail = YeuCauVanHanhCt::find()
                     ->joinWith('thietBi')
                     ->where(['ts_thiet_bi.id' => $returnDetail->id_thiet_bi, 'ts_thiet_bi.trang_thai' => 'VANHANH'])
-                    ->one();
+                    ->one(); */
+                    //an sua
+                    $requestDetail = YeuCauVanHanhCt::findOne($returnDetail->id_ycvhct);
 
                     if ($requestDetail) {
                         $requestDetail->ngay_tra_thuc_te = $returnDetail->ngay_tra;
                         $requestDetail->save(false);
+                        
+                        $thietBi = $requestDetail->thietBi; // Assuming there's a relation to get the thietBi
+                        if ($thietBi) {
+                            $thietBi->trang_thai = 'HOATDONG';
+                            $thietBi->save(false);
+                        }
+                        
+                        $requestDetail->yeuCauVanHanh->setTrangThaiDaTra();
                     }
-    
-                    $thietBi = $requestDetail->thietBi; // Assuming there's a relation to get the thietBi
-                    if ($thietBi) {
-                        $thietBi->trang_thai = 'HOATDONG';
-                        $thietBi->save(false);
-                    }
-
+                    //end an sua
                 }
                 // /.ngay tra thuc te
                 $model->hieu_luc = Yii::$app->request->post('hieu_luc');
                 if ($model->save(false)) {
-                    Yii::$app->session->setFlash('success', 'Successfully.');
-                    return $this->redirect(['index']);
+                    return [
+                        'forceReload' => '#crud-datatable-pjax',
+                        'title' => "Xác nhận trả thiết bị thành công",
+                        'content' => $this->renderAjax('view', [
+                            'model' => $model,
+                            'modelsDetail' => $modelsDetail,
+                            
+                        ]),
+                        'tcontent' => 'Xuất phiếu thành công',
+                        'footer' => Html::button('Đóng', ['class' => 'btn btn-default pull-left', 'data-bs-dismiss' => "modal"])
+                            .($model->details!=null?Html::a(
+                                '<i class="fa fa-print"></i> In Phiếu (A5, A4)',
+                                '#',
+                                [
+                                    'onClick'=>'InPhieu()',
+                                    'data-pjax'=>0,
+                                    'class' => 'btn btn-primary'
+                                ]) : '')
+                    ];
+                   // Yii::$app->session->setFlash('success', 'Successfully.');
+                   // return $this->redirect(['index']);
                     // return [
                     //     'success' => true,
                     //     'redirectUrl' => \yii\helpers\Url::to(['index']),
                     // ];
                 } else {
-                    Yii::$app->session->setFlash('error', 'Failed.');
+                    return [
+                        'forceClose' => true,                       
+                        'tcontent' => 'Có lỗi xảy ra khi thao tác trả thiết bị, vui lòng kiểm tra lại!',
+                        
+                    ];
+                   // Yii::$app->session->setFlash('error', 'Failed.');
                     // return [
                     //     'success' => false,
                     //     'message' => 'Failed to approve the request.',
