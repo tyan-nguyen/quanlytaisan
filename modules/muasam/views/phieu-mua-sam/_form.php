@@ -104,8 +104,6 @@ if (Yii::$app->session->hasFlash('error')) {
         <?php } ?>
         
 
-
-
     </div>
     <div class='row'>
 
@@ -198,9 +196,79 @@ if (Yii::$app->session->hasFlash('error')) {
                     'data-confirm' => 'Bạn có chắc muốn từ chối báo giá',
 				]) :'';
 			?>
+			
+			 <?php //if($model->ctPhieuMuaSams){ ?>
+             <a href="#" onClick="InPhieuMuaSam()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu mua sắm (A4)</a>
+             <?php //} ?>
+             <?php if($model->phieuNhapHang){ ?>
+             <a href="#" onClick="InPhieuNhapKho()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu nhập hàng (A4)</a>
+             <?php }?>
+     
     </div>
     <?php } ?>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<div class="row">
+    	<div class="col-md-12">
+            <!-- print phieu -->
+            <div style="display:none">
+                <div id="print">
+                	<?php //$this->render('_print_phieu_mua_sam', compact('model')) ?>
+                </div>
+                <div id="print2">
+                	<?php //$this->render('_print_phieu_nhap_kho', compact('model')) ?>
+                </div>
+            </div>
+             
+        </div>
+</div>
+
+<script>
+function InPhieuMuaSam(){
+	//load lai phieu in (tranh bi loi khi chinh sua du lieu chua update noi dung in)
+	$.ajax({
+        type: 'post',
+        url: '/muasam/phieu-mua-sam/get-phieu-mua-sam-in-ajax?idPhieu=' + <?= $model->id ?>,
+        //data: frm.serialize(),
+        success: function (data) {
+            console.log('Submission was successful.');
+            console.log(data);            
+            if(data.status == 'success'){
+            	$('#print').html(data.content);
+            	printPhieu();//call from script.js
+            } else {
+            	alert('Phiếu không còn tồn tại trên hệ thống!');
+            }
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+            console.log(data);
+        },
+    });	
+}
+function InPhieuNhapKho(){
+	//load lai phieu in (tranh bi loi khi chinh sua du lieu chua update noi dung in)
+	$.ajax({
+        type: 'post',
+        url: '/muasam/phieu-mua-sam/get-phieu-nhap-kho-in-ajax?idPhieu=' + <?= $model->id ?>,
+        //data: frm.serialize(),
+        success: function (data) {
+            console.log('Submission was successful.');
+            console.log(data);            
+            if(data.status == 'success'){
+            	$('#print2').html(data.content);
+            	printPhieu2();//call from script.js
+            } else {
+            	alert('Phiếu không còn tồn tại trên hệ thống!');
+            }
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+            console.log(data);
+        },
+    });	
+}
+</script>

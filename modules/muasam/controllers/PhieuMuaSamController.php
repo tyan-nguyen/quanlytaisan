@@ -478,4 +478,52 @@ class PhieuMuaSamController extends Controller
             'dataProviderBgms'=>$dataProviderBgms
         ]);
     }
+    
+    /**
+     * load in phieu
+     * @return mixed
+     */
+    public function actionGetPhieuMuaSamInAjax($idPhieu)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($idPhieu);
+        if($model !=null){
+            return [
+                'status'=>'success',
+                'content' => $this->renderAjax( ($model->dm_mua_sam == '	
+thiet_bi' ? '_print_phieu_mua_sam_tb' : '_print_phieu_mua_sam_vt'), [
+                    'model' => $model
+                ])
+            ];
+        } else {
+            return [
+                'status'=>'failed',
+                'content' => 'Phiếu sửa chữa không tồn tại!'
+            ];
+        }
+    }
+    /**
+     * load in phieu
+     * @return mixed
+     */
+    public function actionGetPhieuNhapKhoInAjax($idPhieu)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($idPhieu);
+        if($model !=null){
+            return [
+                'status'=>'success',
+                'content' => $this->renderAjax( ($model->dm_mua_sam == '
+thiet_bi' ? '_print_phieu_nhap_kho_tb' : '_print_phieu_nhap_kho_vt'), [
+                    'model' => $model
+                ])
+            ];
+        } else {
+            return [
+                'status'=>'failed',
+                'content' => 'Phiếu nhập kho không tồn tại!'
+            ];
+        }
+    }
+    
 }

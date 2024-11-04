@@ -49,7 +49,7 @@ $phieuTotal = $baoGiaMuaSamNewCount + $phieuMuaSamNewCount;
 							</li>
 							<?php endif;?>
 							
-							<?php if(User::hasPermission('nDuyetBaoGiaMuaSam',false)) :?>
+							<?php if(User::hasPermission('qDuyetBaoGiaMuaSam',false)) :?>
                             <li class=""><a href="<?= Yii::getAlias('@web/muasam/bao-gia-mua-sam?menu=pms2') ?>" class="slide-item" data-menu="pms2">Báo giá mua sắm <?= $baoGiaMuaSamNewCount>0?'<span class="badge bg-warning ms-2">'.$baoGiaMuaSamNewCount.'</span>':'' ?></a>
 							</li>
 							<?php endif;?>

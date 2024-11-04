@@ -87,7 +87,14 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'id_nguoi_duyet']);
     }
-
+    /**
+     * relation Trung tâm mua sắm
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTrungTamMuaSam()
+    {
+        return $this->hasOne(BoPhan::class, ['id' => 'id_tt_mua_sam']);
+    }
     /**
      * Gets query for [[TsBaoGiaMuaSams]].
      *
@@ -121,7 +128,10 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
      */
     public function getCtPhieuNhapHangs()
     {
-        return $this->hasMany(CtPhieuNhapHang::class, ['id_phieu_mua_sam' => 'id']);
+        if($this->dm_mua_sam==='thiet_bi')
+            return $this->hasMany(CtPhieuNhapHang::class, ['id_phieu_mua_sam' => 'id']);
+        else 
+            return $this->hasMany(CtPhieuNhapHangVt::class, ['id_phieu_mua_sam' => 'id']);
     }
 
     /**
@@ -173,7 +183,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
         return [
             "thiet_bi"=>'Thiết bị',
             "vat_tu"=>'Vật tư',
-                   ];
+        ];
     }
     public function getNguoiTao()
     {
