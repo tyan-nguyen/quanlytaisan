@@ -490,8 +490,7 @@ class PhieuMuaSamController extends Controller
         if($model !=null){
             return [
                 'status'=>'success',
-                'content' => $this->renderAjax( ($model->dm_mua_sam == '	
-thiet_bi' ? '_print_phieu_mua_sam_tb' : '_print_phieu_mua_sam_vt'), [
+                'content' => $this->renderAjax( ($model->dm_mua_sam == 'thiet_bi' ? '_print_phieu_mua_sam_tb' : '_print_phieu_mua_sam_vt'), [
                     'model' => $model
                 ])
             ];
@@ -513,8 +512,7 @@ thiet_bi' ? '_print_phieu_mua_sam_tb' : '_print_phieu_mua_sam_vt'), [
         if($model !=null){
             return [
                 'status'=>'success',
-                'content' => $this->renderAjax( ($model->dm_mua_sam == '
-thiet_bi' ? '_print_phieu_nhap_kho_tb' : '_print_phieu_nhap_kho_vt'), [
+                'content' => $this->renderAjax( ($model->dm_mua_sam == 'thiet_bi' ? '_print_phieu_nhap_kho_tb' : '_print_phieu_nhap_kho_vt'), [
                     'model' => $model
                 ])
             ];

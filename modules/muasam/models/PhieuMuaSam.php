@@ -115,7 +115,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
      */
     public function getCtPhieuMuaSams()
     {
-        if($this->dm_mua_sam==='thiet_bi')
+        if($this->dm_mua_sam=='thiet_bi')
             return $this->hasMany(CtPhieuMuaSam::class, ['id_phieu_mua_sam' => 'id']);
         else
             return $this->hasMany(CtPhieuMuaSamVt::class, ['id_phieu_mua_sam' => 'id']);
