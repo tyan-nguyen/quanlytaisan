@@ -152,8 +152,10 @@ if (Yii::$app->session->hasFlash('error')) {
 
     <?= $form->field($model, 'dm_mua_sam')->textInput(['hidden' => 'hidden'])->label(false) ?>
 
-    <?php if (!in_array($model->trang_thai,['rejected','completed'])){ ?>
+    
     <div class="form-group text-center">
+    
+    <?php if (!in_array($model->trang_thai,['rejected','completed'])){ ?>
         <?= $model->trang_thai==='draft' ? Html::a('Gửi yêu cầu', null, [
 					'class' => 'btn btn-success',
 					'style'=>"margin-left:5px",
@@ -197,6 +199,8 @@ if (Yii::$app->session->hasFlash('error')) {
 				]) :'';
 			?>
 			
+			<?php } ?>
+			
 			 <?php //if($model->ctPhieuMuaSams){ ?>
              <a href="#" onClick="InPhieuMuaSam()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu mua sắm (A4)</a>
              <?php //} ?>
@@ -205,7 +209,7 @@ if (Yii::$app->session->hasFlash('error')) {
              <?php }?>
      
     </div>
-    <?php } ?>
+    
 
     <?php ActiveForm::end(); ?>
 
