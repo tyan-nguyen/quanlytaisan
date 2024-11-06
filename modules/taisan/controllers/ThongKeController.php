@@ -67,7 +67,9 @@ class ThongKeController extends Controller
             $showSuaChua = false;
         if(!isset($showVanHanh) || $showVanHanh == NULL)
             $showVanHanh = false;
+        
         Yii::$app->params['modelID'] = 'Thống kê lịch sử sử dụng tài sản/sữa chữa';
+        
         $model = ThietBi::findOne($idThietBi);
         $lichSuHoatDong = array();
         if($model!=NULL){

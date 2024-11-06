@@ -162,7 +162,7 @@ class ThietBi extends ThietBiBase
                     .'. Địa điểm: ' . $phieuVanHanh->yeuCauVanHanh->cong_trinh . 
                     '. Nội dung: ' . $phieuVanHanh->yeuCauVanHanh->ly_do,
                 'loai'=>YeuCauVanHanh::MODEL_ID,
-                'tham_chieu'=>$phieuVanHanh->id,
+                'tham_chieu'=>$phieuVanHanh->id_yeu_cau_van_hanh,
                 'status'=>$status
             ];
         }
