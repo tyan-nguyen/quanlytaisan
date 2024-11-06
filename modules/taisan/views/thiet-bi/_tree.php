@@ -31,7 +31,7 @@ use app\modules\bophan\models\BoPhan;
 	
 	 <?php $form = ActiveForm::begin([
 	        'id'=>'frmHeThong',
-            'method' => 'post',
+            'method' => 'get',
             'options' => [
                 'class' => 'myFilterForm form-horizontal'
             ],

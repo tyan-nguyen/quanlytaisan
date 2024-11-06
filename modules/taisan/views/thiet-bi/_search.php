@@ -27,7 +27,7 @@ use app\modules\kholuutru\models\KhoLuuTru;
 
     <?php $form = ActiveForm::begin([
         	'id'=>'myFilterForm',
-            'method' => 'post',
+            'method' => 'get',
             'options' => [
                 'class' => 'myFilterForm form-horizontal'
             ],
