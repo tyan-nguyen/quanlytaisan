@@ -55,7 +55,7 @@ Yii::$app->params['showExport'] = true;
             'panel' => [
                 //'type' => 'primary', 
                 'heading' => '<i class="fas fa fa-list" aria-hidden="true"></i> Danh sách',
-                'before'=>'<em>* Danh sách phiếu sửa chữa</em>',
+                'before'=>'<span class="text-secondary"><i class="fe fe-bell"></i> Số phiếu trễ hẹn: <strong>'.$searchModel->soPhieuTreHen.' </strong></span>',
                 'after'=>BulkButtonWidget::widget([
                             'buttons'=>Html::a('<i class="fas fa fa-trash" aria-hidden="true"></i>&nbsp; Xóa đã chọn',
                                 ["bulkdelete"] ,

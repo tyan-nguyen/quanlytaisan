@@ -7,6 +7,7 @@ use kartik\select2\Select2;
 use yii\widgets\ActiveForm;
 use app\modules\taisan\models\ThietBiBase;  
 use yii\helpers\ArrayHelper;
+use app\modules\user\models\User;
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\PhieuSuaChua */
 
@@ -40,13 +41,16 @@ body .select2-container {
                         <li><a href="#tab25" class="active" data-bs-toggle="tab" aria-selected="true" role="tab">
                                 Thông tin phiếu sửa chữa
                             </a></li>
-                        <li><a href="#tab26" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
+                         <?php if(!$model->inDraft){//1?>
+                        <li><a href="#tab26" data-bs-toggle="tab" aria-selected="false" role="tab" 
+                        	class="<?= (User::hasPermission('qThemBaoGiaSuaChua')?'':'disabled')?>"
                                 tabindex="-1">Báo giá</a></li>
                         <li><a href="#tab27" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Vật tư từ kho</a></li>
                         <li><a href="#tab31" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Vật tư hư hỏng</a></li>        
-                        <li><a href="#tab28" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
+                        <li><a href="#tab28" data-bs-toggle="tab" aria-selected="false" role="tab" 
+                        	class="<?= (User::hasPermission('qThemBaoGiaSuaChua')?'':'disabled')?>"
                                 tabindex="-1">Lịch sử báo giá</a></li>
                         <li><a href="#tab29" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Lịch sử sửa chữa thiết bị</a></li>
@@ -54,6 +58,7 @@ body .select2-container {
                         <li><a href="#tab30" data-bs-toggle="tab" aria-selected="false" role="tab" class=""
                                 tabindex="-1">Đánh giá</a></li>
                         <?php } ?>
+                        <?php }//1?>
 
                     </ul>
                 </div>
@@ -66,6 +71,9 @@ body .select2-container {
                         ]) ?>
 
                     </div>
+                    
+                    <?php if(!$model->inDraft){//2?>
+                    
                     <div class="tab-pane" id="tab26" role="tabpanel">
                        
 
@@ -109,6 +117,8 @@ body .select2-container {
                             "model"=>$phieuSuaChua
                         ]) ?>
                     </div>
+                    
+                     <?php }//2?>
 
                 </div>
                 <div class="ps__rail-x" style="left: 0px; bottom: 0px;">

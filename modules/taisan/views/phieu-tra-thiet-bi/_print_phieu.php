@@ -51,7 +51,7 @@ $custom = new CustomFunc();
     	<table class="table-content" style="width: 100%; margin-top:5px;">
     		<thead>
         		<tr>
-        			<th width="50">STT</th>
+        			<th width="30">STT</th>
         			<th width="150">Tên thiết bị</th>
         			<th width="70">Ngày bắt đầu</th>
         			<th width="70">Ngày trả dự kiến</th>
@@ -70,7 +70,7 @@ $custom = new CustomFunc();
             	<td style="text-align:center"><?= $ct->chiTietVanHanh?$custom->convertYMDHISToDMY($ct->chiTietVanHanh->ngay_bat_dau):'' ?></td>
             	<td style="text-align:left"><?= $ct->chiTietVanHanh?$custom->convertYMDHISToDMY($ct->chiTietVanHanh->ngay_ket_thuc):'' ?></td>
             	<td style="text-align:left"><?= $ct->chiTietVanHanh?$custom->convertYMDHISToDMY($ct->ngay_tra):'' ?></td>
-            	<td></td>
+            	<td style="text-align:left"><?= $ct->tra_khong_ve_kho ? 'Thiết bị còn tại công trình' : 'Đã chuyển về kho' ?></td>
             </tr>
             <?php } ?>	
             </tbody>

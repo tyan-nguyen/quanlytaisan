@@ -7,6 +7,7 @@ use app\modules\taisan\models\ThietBi;
 use kartik\date\DatePicker;
 use app\modules\dungchung\models\CustomFunc;
 use app\modules\taisan\models\YeuCauVanHanh;
+use app\widgets\forms\SwitchWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TsYeuCauVanHanhCt */
@@ -61,6 +62,11 @@ if(!$model->isNewRecord){
                 'todayHighlight' => true
             ]
         ]) ?>
+        
+     <?= SwitchWidget::widget([
+	    'model'=>$model,
+	    'attr'=>'tra_khong_ve_kho'
+	]) ?>   
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

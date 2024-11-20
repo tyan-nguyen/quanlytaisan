@@ -16,6 +16,7 @@ use yii\helpers\Html;
             <th>STT</th>
             <th>Tên thiết bị</th>
             <th>Ngày trả</th>
+            <th>Chuyển về kho</th>
             <th width="150">Phiếu vận hành</th>
             <th></th>
         </tr>
@@ -31,6 +32,7 @@ use yii\helpers\Html;
             <th scope="row"><?= $i+1 ?></th>
             <td><?= $modelDetail->thietBi?$modelDetail->thietBi->ten_thiet_bi:'' ?></td>
             <td><?= $ngayTra ?></td>
+            <td><?= $modelDetail->tra_khong_ve_kho ? 'Thiết bị còn tại công trình' : 'Đã chuyển về kho' ?></td>
             <td><?= ($modelDetail->id_ycvhct ? Html::a('<span class="typcn typcn-document-text"></span> Xem phiếu', ['/taisan/theo-doi-van-hanh/view', 'id'=>$modelDetail->chiTietVanHanh->id_yeu_cau_van_hanh, 'idItem'=>$modelDetail->id_ycvhct], [
             	    'role'=>'modal-remote-2',
             	    'class'=>'btn ripple btn-info btn-sm'

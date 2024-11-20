@@ -75,4 +75,15 @@ class CustomFunc
         } else
             return '';
     }
+    
+    /**
+     * tinh so ngay hoat dong = ngay ket thuc - ngay bat dau, neu ngay bat dau = ket thuc thi ket qua la 1 ngay
+     * $fromDate: Y-m-d H:i:s
+     * $toDate: Y-m-d H:i:s
+     */
+    public static function calculateDayActivity($fromDate, $toDate){
+        $timeStart = new \DateTime($fromDate);
+        $timeEnd = new \DateTime($toDate);
+        return $timeStart->diff($timeEnd)->format("%r%a") + 1;// 0 is 1, 1 is 2
+    }
 }

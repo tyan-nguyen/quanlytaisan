@@ -1,3 +1,28 @@
+/**custom for tab*/
+.tabs-menu1 ul li .disabled{
+	color: var(--secondary) !important;
+}
+.tabs-menu1 ul li .disabled:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f070";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+  }
+/** end custom for tab*/
+.td-warning-1{
+	background-color: #e06b32 !important;
+}
+.td-warning-1 a{
+	color:white !important;
+}
+.td-warning-2{
+	background-color: none;
+}
+.td-warning-2 a{
+	color:#e06b32 !important;
+}
 /*form*/
 .datepicker-days table{
 	width: 100%;

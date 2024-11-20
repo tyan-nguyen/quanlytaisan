@@ -119,7 +119,7 @@ use app\widgets\views\ImageWithButtonWidget;
                                 <div class="card-body h-100">
                                     <div>
                                         <h6 class="card-title mb-1">Trạng thái điều chuyển</h6>
-                                        <?php if ($model->trang_thai === 'VANHANH' && $requestDetails !== null) : ?>
+                                        <?php if ($model->trang_thai === 'VANHANH' && $requestDetails != null) : ?>
 
                                             <?php foreach ($requestDetails as $detail) : ?>
                                                 <?= DetailView::widget([
@@ -148,8 +148,17 @@ use app\widgets\views\ImageWithButtonWidget;
                                                     ],
                                                 ]) ?>
                                             <?php endforeach; ?>
+                                            <?php elseif ($model->trang_thai == 'VANHANH' && $requestDetails == null):?>
+                                            <span class="badge bg-primary">Đang vận hành không theo quy trình</span>
                                         <?php else : ?>
-                                            <span class="badge bg-primary">Đang rảnh</span>   
+                                            <span class="badge bg-primary">Đang rảnh</span>
+                                            <?php /////////////// check phieu cuoi cung xem o kho hay o cong trinh
+                                                if($model->lastActivity()){
+                                                    echo ('<br/>Vị trí: '. $model->lastActivity());
+                                                } else {
+                                                    echo ('<br/>Vị trí: Mặc định');
+                                                }
+                                            ?>
                                         <?php endif; ?>
                                     </div>
 

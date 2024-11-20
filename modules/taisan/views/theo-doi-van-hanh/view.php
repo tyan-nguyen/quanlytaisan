@@ -123,6 +123,7 @@ $cus = new CustomFunc();
                                     <th>Ngày bắt đầu</th>
                                     <th>Ngày kết thúc</th>
                                     <th>Ngày trả</th>
+                                    <th>Trả về kho</th>
                                     <!-- Other relevant columns -->
                                 </tr>
                             </thead>
@@ -132,7 +133,16 @@ $cus = new CustomFunc();
                                         <td><?= Html::encode($detail->thietBi->ten_thiet_bi) ?></td>
                                         <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_bat_dau)) ?></td>
                                         <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_ket_thuc)) ?></td>
-                                        <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_tra_thuc_te)) ?></td>
+                                        
+                                        <?php if($detail->phieuTraThietBiChiTiet):?>
+                                       <td><?= Html::encode($cus->convertYMDToDMY($detail->ngay_tra_thuc_te)) ?></td>
+                                        <td><?= ($detail->phieuTraThietBiChiTiet?
+                                        ($detail->phieuTraThietBiChiTiet->tra_khong_ve_kho? 'Còn tại công trình' : 'Đã chuyển về kho')
+                                            :'')
+                                        ?></td>
+                                         <?php else: ?>
+                                         <td colspan="2">Chưa trả</td>
+                                         <?php endif;?>
                                         <!-- Other relevant data -->
                                     </tr>
                                 <?php endforeach; ?>

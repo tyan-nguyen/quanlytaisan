@@ -3,6 +3,7 @@ use cangak\ajaxcrud\BulkButtonWidget;
 use kartik\grid\GridView;
 use yii\bootstrap5\Html;
 use yii\widgets\Pjax;
+use app\modules\user\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\suachua\models\BaoGiaSuaChuaSearch */
@@ -21,7 +22,7 @@ $isUpdate = $phieuSuaChua->trang_thai == 'new' || $phieuSuaChua->trang_thai == '
             'columns' => require (__DIR__ . '/_pjax-columns.php'),
             'toolbar' => [
                 ['content' =>
-                    ($isUpdate ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm báo giá', ['/suachua/bao-gia-sua-chua/create', 'id_phieu_sua_chua' => $phieuSuaChua->id],
+                    ( ($isUpdate && User::hasPermission('qThemBaoGiaSuaChua')) ? Html::a('<i class="fas fa fa-plus" aria-hidden="true"></i> Thêm báo giá', ['/suachua/bao-gia-sua-chua/create', 'id_phieu_sua_chua' => $phieuSuaChua->id],
                         ['role' => 'modal-remote-3', 'title' => 'Thêm mới báo giá', 'class' => 'btn btn-outline-primary']) : '') .
                     Html::a('<i class="fas fa fa-sync" aria-hidden="true"></i> Tải lại', ['', 'id_phieu_sua_chua' => $phieuSuaChua->id],
                         ['data-pjax' => 1, 'class' => 'btn btn-outline-primary', 'title' => 'Tải lại', 'id' => 'update-gridview-bg']),
@@ -38,7 +39,7 @@ $isUpdate = $phieuSuaChua->trang_thai == 'new' || $phieuSuaChua->trang_thai == '
                 //'type' => 'primary',
                 'heading' => false,
                 // 'before'=>'<em>* Danh sách Bao Gia Sua Chuas</em>',
-                'after' => BulkButtonWidget::widget([
+                'after' => (User::hasPermission('qThemBaoGiaSuaChua') ? BulkButtonWidget::widget([
                     'buttons' => Html::a('<i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp; Gửi báo giá',
                         ["gui-bao-gia", 'id_phieu_sua_chua' => $phieuSuaChua->id],
                         [
@@ -50,7 +51,7 @@ $isUpdate = $phieuSuaChua->trang_thai == 'new' || $phieuSuaChua->trang_thai == '
                             'data-confirm-title' => 'Xác nhận gửi?',
                             'data-confirm-message' => 'Bạn có chắc muốn gửi tất cả báo giá?',
                         ]),
-                ]) .
+                ]) : '') .
                 '<div class="clearfix"></div>',
             ],
         ])?>

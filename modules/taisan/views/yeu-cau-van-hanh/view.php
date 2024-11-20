@@ -45,7 +45,7 @@ use app\widgets\SummaryAlert;
             <div class="tab-pane  active show" id="tab1" role="tabpanel">
                 <div class="row">
                     <!-- Left -->
-                    <div class="col">
+                    <div class="col-md-5">
                         <?= DetailView::widget([
                             'model' => $model,
                             'options' => ['class' => 'table table-striped table-bordered detail-view'],
@@ -134,7 +134,7 @@ use app\widgets\SummaryAlert;
                     </div>
 
                     <!-- Right -->
-                    <div class="col">
+                    <div class="col-md-7">
                         <div class="row">
                         	<?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>
                            <div class="col-md-12">

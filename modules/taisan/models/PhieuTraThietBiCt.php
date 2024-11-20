@@ -44,6 +44,10 @@ class PhieuTraThietBiCt extends PhieuTraThietBiCtBase
                 $this->id_ycvhct = NULL;
             }
         }
+        if ($insert) {
+            if($this->tra_khong_ve_kho == null)
+                $this->tra_khong_ve_kho == 0;
+        }
         
 
         return parent::beforeSave($insert);

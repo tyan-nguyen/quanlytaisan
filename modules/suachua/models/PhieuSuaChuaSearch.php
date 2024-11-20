@@ -69,6 +69,11 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
                 'nguoi_tao' => Yii::$app->user->id,
             ]);
         }
+        if(User::hasRole('nLanhDao', false) || User::hasRole('nQuanLy', false) || User::hasPermission('qThemBaoGiaSuaChua')){
+            $query->andWhere("nguoi_tao = ".Yii::$app->user->id." OR trang_thai NOT IN ('draft', 'draft_sent', 'draft_reject')");
+        }else{
+            $query->andFilterWhere(['like', 'trang_thai', $this->trang_thai]);
+        }
 		if($cusomSearch != NULL){
 			$query->andFilterWhere ( [ 'OR' ,['like', 'trang_thai', $cusomSearch],
             ['like', 'ghi_chu1', $cusomSearch],
@@ -99,6 +104,7 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
                 'danh_gia_sc' => $this->danh_gia_sc,
             ]);
 
+        //$query->andFilterWhere(['like', 'trang_thai', $this->trang_thai])
         $query->andFilterWhere(['like', 'trang_thai', $this->trang_thai])
             ->andFilterWhere(['like', 'ghi_chu1', $this->ghi_chu1])
             ->andFilterWhere(['like', 'ghi_chu2', $this->ghi_chu2]);

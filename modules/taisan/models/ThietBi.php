@@ -81,6 +81,8 @@ class ThietBi extends ThietBiBase
         foreach ($phieuBaoTris as $phieuBaoTri){
             $result[] = [
                 'ngay' => $custom->convertYMDHISToDMY($phieuBaoTri->thoi_gian_bat_dau),
+                'ngay_ht' => $custom->convertYMDHISToDMY($phieuBaoTri->thoi_gian_ket_thuc),
+                'ngay_hd' => CustomFunc::calculateDayActivity($phieuBaoTri->thoi_gian_bat_dau, $phieuBaoTri->thoi_gian_ket_thuc),
                 'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuBaoTri->thoi_gian_bat_dau)),
                 'noi_dung' => $phieuBaoTri->keHoach->ten_cong_viec,
                 'loai'=>KeHoachBaoTri::MODEL_ID,
@@ -116,6 +118,8 @@ class ThietBi extends ThietBiBase
             }
             $result[] = [
                 'ngay' => $custom->convertYMDHISToDMY($phieuSuaChua->ngay_sua_chua),
+                'ngay_ht' => $custom->convertYMDHISToDMY($phieuSuaChua->ngay_hoan_thanh),
+                'ngay_hd' => CustomFunc::calculateDayActivity($phieuSuaChua->ngay_sua_chua, $phieuSuaChua->ngay_hoan_thanh),
                 'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuSuaChua->ngay_sua_chua)),
                 'noi_dung' => 'Địa điểm: ' . $phieuSuaChua->dia_chi . '. Tình trạng: ' . $phieuSuaChua->ghi_chu1,
                 'loai'=>PhieuSuaChua::MODEL_ID,
@@ -155,6 +159,8 @@ class ThietBi extends ThietBiBase
             }
             $result[] = [
                 'ngay' => $custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau),
+                'ngay_ht' => $custom->convertYMDHISToDMY($phieuVanHanh->ngay_tra_thuc_te),
+                'ngay_hd' => CustomFunc::calculateDayActivity($phieuVanHanh->ngay_bat_dau, $phieuVanHanh->ngay_tra_thuc_te),
                 'ngay_sort' => str_replace('-', '', $custom->convertYMDHISToYMD($phieuVanHanh->ngay_bat_dau)),
                 'noi_dung' => 'Thời gian: '.$custom->convertYMDHISToDMY($phieuVanHanh->ngay_bat_dau)
                     . ' - '
@@ -339,6 +345,27 @@ class ThietBi extends ThietBiBase
             'icon' => $icon,
             'type' => $type
         ]) : '';
+    }
+    
+    /**
+     * get luân chuyển cuối cùng trong thiết bị
+     */
+    public function lastActivity(){
+        $lastDieuChuyenCt = YeuCauVanHanhCt::find()->where(['id_thiet_bi'=>$this->id])->orderBy(['id'=>SORT_DESC])->one();
+        if($lastDieuChuyenCt){
+            //return 'Đang ở tại kho lưxxx';
+            if($lastDieuChuyenCt->phieuTraThietBiChiTiet){
+               
+                if($lastDieuChuyenCt->phieuTraThietBiChiTiet->tra_khong_ve_kho){
+                    return 'Trả thiết bị nhưng chưa giao về kho, còn tại công trình. <br/>Công trình: ' . ($lastDieuChuyenCt->yeuCauVanHanh!=NULL?($lastDieuChuyenCt->yeuCauVanHanh->cong_trinh):'')
+                    .'<br/>Địa điểm: ' . ($lastDieuChuyenCt->yeuCauVanHanh!=NULL?($lastDieuChuyenCt->yeuCauVanHanh->dia_diem):'')
+                    ;
+                } else {
+                    return 'Đang ở tại kho lưu trữ';
+                }
+            }
+        }
+        return false;
     }
    
 }

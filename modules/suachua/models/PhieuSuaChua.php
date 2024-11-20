@@ -155,7 +155,8 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         if ($this->isNewRecord) {
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
-            $this->trang_thai = "new";
+            //$this->trang_thai = "new";
+            $this->trang_thai = "draft";
             //mặc định khi tạo mới thì ngày hoàn thành bằng ngày dự kiến hoàn thành
             if($this->ngay_du_kien_hoan_thanh != null)
             $this->ngay_hoan_thanh = $cus->convertDMYToYMD($this->ngay_du_kien_hoan_thanh);
@@ -286,10 +287,14 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     
     public static function getDmTrangThai(){
         return [
-            "new"=>'Mới',
-            "quote_sent"=>'Gửi báo giá',
-            "processing"=>'Đang sửa chữa',
-            "completed"=>"Hoàn thành"
+            'draft'=>'Nháp',
+            'draft_sent'=>'Chờ Trung tâm mua sắm xác nhận',
+            'draft_reject'=>'Không chấp nhận yêu cầu',
+            //if draft accept is 'new'
+            'new'=>'Mới',
+            'quote_sent'=>'Gửi báo giá',
+            'processing'=>'Đang sửa chữa',
+            'completed'=>"Hoàn thành"
         ];
     }
     public function getNguoiTao()
@@ -307,5 +312,45 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             '2'=>'2 sao'
         ];
     }
-    
+    /**
+     * kiểm tra phiếu có bị trễ hạn không
+     */
+    public function checkTreHan(){
+        $status = 0;
+        if($this->trang_thai == 'processing'){
+            $custom = new CustomFunc();
+            $today = date('Y-m-d');
+            $dateDuKien = $custom->convertYMDHISToYMD($this->ngay_du_kien_hoan_thanh);
+            if($today > $dateDuKien){
+                $status = 1;
+            }            
+        } else if($this->trang_thai == 'completed'){
+            $custom = new CustomFunc();
+            $dateHoanThanh = $custom->convertYMDHISToYMD($this->ngay_hoan_thanh);
+            $dateDuKien = $custom->convertYMDHISToYMD($this->ngay_du_kien_hoan_thanh);
+            if($dateHoanThanh > $dateDuKien){
+                $status = 2;
+            }
+        }
+        return $status;
+    }
+    /**
+     * đếm tổng số phiếu đang thực hiện mà trễ hạn
+     */
+    public function getSoPhieuTreHen()
+    {
+        $today = date('Y-m-d');
+        $query = self::find()->where(['trang_thai'=>'processing'])
+        ->andWhere("date_format(ngay_du_kien_hoan_thanh, '%Y-%m-%d') <  CURDATE()");
+        return $query->count();
+    }
+    /**
+     * check model not in draft status
+     */
+    public function getInDraft(){
+        if(in_array($this->trang_thai, ['draft', 'draft_sent', 'draft_reject'])){
+            return true;
+        }
+        return false;
+    }
 }

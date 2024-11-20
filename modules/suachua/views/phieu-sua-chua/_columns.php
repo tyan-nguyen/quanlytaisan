@@ -25,7 +25,12 @@ return [
             $html=Html::a($thietBi ? $thietBi->ten_thiet_bi : "", ['chi-tiet-phieu-sua-chua','id_phieu_sua_chua'=>$model->id],
             ['data-pjax'=>0,'title'=> 'Chi tiết phiếu sửa chữa', 'class'=>"text-primary"]);
             return $html;
-        }
+        },
+        'contentOptions' => function ($model, $key, $index, $column) {
+            return [
+                'class'=>($model->checkTreHan()==1?'td-warning-1':($model->checkTreHan()==2?'td-warning-2':'') )
+            ];
+        },
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -87,7 +92,7 @@ return [
         'value'=>function($model){
             //$html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
             return $model->getDmTrangThai()[$model->trang_thai];
-        }
+        },
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',

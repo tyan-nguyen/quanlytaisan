@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use app\modules\dungchung\models\CustomFunc;
 use yii\bootstrap5\Html;
+use app\modules\user\models\User;
 
 return [
     // [
@@ -35,7 +36,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
-        'visible'=>$isUpdate,
+        'visible'=>$isUpdate && User::hasPermission('qThemBaoGiaSuaChua'),
         'width' => '50px',
         'template'=>'{update} {delete}',
         'urlCreator' => function($action, $model, $key, $index) { 

@@ -26,10 +26,10 @@ use app\modules\user\models\User;
 					<div class="tab-pane active" id="side3">
 						<ul class="sidemenu-list">
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a></li>
-							<?php if(User::canRoute('taisan/thiet-bi/index')) :?>
+							<?php if(User::hasPermission('qQuanLyTaiSan')) :?>
 							<li><a href="/taisan/thiet-bi?menu=ts1" class="slide-item" data-menu="ts1">Quản lý tài sản</a></li>
 							<?php endif;?>
-							<?php if(User::canRoute('kholuutru/dm-vat-tu/index')) :?>
+							<?php if(User::hasPermission('qQuanLyVatTu')) :?>
 							<li><a href="/kholuutru/dm-vat-tu?menu=ts7" class="slide-item" data-menu="ts7">Quản lý vật tư</a></li>
 							<?php endif;?>
 							<?php if(User::canRoute('taisan/thiet-bi/index-user')) :?>

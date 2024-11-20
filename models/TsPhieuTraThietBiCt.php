@@ -15,6 +15,7 @@ use Yii;
  * @property string|null $updated_at
  * @property string|null $deleted_at
  * @property int $id_ycvhct
+ * @property int $tra_khong_ve_kho
  */
 class TsPhieuTraThietBiCt extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class TsPhieuTraThietBiCt extends \yii\db\ActiveRecord
     {
         return [
             [['id_thiet_bi', 'id_phieu_tra_thiet_bi', 'id_ycvhct'], 'required'],
-            [['id_thiet_bi', 'id_phieu_tra_thiet_bi', 'id_ycvhct'], 'integer'],
+            [['id_thiet_bi', 'id_phieu_tra_thiet_bi', 'id_ycvhct', 'tra_khong_ve_kho'], 'integer'],
             [['ngay_tra', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
         ];
     }
@@ -51,7 +52,8 @@ class TsPhieuTraThietBiCt extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
-            'id_ycvhct'=>'ID Chi tiết phiếu yêu cầu vận hành'
+            'id_ycvhct'=>'ID Chi tiết phiếu yêu cầu vận hành',
+            'tra_khong_ve_kho' => 'Trả thiết bị nhưng không chuyển về kho'
         ];
     }
 }

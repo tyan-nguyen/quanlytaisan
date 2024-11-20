@@ -12,6 +12,7 @@ use yii\helpers\Html;
             <th>Ngày bắt đầu</th>
             <th>Ngày kết thúc</th>
             <th>Ngày trả TT</th>
+            <th>Trả về kho</th>
         </tr>
     </thead>
     <tbody>
@@ -35,7 +36,15 @@ use yii\helpers\Html;
             <td><?= $modelDetail->thietBi?$modelDetail->thietBi->ten_thiet_bi:'' ?></td>
             <td><?= $ngayBatDau ?></td>
             <td><?= $ngayKetThuc ?></td>
+            <?php if($modelDetail->phieuTraThietBiChiTiet):?>
             <td><?= $ngayTraTT ?></td>
+            <td><?= ($modelDetail->phieuTraThietBiChiTiet?
+                ($modelDetail->phieuTraThietBiChiTiet->tra_khong_ve_kho? 'Còn tại công trình' : 'Đã chuyển về kho')
+                :'')
+            ?></td>
+             <?php else: ?>
+             <td colspan="2">Chưa trả</td>
+             <?php endif;?>
         </tr>
         <?php endforeach; ?>
        

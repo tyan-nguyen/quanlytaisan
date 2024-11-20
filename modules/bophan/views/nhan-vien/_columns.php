@@ -25,6 +25,10 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'ten_truy_cap',
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ten_nhan_vien',
     ],
     [

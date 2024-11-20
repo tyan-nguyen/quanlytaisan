@@ -46,6 +46,8 @@ body .select2-container {
             	<td width="150">Trạng thái</td>
             	<td width="150">Loại hoạt động</td>
             	<td width="120">Ngày</td>
+            	<td width="120">Ngày hoàn thành</td>
+            	<td width="120">Số ngày</td>
             	<td>Nội dung</td>
             </tr>
         </thead>
@@ -85,11 +87,18 @@ body .select2-container {
         	?></td>
         	
         	<td><?= $ls['ngay'] ?></td>
+        	<td><?= $ls['ngay_ht'] ?></td>
+        	<td><?= $ls['ngay_hd'] ?></td>
         	<td><?= $ls['noi_dung'] ?></td>
         </tr>
         <?php         
             }
         ?>
+        <tr>
+        	<td colspan="<?= ((!isset($idThietBi) || !$idThietBi) ? 7 : 6) ?>" align="right"><span style="font-weight:bold;text-transform: uppercase;">Tổng ngày sử dụng</span></td>
+        	<td><span style="font-weight:bold;text-transform: uppercase;"><?= array_sum(array_column($lichSuHoatDong, 'ngay_hd'));  ?></span></td>
+        	<td></td>
+        </tr>
         </table>
         <?php 
     	} else {

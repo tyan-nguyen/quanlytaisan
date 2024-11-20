@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\widgets\forms\RadioWidget;
 use app\modules\bophan\models\BoPhan;
+use app\modules\user\models\User;
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\PhieuSuaChua */
 /* @var $form yii\widgets\ActiveForm */
@@ -153,17 +154,51 @@ if(!$model->isNewRecord){
     
     <div class="form-group">
     <?php if (!Yii::$app->request->isAjax && $model->trang_thai !== 'completed') {?>
-    <?= Html::a('Hoàn thành sửa chữa', null, [
+    <?= !$model->inDraft ? Html::a('Hoàn thành sửa chữa', null, [
                 'class' => 'btn btn-success',
                 'style'=>"margin-left:5px",
                 'data' => [
                     'method' => 'post',
                     'params'=>['PhieuSuaChua[trang_thai]'=>'completed']
                 ]
-            ]);
+            ]) : '';
     ?>
-        <?=Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
+        <?= (!User::hasPermission('qThemBaoGiaSuaChua') && $model->trang_thai == 'draft_sent') ? '' : Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        
+        <!-- danh cho draft -->
+        <?= $model->trang_thai == 'draft' ? Html::a('Gửi yêu cầu đến trung tâm sửa chữa', null, [
+                'class' => 'btn btn-warning',
+                'style'=>"margin-left:5px",
+                'data' => [
+                    'method' => 'post',
+                    'params'=>['PhieuSuaChua[trang_thai]'=>'draft_sent'],
+                ],
+            ]) : '';
+        ?>
+        <!-- danh cho draft, trung tam sua chua xac nhan -->
+        <?= (User::hasPermission('qThemBaoGiaSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Xác nhận yêu cầu', null, [
+                'class' => 'btn btn-warning',
+                'style'=>"margin-left:5px",
+                'data' => [
+                    'method' => 'post',
+                    'params'=>['PhieuSuaChua[trang_thai]'=>'new'],
+                ],
+            ]) : '';
+        ?>
+        <!-- danh cho draft, trung tam sua chua xac nhan -->
+        <?= (User::hasPermission('qThemBaoGiaSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Không chấp nhận yêu cầu', null, [
+                'class' => 'btn btn-warning',
+                'style'=>"margin-left:5px",
+                'data' => [
+                    'method' => 'post',
+                    'params'=>['PhieuSuaChua[trang_thai]'=>'draft_reject'],
+                ],
+            ]) : '';
+        ?>
+        
+        
         <?php } ?>
+        
         <?php if (!Yii::$app->request->isAjax) {?>
         <?php /* Html::a('Print phiếu sửa chữa', null, [
                 'class' => 'btn btn-info',

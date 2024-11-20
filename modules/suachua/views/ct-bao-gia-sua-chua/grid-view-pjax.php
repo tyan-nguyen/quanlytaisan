@@ -6,6 +6,7 @@ use kartik\grid\GridView;
 use cangak\ajaxcrud\CrudAsset; 
 use cangak\ajaxcrud\BulkButtonWidget;
 use yii\widgets\Pjax;
+use app\modules\user\models\User;
 $isCheckUpdate=$phieuSuaChua->trang_thai !== 'completed';
 //$checkAction=($isCheckUpdate && $baoGiaSuaChua->trang_thai=="draft");
 
