@@ -8,6 +8,7 @@ use yii\bootstrap5\ActiveForm;
 use app\modules\muasam\models\PhieuMuaSam;
 use app\modules\suachua\models\BaoGiaSuaChua;
 use app\modules\muasam\models\BaoGiaMuaSam;
+use app\modules\suachua\models\PhieuSuaChua;
 
 ViboonAsset::register($this);
 
@@ -22,6 +23,7 @@ $phieuMuaSamNew=PhieuMuaSam::getListMuaSamByStatus(['submited']);
 $baoGiaMuaSamNewCount=BaoGiaMuaSam::getCountNewByStatus(['submited']);
 $phieuSuaChua=BaoGiaSuaChua::getBaoGiaByStatus('submited');
 $phieuSuaChuaCount=BaoGiaSuaChua::getBaoGiaByStatus('submited')->count();
+$phieuXuatKhoSuaChuaCount = PhieuSuaChua::getYeuCauVatTuByStatus('draft_sent')->count();
 
 ?>
 <?php $this->beginPage() ?>
@@ -54,7 +56,7 @@ $phieuSuaChuaCount=BaoGiaSuaChua::getBaoGiaByStatus('submited')->count();
 
 		<?= $this->render('_top', compact('phieuMuaSamNew', 'phieuSuaChua', 'phieuSuaChuaCount')) ?>
 
-		<?= $this->render('_left', compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount', 'phieuSuaChua', 'phieuSuaChuaCount')) ?>
+		<?= $this->render('_left', compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount', 'phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount')) ?>
 
 		<!-- Main Content-->
 		<div class="main-content side-content pt-0">

@@ -43,7 +43,7 @@ use app\modules\user\models\User;
 				<?php // $this->render('menus/kho-luu-tru') ?>
 				
 				<?= $this->render('menus/bao-tri') ?>
-				<?= $this->render('menus/sua-chua',compact('phieuSuaChua', 'phieuSuaChuaCount')) ?>
+				<?= $this->render('menus/sua-chua',compact('phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount')) ?>
 				<?= $this->render('menus/mua-sam',compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount')) ?>
 				<?= $this->render('menus/tai-khoan') ?>
 				

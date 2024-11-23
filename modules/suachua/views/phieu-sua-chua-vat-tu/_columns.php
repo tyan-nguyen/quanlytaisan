@@ -55,7 +55,11 @@ return [
         'dropdown' => false,
         'vAlign'=>'middle',
         'width' => '200px',
-        'visible'=>$isCheckUpdate,
+        //'visible'=>($isCheckUpdate && $enableEdit),
+        'visibleButtons' => [
+            'update'=>($isCheckUpdate && $enableEdit),
+            'delete'=>($isCheckUpdate && $enableEdit),
+        ],
         'urlCreator' => function($action, $model, $key, $index) { 
                 return Url::to(["/suachua/phieu-sua-chua-vat-tu/".$action,'id'=>$key]);
         },

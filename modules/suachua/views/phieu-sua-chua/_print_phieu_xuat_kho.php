@@ -29,8 +29,9 @@ if ($model->ngay_sua_chua != null) {
     			<td width="100px">
     				<div>
     				Số phiếu: P-<?= substr("0000000{$model->id}", -6) ?>
-    				<br/>
-    				(<?= $baoGia!=null?$baoGia->getDmTrangThai()[$baoGia->trang_thai]:'Không có BG'  ?>)
+    				<!-- <br/>
+    				(<?= $baoGia!=null?$baoGia->getDmTrangThai()[$baoGia->trang_thai]:'Không có BG'  ?>) -->
+    				<?= $model->trangThaiXuatKho!=null?('<br/>Xuất kho: ' . $model->trangThaiXuatKho):'VT kho: Chưa duyệt'  ?>
     				</div>
     			</td>
     		</tr>

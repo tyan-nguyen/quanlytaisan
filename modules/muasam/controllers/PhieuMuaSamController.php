@@ -257,7 +257,11 @@ class PhieuMuaSamController extends Controller
                 $refererUrl = Yii::$app->request->referrer;
                 return $this->redirect($refererUrl);
             } else {
-                Yii::$app->session->setFlash('error', $request->post('messageError'));
+                $extraMessage = '';
+                if(count($model->ctPhieuMuaSams)==0){
+                    $extraMessage = 'Vui lòng nhập chi tiết đề nghị mua sắm!';
+                }
+                Yii::$app->session->setFlash('error', $request->post('messageError') . ($extraMessage!=''?(' - ' . $extraMessage) : '') );
                 $refererUrl = Yii::$app->request->referrer;
                 return $this->redirect($refererUrl);
             }

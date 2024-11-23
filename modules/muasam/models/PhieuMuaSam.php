@@ -154,7 +154,7 @@ class PhieuMuaSam extends \yii\db\ActiveRecord
 
         }else{
             if($this->trang_thai != "draft" && count($this->ctPhieuMuaSams)==0)
-            return ;
+                return ;
             if($this->getOldAttribute('trang_thai')!=$this->trang_thai && ($this->trang_thai === "approved" || $this->trang_thai === "rejected"))
             $this->id_nguoi_duyet = Yii::$app->user->id;
 

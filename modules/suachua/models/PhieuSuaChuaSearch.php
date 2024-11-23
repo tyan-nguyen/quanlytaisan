@@ -21,7 +21,7 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
     {
         return [
             [['id', 'id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc'], 'integer'],
-            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'trang_thai', 'ngay_tao', 'ngay_cap_nhat', 'ghi_chu1', 'ghi_chu2'], 'safe'],
+            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'trang_thai', 'ngay_tao', 'ngay_cap_nhat', 'ghi_chu1', 'ghi_chu2', 'duyet_vt_kho', 'ngay_duyet_vt_kho', 'nguoi_duyet_vt_kho', 'noi_dung_duyet_vt_kho', 'da_xuat_vt_kho', 'ngay_xuat_vt_kho', 'nguoi_xuat_vt_kho'], 'safe'],
             [['phi_linh_kien', 'phi_khac', 'tong_tien'], 'number'],
         ];
     }
@@ -102,6 +102,7 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
                 'ngay_cap_nhat' => $this->ngay_cap_nhat,
                 'nguoi_cap_nhat' => $this->nguoi_cap_nhat,
                 'danh_gia_sc' => $this->danh_gia_sc,
+        	    'duyet_vt_kho' => $this->duyet_vt_kho
             ]);
 
         //$query->andFilterWhere(['like', 'trang_thai', $this->trang_thai])

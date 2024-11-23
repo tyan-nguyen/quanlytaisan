@@ -173,6 +173,10 @@ if(!$model->isNewRecord){
                     'method' => 'post',
                     'params'=>['PhieuSuaChua[trang_thai]'=>'draft_sent'],
                 ],
+                //'role'=>'modal-remote-3',
+                'data-confirm' => 'Bạn có chắc muốn gửi yêu cầu đến trung tâm sửa chữa?',
+                //'data-confirm-title'=>'Gửi yêu cầu',
+                //'data-confirm-message'=>'Xác nhận gửi yêu cầu'
             ]) : '';
         ?>
         <!-- danh cho draft, trung tam sua chua xac nhan -->

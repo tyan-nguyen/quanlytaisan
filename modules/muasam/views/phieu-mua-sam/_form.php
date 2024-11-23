@@ -167,10 +167,10 @@ if (Yii::$app->session->hasFlash('error')) {
                             'messageError'=>'Gửi yêu cầu thất bại'
                             ]
                     ],
-                    'data-confirm' => 'Bạn có chắc muốn gửi báo giá',
+                    'data-confirm' => 'Bạn có chắc muốn gửi yêu cầu mua sắm?',
                     //'title' => Yii::t('yii', 'NDel'),
-                    'data-confirm-title'=>'',
-                    'data-confirm-message'=>''
+                    'data-confirm-title'=>'Gửi yêu cầu',
+                    'data-confirm-message'=>'Xác nhận gửi yêu cầu'
 				]) : '';
 			?>
             
@@ -201,12 +201,12 @@ if (Yii::$app->session->hasFlash('error')) {
 			
 			<?php } ?>
 			
-			 <?php //if($model->ctPhieuMuaSams){ ?>
-             <a href="#" onClick="InPhieuMuaSam()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu mua sắm (A4)</a>
-             <?php //} ?>
-             <?php if($model->phieuNhapHang){ ?>
-             <a href="#" onClick="InPhieuNhapKho()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu nhập hàng (A4)</a>
-             <?php }?>
+			 <?php if(!$model->isNewRecord){ ?>
+                 <a href="#" onClick="InPhieuMuaSam()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu mua sắm (A4)</a>
+                 <?php if($model->phieuNhapHang){ ?>
+                 <a href="#" onClick="InPhieuNhapKho()" class="btn ripple btn-main-primary"><i class="fa fa-print"></i> In phiếu nhập hàng (A4)</a>
+                 <?php }?>
+             <?php } ?>
      
     </div>
     

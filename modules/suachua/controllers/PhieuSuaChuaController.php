@@ -17,6 +17,7 @@ use app\modules\suachua\models\BaoGiaSuaChuaSearch;
 use app\modules\suachua\models\BaoGiaSuaChua;
 use app\modules\user\models\User;
 use yii\web\ForbiddenHttpException;
+use app\modules\suachua\models\PhieuSuaChuaVatTu;
 
 /**
  * PhieuSuaChuaController implements the CRUD actions for PhieuSuaChua model.
@@ -265,7 +266,8 @@ class PhieuSuaChuaController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);    
+        $oldModel = $this->findModel($id);
         
         if($request->isAjax){
             /*
@@ -306,8 +308,21 @@ class PhieuSuaChuaController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['chi-tiet-phieu-sua-chua', 'id_phieu_sua_chua' => $model->id]);
+            if ($model->load($request->post())) {
+                if($oldModel->duyet_vt_kho=='draft' && $model->duyet_vt_kho=='draft_sent'){
+                    $vatTus = PhieuSuaChuaVatTu::findOne(['id_phieu_sua_chua' => $model->id]);
+                    if($vatTus == null){
+                        Yii::$app->session->setFlash('error', 'Gửi yêu cầu vật tư kho không thành công! Vui lòng cập nhật lại nội dung yêu cầu vật tư kho.');
+                        return $this->redirect(['chi-tiet-phieu-sua-chua', 'id_phieu_sua_chua' => $model->id]);
+                    }
+                }
+                if($model->save()){
+                    return $this->redirect(['chi-tiet-phieu-sua-chua', 'id_phieu_sua_chua' => $model->id]);
+                }else {
+                    return $this->render('update', [
+                        'model' => $model,
+                    ]);
+                }
             } else {
                 return $this->render('update', [
                     'model' => $model,
@@ -465,7 +480,7 @@ class PhieuSuaChuaController extends Controller
         $model = $this->findModel($id_phieu_sua_chua);
         
         //check quyền truy cập phiếu
-        if(User::canRoute($this->route, false) && $model->nguoi_tao != Yii::$app->user->id){
+        if(!User::canRoute($this->route, false) /* && $model->nguoi_tao != Yii::$app->user->id */){
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
         

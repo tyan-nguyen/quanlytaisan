@@ -27,6 +27,20 @@ body .select2-container {
 }
 </style>
 
+<?php 
+// Display success flash message
+if (Yii::$app->session->hasFlash('success')) {
+    echo '<div class="alert alert-success">' . Yii::$app->session->getFlash('success') . '</div>';
+}
+// Display error flash message
+if (Yii::$app->session->hasFlash('error')) {
+?>
+    <div class="alert alert-danger mb-0" role="alert">
+    <span class="alert-inner--icon d-inline-block me-1"><i class="fe fe-slash"></i></span>
+    <span class="alert-inner--text"><strong>Có lỗi xảy ra.</strong> <?= Yii::$app->session->getFlash('error') ?></span>
+    </div>
+<?php } ?>
+
 <div class="card custom-card" id="tabstyle">
     <!-- <div class="card-header rounded-bottom-0">
         <h5 class="mt-2">Tabs Style</h5>

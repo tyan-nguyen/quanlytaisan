@@ -32,6 +32,13 @@ use app\modules\taisan\models\ThietBiVatTu;
  * @property string|null $ghi_chu1
  * @property string|null $ghi_chu2
  * @property int|null $danh_gia_sc
+ * @property string|null $duyet_vt_kho
+ * @property string|null $ngay_duyet_vt_kho
+ * @property int|null $nguoi_duyet_vt_kho
+ * @property string|null $noi_dung_duyet_vt_kho
+ * @property int|null $da_xuat_vt_kho
+ * @property string|null $ngay_xuat_vt_kho
+ * @property int|null $nguoi_xuat_vt_kho
  *
  * @property TsThietBi $thietBi
  * @property TsBaoGiaSuaChua[] $tsBaoGiaSuaChuas
@@ -55,10 +62,11 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return [
             [['id_thiet_bi', 'id_tt_sua_chua'], 'required'],
-            [['id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc','danh_gia_bg'], 'integer'],
-            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'ngay_tao', 'ngay_cap_nhat'], 'safe'],
+            [['id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc','danh_gia_bg', 'nguoi_duyet_vt_kho', 'da_xuat_vt_kho', 'nguoi_xuat_vt_kho'], 'integer'],
+            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'ngay_tao', 'ngay_cap_nhat', 'ngay_duyet_vt_kho', 'ngay_xuat_vt_kho'], 'safe'],
             [['phi_linh_kien', 'phi_khac', 'tong_tien'], 'number'],
-            [['ghi_chu1', 'ghi_chu2','dia_chi'], 'string'],
+            [['ghi_chu1', 'ghi_chu2','dia_chi', 'noi_dung_duyet_vt_kho'], 'string'],
+            [['duyet_vt_kho'], 'string', 'max' => 20],
             [['trang_thai'], 'string', 'max' => 255],
             [['id_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => ThietBiBase::class, 'targetAttribute' => ['id_thiet_bi' => 'id']],
             [['id_tt_sua_chua'], 'exist', 'skipOnError' => true, 'targetClass' => BoPhan::class, 'targetAttribute' => ['id_tt_sua_chua' => 'id']],
@@ -89,7 +97,14 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             'ghi_chu1' => 'Tình trạng hư hỏng',
             'ghi_chu2' => 'Ghi chú 2',
             'danh_gia_sc' => 'Đánh giá sửa chữa',
-            'danh_gia_bg' => 'Đánh giá đv báo giá'
+            'danh_gia_bg' => 'Đánh giá đv báo giá',
+            'duyet_vt_kho'=>'Đã duyệt vật tư từ kho',
+            'ngay_duyet_vt_kho'=>'Ngày duyệt vật tư từ kho',
+            'nguoi_duyet_vt_kho'=>'Người duyệt vật tư kho',
+            'noi_dung_duyet_vt_kho'=>'Nội dung duyệt vật tư kho',
+            'da_xuat_vt_kho'=>'Đã xuất vật tư kho',
+            'ngay_xuat_vt_kho'=>'Ngày xuất vật tư kho',
+            'nguoi_xuat_vt_kho'=>'Người xuất vật tư kho',
         ];
     }
 
@@ -160,6 +175,10 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             //mặc định khi tạo mới thì ngày hoàn thành bằng ngày dự kiến hoàn thành
             if($this->ngay_du_kien_hoan_thanh != null)
             $this->ngay_hoan_thanh = $cus->convertDMYToYMD($this->ngay_du_kien_hoan_thanh);
+            if($this->duyet_vt_kho == null)
+                $this->duyet_vt_kho = 'draft';
+                if($this->da_xuat_vt_kho == null)
+                    $this->da_xuat_vt_kho = 0;
 
         }
         
@@ -287,16 +306,17 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     
     public static function getDmTrangThai(){
         return [
-            'draft'=>'Nháp',
-            'draft_sent'=>'Chờ Trung tâm mua sắm xác nhận',
-            'draft_reject'=>'Không chấp nhận yêu cầu',
+            'draft' => 'Nháp',
+            'draft_sent' => 'Chờ Trung tâm mua sắm xác nhận',
+            'draft_reject' => 'Không chấp nhận yêu cầu',
             //if draft accept is 'new'
-            'new'=>'Mới',
-            'quote_sent'=>'Gửi báo giá',
-            'processing'=>'Đang sửa chữa',
-            'completed'=>"Hoàn thành"
+            'new' => 'Mới',
+            'quote_sent' => 'Gửi báo giá',
+            'processing' => 'Đang sửa chữa',
+            'completed' => 'Hoàn thành'
         ];
     }
+    
     public function getNguoiTao()
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
@@ -353,4 +373,57 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         }
         return false;
     }
+    
+    public static function getDmTrangThaiKho(){
+        return [
+            'draft'=>'Nháp',
+            'draft_sent'=>'Chờ duyệt',
+            'draft_reject'=>'Từ chối',
+            'ok'=>'Đã duyệt',
+        ];
+    }
+    public function getTrangThaiKho(){
+        return $this->getDmTrangThaiKho()[$this->duyet_vt_kho];
+    }
+    public static function getYeuCauVatTuByStatus($status)
+    {
+        $result=PhieuSuaChua::find()
+        ->where(['duyet_vt_kho'=>$status]);
+        return $result;
+    }
+    /**
+     * Hiển thị trạng thái xuất kho
+     */
+    public function getTrangThaiDuyetKho(){
+        if($this->vatTus != null){
+            return $this->duyet_vt_kho?($this->dmTrangThaiKho[$this->duyet_vt_kho]?$this->dmTrangThaiKho[$this->duyet_vt_kho]:false):false;
+        }
+        return false;
+    }
+    public function getTrangThaiXuatKho(){
+        if($this->duyet_vt_kho == 'ok'){
+            if($this->da_xuat_vt_kho){
+                return 'Đã xuất';
+            } else {
+                return 'Chưa xuất';
+            }
+        }
+        return false;
+    }
+    /* public function getTrangThaiXuatKho(){
+        if($this->duyet_vt_kho){
+            if($this->da_xuat_vt_kho){
+                return 'Đã duyệt, Đã xuất vật tư kho';
+            } else {
+                return 'Đã duyệt, Chưa xuất vật tư kho';
+            }
+        } else {
+            if($this->vatTus == null){
+                return 'Không có đề nghị vật tư';
+            } else {
+                return 'Đề nghị vật tư chưa được duyệt';
+            }
+        }
+    } */
+    
 }

@@ -6,7 +6,10 @@ use app\modules\user\models\User;
 		<span class="side-menu__icon"><i class="bi bi-pin-map side_menu_img"></i></span>
 		<span class="side-menu__label">Sửa chữa 
 		<?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
-		<?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?>
+		<?php 
+		$phieuSuaChuaTotalCount = $phieuSuaChuaCount + $phieuXuatKhoSuaChuaCount;
+		?>
+		<?= $phieuSuaChuaTotalCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaTotalCount.'</span>':'' ?>
 		<?php endif;?>
 		</span><i class="angle fe fe-chevron-right"></i>
 	</a>
@@ -38,6 +41,10 @@ use app\modules\user\models\User;
 							
 							<?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
                             <li class=""><a href="<?= Yii::getAlias('@web/suachua/bao-gia-sua-chua?menu=psc2') ?>" class="slide-item" data-menu="psc2">Báo giá sửa chữa <?= $phieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaCount.'</span>':'' ?></a>
+							</li>
+							<?php endif;?>
+							<?php if(User::hasPermission('qDuyetXuatKhoSuaChua',false)) :?>
+                            <li class=""><a href="<?= Yii::getAlias('@web/suachua/xuat-kho-sua-chua?menu=psc3') ?>" class="slide-item" data-menu="psc3">Xuất kho sửa chữa <?= $phieuXuatKhoSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$phieuXuatKhoSuaChuaCount.'</span>':'' ?></a>
 							</li>
 							<?php endif;?>
 							<!-- <li class=""><a href="<?= Yii::getAlias('@web/suachua/dm-tt-sua-chua?menu=psc3') ?>" class="slide-item" data-menu="psc3">Trung tâm sửa chữa</a>

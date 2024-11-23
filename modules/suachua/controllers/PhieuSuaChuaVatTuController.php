@@ -72,13 +72,14 @@ class PhieuSuaChuaVatTuController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             $model = $this->findModel($id);
+            $enableEdit = $model->phieuSuaChua->duyet_vt_kho == 'draft' || $model->phieuSuaChua->duyet_vt_kho == 'draft_reject';
             return [
                     'title'=> $model->trang_thai=='new'?'Vật tư từ kho':'Vật tư hư hỏng khác ngoài vật tư thiết bị',
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
                     'footer'=> Html::button('Đóng lại',['class'=>'btn btn-default pull-left','data-bs-dismiss'=>"modal"]).
-                            Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    ($enableEdit ? Html::a('Sửa',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote-2']) : '')
                 ];    
         }else{
             return $this->render('view', [
