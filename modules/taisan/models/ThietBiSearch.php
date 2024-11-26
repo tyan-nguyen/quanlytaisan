@@ -238,7 +238,16 @@ class ThietBiSearch extends ThietBi
         foreach ($yeuCauVanHanhCts as $phieuVanHanh){
             $status = '';
             if($phieuVanHanh->ngay_tra_thuc_te !=null){
-                $status = 'Đã trả';
+                if($phieuVanHanh->phieuTraThietBiChiTiet && !$phieuVanHanh->phieuTraThietBiChiTiet->tra_khong_ve_kho ){
+                    $status = 'Đã trả và chuyển về kho';
+                } else if($phieuVanHanh->phieuTraThietBiChiTiet && !$phieuVanHanh->phieuTraThietBiChiTiet->tra_khong_ve_kho ){
+                    $status = 'Đã trả và còn tại công trình';
+                } else if($phieuVanHanh->id_ycvhct_chuyen){//không có phiếu trả
+                    $status = 'Chuyển tiếp đi công trình khác';
+                } else {
+                    $status = 'Khác';
+                }
+                //$status = 'Đã trả';
             } else {
                 if($phieuVanHanh->yeuCauVanHanh->hieu_luc == "VANHANH"){
                     $status = 'Đang vận hành';

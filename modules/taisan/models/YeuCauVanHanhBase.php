@@ -24,8 +24,9 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
     const STATUS_VANHANH = 'VANHANH';
     const STATUS_DATRA = 'DATRA';
     const STATUS_NGUNG_QUYTRINH = 'NGUNG_QUYTRINH';
-
-    const  SCENARIO_SEND_REQUEST = 'send_request';
+    const SCENARIO_SEND_REQUEST = 'send_request';
+    const TYPE_YC_NEW = 'PHIEU_MOI';
+    const TYPE_YC_FORWARD = 'PHIEU_CHUYEN_TIEP';
 
     // public $idNguoiDuyet;
     // public $ngayDuyet;
@@ -54,6 +55,39 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
         } else {
             return false;
         }
+    }
+    
+    /**
+     * hiển thị label cho loại phiếu
+     */
+    public function getLoaiPhieu(){
+        switch ($this->loai_phieu) {
+            case self::TYPE_YC_NEW:
+                $label = "Phiếu mới";
+                break;
+            case self::TYPE_YC_FORWARD:
+                $label = "Phiếu chuyển tiếp";
+                break;
+            default:
+                $label = '';
+        }
+        return $label;
+    }
+    /**
+     * hiển thị label cho loại phiếu with Badge
+     */
+    public function getLoaiPhieuWithBadge(){
+        switch ($this->loai_phieu) {
+            case self::TYPE_YC_NEW:
+                $label = '<span class="badge bg-primary">Phiếu mới</span>';
+                break;
+            case self::TYPE_YC_FORWARD:
+                $label = '<span class="badge bg-secondary">Phiếu chuyển tiếp</span>';
+                break;
+            default:
+                $label = '';
+        }
+        return $label;
     }
 
     /**
@@ -174,7 +208,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
                 ['ly_do', 'hieu_luc', 'noi_dung_lap', 'noi_dung_gui', 'noi_dung_duyet', 'noi_dung_xuat', 'noi_dung_nhan', 'dia_diem', 'cong_trinh'],
                 'string', 'max' => 255
             ],
-
+            [['loai_phieu'], 'string', 'max' => 20],
             [['id_bo_phan_quan_ly'], 'exist', 'skipOnError' => true, 'targetClass' => BoPhan::class, 'targetAttribute' => ['id_bo_phan_quan_ly' => 'id']],
             [['id_nguoi_lap'], 'exist', 'skipOnError' => true, 'targetClass' => NhanVien::class, 'targetAttribute' => ['id_nguoi_lap' => 'id']],
             [['id_nguoi_gui'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_nguoi_gui' => 'id']],
@@ -226,6 +260,7 @@ class YeuCauVanHanhBase extends \app\models\TsYeuCauVanHanh
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
             'deleted_at' => 'Ngày xóa',
+            'loai_phieu' => 'Loại phiếu'
         ];
     }
 

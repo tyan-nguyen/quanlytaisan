@@ -46,6 +46,9 @@ class YeuCauVanHanh extends YeuCauVanHanhBase
 
         if ($this->ngay_nhan != null)
             $this->ngay_nhan = $cus->convertDMYToYMD($this->ngay_nhan);
+        //su dung cho cap nhat may cai cu luon 
+        if($this->loai_phieu == null)
+            $this->loai_phieu = self::TYPE_YC_NEW;
 
         if ($insert) {
             $this->hieu_luc = 'NHAP';

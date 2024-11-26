@@ -244,131 +244,27 @@ if($model->isNewRecord){
         </div>
     </div>
     
-    <?php if( ((!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET) || $model->loai_phieu==YeuCauVanHanh::TYPE_YC_FORWARD) && User::hasPermission('qSapXepThietBi',false) ){ ?>    
+    <?php if(User::hasPermission('qSapXepThietBi',false) ){ ?>    
     <!-- chi tiet thiet bi -->
     <div class="row">
-    	<div class="col-md-12 mt-2">
-       		<?= ($model->loai_phieu!=YeuCauVanHanh::TYPE_YC_FORWARD && $model->details) ? SummaryAlert::widget([
+    	<!-- <div class="col-md-12 mt-2">
+       		<?= !$model->details ? SummaryAlert::widget([
 			    'textMain'=>'Yêu cầu vận hành đã được duyệt!',
 			    'textSummary'=>'Vui lòng thêm thiết bị điều chuyển cho yêu cầu.'
 			]) : '' ?>
-       </div>   
+       </div>   --> 
     	<div class="col-md-12" id="chiTietBlock">
-        	<?= $this->render('_form_chi_tiet', ['model'=>$model]) ?>
+        	<?= $this->render('_form_chi_tiet_view', ['model'=>$model, 'ycvhctModel'=>$ycvhctModel]) ?>
         </div>
     </div>
-	<?php } else if( (!$model->isNewRecord && $model->sauDuyet()) || !User::hasPermission('qSapXepThietBi',false) && $model->sauDuyet()){ ?>    
+	<?php } /*else if( (!$model->isNewRecord && $model->sauDuyet()) || !User::hasPermission('qSapXepThietBi',false) && $model->sauDuyet()){ ?>    
     <!-- chi tiet thiet bi sua -->
     <div class="row">  
     	<div class="col-md-12" id="chiTietBlock">
-        	<?= $this->render('_form_chi_tiet_view', ['model'=>$model]) ?>
+        	<?= $this->render('../yeu-cau-van-hanh/_form_chi_tiet_view', ['model'=>$model]) ?>
         </div>
     </div>
-	<?php }?>
-	
-    <!-- Them Chi tiet Thiet bi -->
-
-    <?php /*DynamicFormWidget::begin([
-        'widgetContainer' => 'dynamicform_wrapper',
-        'widgetBody' => '.container-items',
-        'widgetItem' => '.item',
-        'limit' => 10,
-        'min' => 1,
-        'insertButton' => '.add-item',
-        'deleteButton' => '.remove-item',
-        'model' => $modelsDetail[0],
-        'formId' => 'dynamic-form',
-        'formFields' => [
-            'id_thiet_bi',
-            'ngay_bat_dau',
-            'ngay_ket_thuc',
-        ],
-    ]); ?>
-
-    <?= Html::hiddenInput('request-id', $model->id, ['id' => 'request-id']) ?>
-
-    <div class="container-items mt-4">
-        <?php foreach ($modelsDetail as $i => $modelDetail) : ?>
-            <div class="item panel panel-default">
-                <div class="panel-heading text-primary bg-transparent">
-                    <h3 class="panel-title pull-left m-2">Chi tiết thiết bị</h3>
-                    <div class="pull-right">
-                        <?php if ($isDraft) : ?>
-                            <button type="button" class="add-item btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
-                            <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
-                        <?php endif; ?>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="panel-body">
-                    <?php
-                    // necessary for update action.
-                    if (!$modelDetail->isNewRecord) {
-                        echo Html::activeHiddenInput($modelDetail, "[{$i}]id");
-                    }
-                    ?>
-
-                    <div class="row">
-                        <div class="col">
-                            
-                            
-                            
-                             <?=$form->field($modelDetail, "[{$i}]id_thiet_bi")->widget(Select2::classname(), [
-                                 'data' => ArrayHelper::map(ThietBi::find()->all(), 'id', 'ten_thiet_bi'),
-                                'language' => 'vi',
-                                'options' => [
-                                    'placeholder' => 'Chọn thiết bị...',
-                                ],
-                                'pluginOptions' => [
-                                    'allowClear' => true,
-                                    'width' => '100%',
-                                    'dropdownParent' => new yii\web\JsExpression('$("#ajaxCrudModal")'),
-                                ],
-                            ]);?>
-                            
-                            
-                            
-                            
-                        </div>
-                        <div class="col">
-                            <?= $form->field($modelDetail, "[{$i}]ngay_bat_dau")->widget(DatePicker::classname(), [
-                                'options' => [
-                                    'placeholder' => 'Nhập ngày ...',
-                                    'class' => 'date-picker'
-
-                                ],
-                                'pluginOptions' => [
-                                    'width' => '100%',
-                                    'autoclose' => true,
-                                    'format' => 'dd/mm/yyyy',
-                                    'todayHighlight' => true
-                                ]
-                            ]) ?>
-                        </div>
-                        <div class="col">
-                            <?= $form->field($modelDetail, "[{$i}]ngay_ket_thuc")->widget(DatePicker::classname(), [
-                                'options' => [
-                                    'placeholder' => 'Nhập ngày ...',
-                                    'class' => 'date-picker'
-                                ],
-                                'pluginOptions' => [
-                                    'width' => '100%',
-                                    'autoclose' => true,
-                                    'format' => 'dd/mm/yyyy',
-                                    'todayHighlight' => true
-                                ]
-                            ]) ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-
-
-    <!-- ./Them Chi tiet Thiet bi -->
-
-    <?php DynamicFormWidget::end(); */  ?>
+	<?php } */?>
 
     <?php if (!Yii::$app->request->isAjax) { ?>
         <div class="form-group">
@@ -379,42 +275,6 @@ if($model->isNewRecord){
     <?php ActiveForm::end(); ?>
 
 </div>
-
-<?php
-// $submitUrl = Url::to(['/taisan/yeu-cau-van-hanh/submit']);
-// $js = <<<JS
-// $(document).on('click', '#submit-button', function() {
-
-//     var requestId = $('#dynamic-form').data('request-id');
-//     console.log('Submit button clicked. Request ID:', requestId);
-
-//     var requestId = $('#request-id').val();
-//     if (requestId) {
-//         $.ajax({
-//             url: '$submitUrl',
-//             type: 'POST',   
-//             data: { id: requestId, _csrf: yii.getCsrfToken() },
-//             success: function(response) {
-//                 if(response === 'success') {
-//                     $('#dynamic-form :input').prop('disabled', true);
-//                     $('#submit-button').prop('disabled', true);
-//                     $('#draft-button').hide();
-//                 } else {
-//                     alert('Error: ' + response);
-//                 }
-//             },
-//             error: function(xhr, status, error) {
-//                 alert('Error: ' + error);
-//             }
-//         });
-//     } else {
-//         alert('Request ID is not set. Cannot submit the form.');
-//     }
-// });
-// JS;
-
-// $this->registerJs($js);
-?>
 
 <?php
 $script = <<< JS

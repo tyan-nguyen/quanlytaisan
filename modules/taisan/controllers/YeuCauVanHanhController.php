@@ -764,6 +764,25 @@ class YeuCauVanHanhController extends Controller
             // if ($model->validate() && $model->save(false)) {
 
             if ($model->save(false)) {
+                //set cho trường hợp phiếu chuyển tiếp, add 26/11/2024
+                if($model->loai_phieu==YeuCauVanHanh::TYPE_YC_FORWARD){
+                    //duyệt chi tiết, nếu chi tiết là yêu cầu chuyển tiếp thì sét ngày kết thúc 
+                    //và trạng thái đã trả cho yêu cầu chi tiết trước
+                    foreach ($model->details as $detail) {
+                        if($detail->id_ycvhct_chuyen){
+                            $ycvhctModel = YeuCauVanHanhCt::findOne($detail->id_ycvhct_chuyen);
+                            if($ycvhctModel && $ycvhctModel->ngay_tra_thuc_te==null){
+                                $ycvhctModel->ngay_tra_thuc_te = $detail->ngay_bat_dau;
+                            }
+                            $ycvhctModel->id_ycvhct_chuyen = $detail->id;
+                            if($ycvhctModel->save()){
+                                $ycvhctModel->yeuCauVanHanh->setTrangThaiDaTra();
+                            }
+                        }
+                    }
+                    
+                }
+                //xử lý tiếp theo
                 foreach ($model->details as $detail) {
                     $device = ThietBi::findOne($detail->id_thiet_bi);
                     if ($device) {

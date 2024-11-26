@@ -19,11 +19,14 @@ use app\modules\taisan\models\ThietBi;
  * @property string $created_at
  * @property string|null $updated_at
  * @property string|null $deleted_at
+ * @property int|null $id_ycvhct_chuyen
+ * @property string|null $loai_van_hanh
  */
 class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
 {
     const MODEL_ID = 'yeu-cau-van-hanh-ct';
-
+    const TYPE_VH_NEW = 'VH_MOI';
+    const TYPE_VH_FORWARD = 'VH_CHUYEN_TIEP';
     /**
      * {@inheritdoc}
      */
@@ -35,14 +38,14 @@ class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
                 'required'
             ],
             [
-                ['id_thiet_bi', 'id_yeu_cau_van_hanh'],
+                ['id_thiet_bi', 'id_yeu_cau_van_hanh', 'id_ycvhct_chuyen'],
                 'integer'
             ],
             [
                 ['ngay_bat_dau', 'ngay_ket_thuc', 'created_at', 'updated_at', 'deleted_at'],
                 'safe'
             ],
-
+            [['loai_van_hanh'], 'string', 'max' => 20],
             [['id_yeu_cau_van_hanh'], 'exist', 'skipOnError' => true, 'targetClass' => YeuCauVanHanh::class, 'targetAttribute' => ['id_yeu_cau_van_hanh' => 'id']],
             [['id_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => ThietBi::class, 'targetAttribute' => ['id_thiet_bi' => 'id']],
 
@@ -63,6 +66,8 @@ class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
             'created_at' => 'Ngày tạo',
             'updated_at' => 'Ngày cập nhật',
             'deleted_at' => 'Deleted At',
+            'id_ycvhct_chuyen' => 'ID Yêu cầu chuyển',
+            'loai_van_hanh' => 'Loại vận hành',
         ];
     }
 
@@ -85,10 +90,51 @@ class YeuCauVanHanhCtBase extends \app\models\TsYeuCauVanHanhCt
         return $this->hasOne(YeuCauVanHanh::class, ['id' => 'id_yeu_cau_van_hanh']);
     }
     
+    public function getYcvhctChuyen()
+    {
+        if($this->id_ycvhct_chuyen != null)
+            return $this->hasOne(YeuCauVanHanhCt::class, ['id' => 'id_ycvhct_chuyen']);
+        else 
+            return null;
+    }
+    
     public function getPhieuTraThietBiChiTiet()
     {
         return PhieuTraThietBiCt::findOne(['id_ycvhct'=>$this->id]);
         //return $this->hasMany(PhieuTraThietBiCt::class, ['id_ycvhct' => 'id']);
+    }
+    
+    /**
+     * hiển thị label cho loại phiếu
+     */
+    public function getLoaiVanHanh(){
+        switch ($this->loai_van_hanh) {
+            case self::TYPE_VH_NEW:
+                $label = "Vận hành mới";
+                break;
+            case self::TYPE_VH_FORWARD:
+                $label = "Vận hành chuyển tiếp";
+                break;
+            default:
+                $label = '';
+        }
+        return $label;
+    }
+    /**
+     * hiển thị label cho loại phiếu with Badge
+     */
+    public function getLoaiVanHanhWithBadge(){
+        switch ($this->loai_van_hanh) {
+            case self::TYPE_VH_NEW:
+                $label = '<span class="badge bg-primary">Vận hành mới</span>';
+                break;
+            case self::TYPE_VH_FORWARD:
+                $label = '<span class="badge bg-secondary">Vận hành chuyển tiếp</span>';
+                break;
+            default:
+                $label = '';
+        }
+        return $label;
     }
     
 }

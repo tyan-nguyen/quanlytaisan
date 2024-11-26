@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\taisan\models;
 
 use Yii;
@@ -7,7 +6,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use app\modules\dungchung\models\CustomFunc;
-
 
 class YeuCauVanHanhCt extends YeuCauVanHanhCtBase
 {

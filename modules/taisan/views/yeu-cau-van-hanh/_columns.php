@@ -26,6 +26,14 @@ return [
     ],
     [
         'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'loai_phieu',
+        "format" => 'raw',
+        'value' => function ($model) {
+            return $model->loaiPhieuWithBadge;
+        }
+        ],
+    [
+        'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id_nguoi_lap',
         "format" => 'raw',
         'value' => function ($model) {
