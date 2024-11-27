@@ -45,7 +45,7 @@ use app\widgets\SummaryAlert;
             <div class="tab-pane  active show" id="tab1" role="tabpanel">
                 <div class="row">
                     <!-- Left -->
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <?= DetailView::widget([
                             'model' => $model,
                             'options' => ['class' => 'table table-striped table-bordered detail-view'],
@@ -62,16 +62,105 @@ use app\widgets\SummaryAlert;
                                     'value' => $model->nguoiLap ? $model->nguoiLap->ten_nhan_vien : '-',
                                     'label' => 'Người Lập',
                                 ],
-                                [
+                                /* [
                                     'attribute' => 'id_nguoi_yeu_cau',
                                     'value' => $model->nguoiYeuCau ? $model->nguoiYeuCau->ten_nhan_vien : '-',
                                     'label' => 'Người yêu cầu',
-                                ],
+                                ], */
                                 [
                                     'attribute' => 'ngay_lap',
                                     'value' => $model->ngayLap ? $model->ngayLap : '-',
                                     'label' => 'Ngày lập',
                                 ],
+
+                                /* [
+                                    'attribute' => 'id_nguoi_gui',
+                                    'value' => $model->nguoiGui ? $model->nguoiGui->username : '-',
+                                    'label' => 'Người gửi',
+                                ],
+                                [
+                                    'attribute' => 'ngay_gui',
+                                    'value' => $model->ngayGui ? $model->ngayGui : '-',
+                                    'label' => 'Ngày gửi',
+                                ],
+                                */
+                                [
+                                    'attribute' => 'id_nguoi_duyet',
+                                    'value' => $model->nguoiDuyet ? $model->nguoiDuyet->username : '-',
+                                    'label' => 'Người duyệt',
+                                ],
+                                [
+                                    'attribute' => 'ngay_duyet',
+                                    'value' => $model->ngayDuyet ? $model->ngayDuyet : '-',
+                                    'label' => 'Ngày duyệt',
+                                ],
+                                /*[
+                                    'attribute' => 'id_nguoi_xuat',
+                                    'value' => $model->nguoiXuat ? $model->nguoiXuat->username : '-',
+                                    'label' => 'Người xuất',
+                                ],
+                                [
+                                    'attribute' => 'ngay_xuat',
+                                    'value' => $model->ngayXuat ? $model->ngayXuat : '-',
+                                    'label' => 'Ngày xuất',
+                                ],
+
+                                [
+                                    'attribute' => 'id_nguoi_nhan',
+                                    'value' => $model->nguoiNhan ? $model->nguoiNhan->ten_nhan_vien : '-',
+                                    'label' => 'Người nhận',
+                                ],
+                                [
+                                    'attribute' => 'ngay_nhan',
+                                    'value' => $model->ngayNhan ? $model->ngayNhan : '-',
+                                    'label' => 'Ngày nhận',
+                                ], */
+
+                                // 'id_bo_phan_quan_ly',
+
+                                'dia_diem',
+                                'cong_trinh',
+                                [
+                                    'attribute' => 'hieu_luc',
+                                    'value' => $model->tenHieuLucWithBadge ? $model->tenHieuLucWithBadge : '-',
+                                    'format' => 'raw',
+                                    'label' => 'Hiệu lực',
+                                ],
+
+
+                            ],
+                            'template' => "<tr><th style='width: 40%;'>{label}</th><td class='align-middle'>{value}</td></tr>"
+                        ]) ?>
+                    </div>
+
+                    <!-- Right -->
+                    <div class="col-md-6">
+                        <?= DetailView::widget([
+                            'model' => $model,
+                            'options' => ['class' => 'table table-striped table-bordered detail-view'],
+                            'template' => '<tr><th>{label}</th><td>{value}</td></tr>',
+                            'attributes' => [
+
+                                //'id',
+                                /* [
+                                    'label'=>'Mã phiếu',
+                                    'value'=>'P-' . substr("0000000{$model->id}", -6)
+                                ], */
+                                /* [
+                                    'attribute' => 'id_nguoi_lap',
+                                    'value' => $model->nguoiLap ? $model->nguoiLap->ten_nhan_vien : '-',
+                                    'label' => 'Người Lập',
+                                ], */
+                                [
+                                    'attribute' => 'id_nguoi_yeu_cau',
+                                    'value' => $model->nguoiYeuCau ? $model->nguoiYeuCau->ten_nhan_vien : '-',
+                                    'label' => 'Người yêu cầu',
+                                ],
+                                /* [
+                                    'attribute' => 'ngay_lap',
+                                    'value' => $model->ngayLap ? $model->ngayLap : '-',
+                                    'label' => 'Ngày lập',
+                                ], */
 
                                 [
                                     'attribute' => 'id_nguoi_gui',
@@ -84,7 +173,7 @@ use app\widgets\SummaryAlert;
                                     'label' => 'Ngày gửi',
                                 ],
 
-                                [
+                                /* [
                                     'attribute' => 'id_nguoi_duyet',
                                     'value' => $model->nguoiDuyet ? $model->nguoiDuyet->username : '-',
                                     'label' => 'Người duyệt',
@@ -93,7 +182,7 @@ use app\widgets\SummaryAlert;
                                     'attribute' => 'ngay_duyet',
                                     'value' => $model->ngayDuyet ? $model->ngayDuyet : '-',
                                     'label' => 'Ngày duyệt',
-                                ],
+                                ], */
                                 [
                                     'attribute' => 'id_nguoi_xuat',
                                     'value' => $model->nguoiXuat ? $model->nguoiXuat->username : '-',
@@ -118,23 +207,23 @@ use app\widgets\SummaryAlert;
 
                                 // 'id_bo_phan_quan_ly',
 
-                                'dia_diem',
+                               /*  'dia_diem',
                                 'cong_trinh',
                                 [
                                     'attribute' => 'hieu_luc',
                                     'value' => $model->tenHieuLucWithBadge ? $model->tenHieuLucWithBadge : '-',
                                     'format' => 'raw',
                                     'label' => 'Hiệu lực',
-                                ],
+                                ], */
 
 
                             ],
                             'template' => "<tr><th style='width: 40%;'>{label}</th><td class='align-middle'>{value}</td></tr>"
                         ]) ?>
                     </div>
-
-                    <!-- Right -->
-                    <div class="col-md-7">
+                    
+                    <div class="col-md-12">
+                    	<h5>Danh sách thiết bị</h5>
                         <div class="row">
                         	<?php if(!$model->isNewRecord && $model->hieu_luc==YeuCauVanHanh::STATUS_DADUYET){ ?>
                            <div class="col-md-12">
