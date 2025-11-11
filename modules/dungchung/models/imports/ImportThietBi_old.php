@@ -170,11 +170,9 @@ class ImportThietBi
                 //check S <han_bao_hanh>
                 //check T <ngay_dua_vao_su_dung>
                 //chek U <trang_thai> IN (1,2,3,4)
-				//chek U <trang_thai> IN (1,2,3,4)
                 $mod = new CheckFile();
                 $mod->isCompare = true;
-                //$mod->valueCompare = [1, 2, 3, 4];
-				$mod->valueCompare = ['HOATDONG', 'SUACHUA', 'HONG', 'MAT', 'THANHLY', 'VANHANH'];
+                $mod->valueCompare = [1, 2, 3, 4];
                 $err = $mod->checkVal('U'.$index, $row['U']);
                 if(!empty($err)){
                     array_push($errorByRow, $err);

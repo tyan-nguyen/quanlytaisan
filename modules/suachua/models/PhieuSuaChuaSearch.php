@@ -69,8 +69,9 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
                 'nguoi_tao' => Yii::$app->user->id,
             ]);
         }
-        if(User::hasRole('nLanhDao', false) || User::hasRole('nQuanLy', false) || User::hasPermission('qThemBaoGiaSuaChua')){
-            $query->andWhere("nguoi_tao = ".Yii::$app->user->id." OR trang_thai NOT IN ('draft', 'draft_sent', 'draft_reject')");
+        if(User::hasRole('nLanhDao', false) || User::hasRole('nQuanLy', false) /*|| User::hasPermission('qThemBaoGiaSuaChua')*/ ){
+            //$query->andWhere("nguoi_tao = ".Yii::$app->user->id." OR trang_thai NOT IN ('draft', 'draft_sent', 'draft_reject')");
+            $query->andWhere("nguoi_tao = ".Yii::$app->user->id." OR trang_thai NOT IN ('draft', 'draft_reject')");
         }else{
             $query->andFilterWhere(['like', 'trang_thai', $this->trang_thai]);
         }
