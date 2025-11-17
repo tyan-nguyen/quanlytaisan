@@ -180,7 +180,7 @@ if(!$model->isNewRecord){
             ]) : '';
         ?>
         <!-- danh cho draft, trung tam sua chua xac nhan -->
-        <?= (User::hasPermission('qThemBaoGiaSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Xác nhận yêu cầu', null, [
+        <?= (User::hasPermission('qDuyetPhieuSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Xác nhận yêu cầu', null, [
                 'class' => 'btn btn-warning',
                 'style'=>"margin-left:5px",
                 'data' => [
