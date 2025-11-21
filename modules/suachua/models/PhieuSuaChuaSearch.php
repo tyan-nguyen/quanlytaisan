@@ -14,6 +14,8 @@ use app\modules\user\models\User;
  */
 class PhieuSuaChuaSearch extends PhieuSuaChua
 {
+    public $ngay_hoan_thanh_from;
+    public $ngay_hoan_thanh_to;
     /**
      * @inheritdoc
      */
@@ -21,7 +23,9 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
     {
         return [
             [['id', 'id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc'], 'integer'],
-            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'trang_thai', 'ngay_tao', 'ngay_cap_nhat', 'ghi_chu1', 'ghi_chu2', 'duyet_vt_kho', 'ngay_duyet_vt_kho', 'nguoi_duyet_vt_kho', 'noi_dung_duyet_vt_kho', 'da_xuat_vt_kho', 'ngay_xuat_vt_kho', 'nguoi_xuat_vt_kho'], 'safe'],
+            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'trang_thai', 'ngay_tao', 'ngay_cap_nhat', 'ghi_chu1', 'ghi_chu2', 'duyet_vt_kho', 'ngay_duyet_vt_kho', 'nguoi_duyet_vt_kho', 'noi_dung_duyet_vt_kho', 'da_xuat_vt_kho', 'ngay_xuat_vt_kho', 'nguoi_xuat_vt_kho', 'ngay_hoan_thanh_from', 
+               'ngay_hoan_thanh_to' 
+            ], 'safe'],
             [['phi_linh_kien', 'phi_khac', 'tong_tien'], 'number'],
         ];
     }
@@ -82,20 +86,45 @@ class PhieuSuaChuaSearch extends PhieuSuaChua
             ['like', 'ghi_chu2', $cusomSearch]] );
  
 		} else {
+		    // $this->ngay_hoan_thanh = $custom->convertDMYToYMD($this->ngay_hoan_thanh);
+		    $tuNgay = null;
+		    $denNgay = null;
+		    
+		    if (!empty($this->ngay_hoan_thanh_from)) {
+		        $tuNgay = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $this->ngay_hoan_thanh_from)));
+		    }
+		    
+		    if (!empty($this->ngay_hoan_thanh_to)) {
+		        $denNgay = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $this->ngay_hoan_thanh_to)));
+		    }
+		    
+		    // Tìm kiếm between
+		    if ($tuNgay && $denNgay) {
+		        $query->andWhere(['between', 'ngay_hoan_thanh', $tuNgay, $denNgay]);
+		    }
+		    
+		    // Chỉ có từ ngày
+		    if ($tuNgay && !$denNgay) {
+		        $query->andWhere(['>=', 'ngay_hoan_thanh', $tuNgay]);
+		    }
+		    
+		    // Chỉ có đến ngày
+		    if (!$tuNgay && $denNgay) {
+		        $query->andWhere(['<=', 'ngay_hoan_thanh', $denNgay]);
+		    }
+		    
 		    $custom = new CustomFunc();
 		    if($this->ngay_sua_chua!=null){
 		        $this->ngay_sua_chua = $custom->convertDMYToYMD($this->ngay_sua_chua);
 		    }
-		    if($this->ngay_hoan_thanh!=null){
-		        $this->ngay_hoan_thanh = $custom->convertDMYToYMD($this->ngay_hoan_thanh);
-		    }
+
         	$query->andFilterWhere([
                 'id' => $this->id,
                 'id_thiet_bi' => $this->id_thiet_bi,
                 'id_tt_sua_chua' => $this->id_tt_sua_chua,
                 'ngay_sua_chua' => $this->ngay_sua_chua,
                 'ngay_du_kien_hoan_thanh' => $this->ngay_du_kien_hoan_thanh,
-                'ngay_hoan_thanh' => $this->ngay_hoan_thanh,
+                //'ngay_hoan_thanh' => $this->ngay_hoan_thanh,
                 'phi_linh_kien' => $this->phi_linh_kien,
                 'phi_khac' => $this->phi_khac,
                 'tong_tien' => $this->tong_tien,

@@ -66,7 +66,7 @@ if($model->ngay_hoan_thanh){
             ],
         ]);?>
 
-     <?=$form->field($model, 'ngay_hoan_thanh')->widget(DatePicker::classname(), [
+     <?=$form->field($model, 'ngay_hoan_thanh_from')->widget(DatePicker::classname(), [
             'options' => [
                 'placeholder' => 'Chọn ngày...',
             ],
@@ -74,8 +74,16 @@ if($model->ngay_hoan_thanh){
                 'autoclose' => true,
                 'format' => 'dd/mm/yyyy',
             ],
-        ]);?>
-   
+        ])->label('Ngày hoàn thành từ');?>
+   <?=$form->field($model, 'ngay_hoan_thanh_to')->widget(DatePicker::classname(), [
+            'options' => [
+                'placeholder' => 'Chọn ngày...',
+            ],
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'dd/mm/yyyy',
+            ],
+        ])->label('Ngày hoàn thành đến');?>
     <?= $form->field($model, 'trang_thai')->dropDownList($model->getDmTrangThai(), ['prompt'=>'-Chọn trạng thái-']) ?>
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
