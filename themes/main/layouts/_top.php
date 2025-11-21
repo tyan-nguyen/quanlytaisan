@@ -60,13 +60,13 @@ $countPhieuMuaSam=0;
                                 <div class="header-dropdown-list cart-list" id="notification-list">
                                     <!-- <ul id="notification-list" class="dropdown-menu"></ul> -->
 
-
+									<!-- 
                                     <div class="dropdown-item d-flex border-bottom pb-1 align-items-center">
                                         <a href="product-cart.html" class="cart-link"></a>
                                         <div class="ms-3">
-                                            <p class="mb-0 tx-14 text-dark fw-medium">Flower Pot</p>
+                                            <p class="mb-0 tx-14 text-dark fw-medium text-wrap">Flower Pot</p>
                                         </div>
-                                    </div>
+                                    </div>-->
 
                                 </div>
                             </div>

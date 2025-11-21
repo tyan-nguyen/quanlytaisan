@@ -275,7 +275,7 @@ $(document).ready(function() {
                         // });
                     });
                 } else {
-                    notificationList.append('<li>No pending requests</li>');
+                    notificationList.append('<li style="padding:10px">Không có yêu cầu mới</li>');
                 }
             },
             error: function() {
