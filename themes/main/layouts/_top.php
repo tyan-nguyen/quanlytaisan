@@ -113,12 +113,36 @@ $countPhieuMuaSam=0;
                         </li>
                         <?php endif;?>
                         <!-- CART -->
+                        
+                        <!-- phiếu sửa chữa -->
+                         <?php if(User::hasPermission('qDuyetPhieuSuaChua',true)) :?>
+                        <li class="dropdown  d-flex shopping-cart main-header-notification">
+                            <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                <i class="bi bi-gear"></i> <span class="icon-text-top">Phiếu sửa chữa</span>
+                                <span class="badge bg-warning header-badge" id="notification-count-sc"><?= $dsPhieuSuaChuaCount ?? 0 ?></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <div class="header-navheading d-flex border-bottom mb-0 align-items-center">
+                                    <h5 class="fw-semibold mb-0">Duyệt phiếu sửa chữa</h5>
+                                    <a class="btn ripple btn-primary btn-sm ms-auto"
+                                        href="/suachua/bao-gia-sua-chua?menu=psc2">Xem tất cả</a>
+                                </div>
+                                <div class="header-dropdown-list cart-list">
+                                    <!-- <ul id="notification-list" class="dropdown-menu"></ul> -->
+
+									<?= $this->render('./notification/phieusuachua',['dsPhieuSuaChua'=>$dsPhieuSuaChua])  ?>
+
+                                </div>
+                            </div>
+                        </li>
+                        <?php endif;?>
+                        <!-- sửa chữa -->
 
                         <!-- sửa chữa -->
                          <?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
                         <li class="dropdown  d-flex shopping-cart main-header-notification">
                             <a class="nav-link icon" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-gear"></i> <span class="icon-text-top">Sửa chữa</span>
+                                <i class="bi bi-gear"></i> <span class="icon-text-top">BG sửa chữa</span>
                                 <span class="badge bg-warning header-badge" id="notification-count-sc"><?= $phieuSuaChuaCount ?? 0 ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

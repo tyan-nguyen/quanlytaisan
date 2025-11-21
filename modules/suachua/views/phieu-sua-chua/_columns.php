@@ -16,6 +16,21 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'id',
     // ],
+    
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'trang_thai',
+        'format'=>'raw',
+        'value'=>function($model){
+            //$html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
+            return $model->getDmTrangThaiWithBadge()[$model->trang_thai];
+        },
+        'contentOptions' => ['style' => 'text-align:center'],
+        //'width'=>'100px',
+        'pageSummary' => 'Tổng cộng',
+        'pageSummaryOptions' => ['class' => 'text-right text-center'],
+    ],
+        
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_thiet_bi',
@@ -32,47 +47,83 @@ return [
             ];
         },
     ],
+    
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id_tt_sua_chua',
+        'attribute'=>'nguoi_tao',
+        'label'=>'Tạo phiếu',
         'value'=>function($model){
-            $ttSuaChua=$model->ttSuaChua;
-            return $ttSuaChua ? $ttSuaChua->ten_bo_phan : "";
+            $nv = $model->nguoiTao->nhanVien;
+            return $nv ? $nv->ten_nhan_vien : $model->nguoiTao->username;
         }
     ],
     
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ngay_sua_chua',
+        'label'=>'Ngày sửa',
         'value'=>function($model){
             $cus = new CustomFunc();
             if ($model->ngay_sua_chua != null) {
                 return $cus->convertYMDToDMY($model->ngay_sua_chua);
             }
             else return null;
-        }
+        },
+        'contentOptions' => ['style' => 'text-align:center;'],
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ngay_du_kien_hoan_thanh',
+        'label'=>'Dự kiến H.T',
         'value'=>function($model){
             $cus = new CustomFunc();
             if ($model->ngay_du_kien_hoan_thanh != null) {
                 return $cus->convertYMDToDMY($model->ngay_du_kien_hoan_thanh);
             }
             else return null;
+        },
+        'contentOptions' => ['style' => 'text-align:center;'],
+    ],
+    
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_tt_sua_chua',
+        'label'=>'Đơn vị duyệt',
+        'value'=>function($model){
+        $ttSuaChua=$model->ttSuaChua;
+        return $ttSuaChua ? $ttSuaChua->ten_bo_phan : "";
         }
     ],
+    
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'nguoi_duyet_phieu',
+        'label'=>'Người duyệt',
+        'value'=>function($model){
+            if($model->nguoiDuyetPhieu){
+                $nv = $model->nguoiDuyetPhieu->nhanVien;
+                if($nv){
+                    return $nv->ten_nhan_vien;
+                } else {
+                    return $model->nguoiDuyetPhieu->username;
+                }
+            }
+            return '';
+        }
+    ],
+        
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ngay_hoan_thanh',
+        'label'=>'H.T thực tế',
         'value'=>function($model){
             $cus = new CustomFunc();
             if ($model->ngay_hoan_thanh != null) {
                 return $cus->convertYMDToDMY($model->ngay_hoan_thanh);
             }
             else return null;
-        }
+        },
+        'contentOptions' => ['style' => 'text-align:center;'],
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
@@ -86,14 +137,20 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'tong_tien',
     // ],
+    
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'trang_thai',
+        //'attribute'=>'trang_thai',
+        'label'=>'Tổng chi phí',
         'value'=>function($model){
             //$html='<span class="badge rounded-pill bg-'.$model->getColorTrangThai()[$model->trang_thai].'">'.$model->getDmTrangThai()[$model->trang_thai].'</span>';
-            return $model->getDmTrangThai()[$model->trang_thai];
+           return $model->tongTien;
         },
-    ],
+        'contentOptions' => ['style' => 'text-align:right;font-weight:bold'],
+        'format' => ['decimal', 0],
+        'pageSummary' => true,
+        'pageSummaryOptions' => ['class' => 'text-right text-end'],
+     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'ngay_tao',

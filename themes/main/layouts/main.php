@@ -21,6 +21,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 $phieuMuaSamNew=PhieuMuaSam::getListMuaSamByStatus(['submited']);
 $baoGiaMuaSamNewCount=BaoGiaMuaSam::getCountNewByStatus(['submited']);
+$dsPhieuSuaChua = PhieuSuaChua::getListByStatus('draft_sent');
+$dsPhieuSuaChuaCount = PhieuSuaChua::getListByStatus('draft_sent')->count();
+//phieu bao gia
 $phieuSuaChua=BaoGiaSuaChua::getBaoGiaByStatus('submited');
 $phieuSuaChuaCount=BaoGiaSuaChua::getBaoGiaByStatus('submited')->count();
 $phieuXuatKhoSuaChuaCount = PhieuSuaChua::getYeuCauVatTuByStatus('draft_sent')->count();
@@ -54,9 +57,10 @@ $phieuXuatKhoSuaChuaCount = PhieuSuaChua::getYeuCauVatTuByStatus('draft_sent')->
 	<!-- Page -->
 	<div class="page">
 
-		<?= $this->render('_top', compact('phieuMuaSamNew', 'phieuSuaChua', 'phieuSuaChuaCount')) ?>
+		<?= $this->render('_top', compact('phieuMuaSamNew', 'phieuSuaChua', 
+		    'phieuSuaChuaCount', 'dsPhieuSuaChua', 'dsPhieuSuaChuaCount')) ?>
 
-		<?= $this->render('_left', compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount', 'phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount')) ?>
+		<?= $this->render('_left', compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount', 'phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount', 'dsPhieuSuaChuaCount')) ?>
 
 		<!-- Main Content-->
 		<div class="main-content side-content pt-0">

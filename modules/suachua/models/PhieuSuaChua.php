@@ -39,6 +39,8 @@ use app\modules\taisan\models\ThietBiVatTu;
  * @property int|null $da_xuat_vt_kho
  * @property string|null $ngay_xuat_vt_kho
  * @property int|null $nguoi_xuat_vt_kho
+ * @property int|null $nguoi_duyet_phieu
+ * @property string|null $thoi_gian_duyet_phieu
  *
  * @property TsThietBi $thietBi
  * @property TsBaoGiaSuaChua[] $tsBaoGiaSuaChuas
@@ -62,8 +64,8 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return [
             [['id_thiet_bi', 'id_tt_sua_chua'], 'required'],
-            [['id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc','danh_gia_bg', 'nguoi_duyet_vt_kho', 'da_xuat_vt_kho', 'nguoi_xuat_vt_kho'], 'integer'],
-            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'ngay_tao', 'ngay_cap_nhat', 'ngay_duyet_vt_kho', 'ngay_xuat_vt_kho'], 'safe'],
+            [['id_thiet_bi', 'id_tt_sua_chua', 'nguoi_tao', 'nguoi_cap_nhat', 'danh_gia_sc','danh_gia_bg', 'nguoi_duyet_vt_kho', 'da_xuat_vt_kho', 'nguoi_xuat_vt_kho', 'nguoi_duyet_phieu'], 'integer'],
+            [['ngay_sua_chua', 'ngay_du_kien_hoan_thanh', 'ngay_hoan_thanh', 'ngay_tao', 'ngay_cap_nhat', 'ngay_duyet_vt_kho', 'ngay_xuat_vt_kho', 'thoi_gian_duyet_phieu'], 'safe'],
             [['phi_linh_kien', 'phi_khac', 'tong_tien'], 'number'],
             [['ghi_chu1', 'ghi_chu2','dia_chi', 'noi_dung_duyet_vt_kho'], 'string'],
             [['duyet_vt_kho'], 'string', 'max' => 20],
@@ -105,6 +107,8 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             'da_xuat_vt_kho'=>'Đã xuất vật tư kho',
             'ngay_xuat_vt_kho'=>'Ngày xuất vật tư kho',
             'nguoi_xuat_vt_kho'=>'Người xuất vật tư kho',
+            'nguoi_duyet_phieu'=>'Người duyệt phiếu',
+            'thoi_gian_duyet_phieu'=>'Thời gian duyệt'
         ];
     }
 
@@ -117,7 +121,6 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ThietBiBase::class, ['id' => 'id_thiet_bi']);
     }
-
     /**
      * Gets query for [[TsBaoGiaSuaChuas]].
      *
@@ -142,6 +145,10 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
     public function getBaoGiaSuaChua()
     {
         return $this->hasOne(BaoGiaSuaChua::class, ['id_phieu_sua_chua' => 'id'])->where(["flag_index"=>0]);
+    }
+    public function getBaoGiaSuaChuaApproveds()
+    {
+        return $this->hasOne(BaoGiaSuaChua::class, ['id_phieu_sua_chua' => 'id'])->where(["flag_index"=>0, 'trang_thai'=>'approved']);
     }
     public function getLichSuBaoGiaSuaChuas()
     {
@@ -177,11 +184,9 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             $this->ngay_hoan_thanh = $cus->convertDMYToYMD($this->ngay_du_kien_hoan_thanh);
             if($this->duyet_vt_kho == null)
                 $this->duyet_vt_kho = 'draft';
-                if($this->da_xuat_vt_kho == null)
-                    $this->da_xuat_vt_kho = 0;
-
+            if($this->da_xuat_vt_kho == null)
+                $this->da_xuat_vt_kho = 0;
         }
-        
         
         if($this->ngay_sua_chua != null)
             $this->ngay_sua_chua = $cus->convertDMYToYMD($this->ngay_sua_chua);
@@ -317,9 +322,26 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         ];
     }
     
+    public static function getDmTrangThaiWithBadge(){
+        return [
+            'draft' => '<span class="badge bg-info mt-2"><i class="ion-clipboard"></i> Phiếu Nháp</span>',
+            'draft_sent' => '<span class="badge bg-warning mt-2"><i class="ion-compose"></i> Chờ duyệt phiếu</span>',
+            'draft_reject' => '<span class="badge bg-danger mt-2"><i class="ion-close-circled"></i> Không duyệt phiếu</span>',
+            //if draft accept is 'new'
+            'new' => '<span class="badge bg-success mt-2"><i class="ion-document"></i> P. Đã duyệt</span>',
+            'quote_sent' => '<span class="badge bg-warning mt-2"><i class="ion-compose"></i> Chờ duyệt BG</span>',
+            'processing' => '<span class="badge bg-secondary mt-2"><i class="ion-settings"></i> Đang sửa</span>',
+            'completed' => '<span class="badge bg-primary mt-2"><i class="ion-checkmark"></i> Hoàn thành</span>'
+        ];
+    }
+    
     public function getNguoiTao()
     {
         return $this->hasOne(User::class, ['id' => 'nguoi_tao']);
+    }
+    public function getNguoiDuyetPhieu()
+    {
+        return $this->hasOne(User::class, ['id' => 'nguoi_duyet_phieu']);
     }
     public function getNguoiCapNhat()
     {
@@ -410,6 +432,18 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
         }
         return false;
     }
+    
+    /**
+     * get ds phieu
+     */
+    public static function getListByStatus($status)
+    {
+        $result=PhieuSuaChua::find()
+            //->joinWith(['thietBi'])
+            ->where(['trang_thai'=>$status]);
+        return $result;
+    }
+    
     /* public function getTrangThaiXuatKho(){
         if($this->duyet_vt_kho){
             if($this->da_xuat_vt_kho){
@@ -425,5 +459,21 @@ class PhieuSuaChua extends \yii\db\ActiveRecord
             }
         }
     } */
+    
+    /**
+     * get tong tien sua chua cua cac bao gia duoc duyet
+     */
+    public function getTongTien(){
+        $tongTien = 0;
+        $baoGias = $this->getBaoGiaSuaChuaApproveds()->all();
+        if($baoGias != null){
+            foreach ($baoGias as $iBaoGia=>$baoGia){
+                if ($baoGia->tong_tien !== null) {
+                    $tongTien += $baoGia->tong_tien;
+                }
+            }
+        }
+        return $tongTien;
+    }
     
 }

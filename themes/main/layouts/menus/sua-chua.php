@@ -7,7 +7,7 @@ use app\modules\user\models\User;
 		<span class="side-menu__label">Sửa chữa 
 		<?php if(User::hasPermission('qDuyetBaoGiaSuaChua',false)) :?>
 		<?php 
-		$phieuSuaChuaTotalCount = $phieuSuaChuaCount + $phieuXuatKhoSuaChuaCount;
+		$phieuSuaChuaTotalCount = $phieuSuaChuaCount + $phieuXuatKhoSuaChuaCount + $dsPhieuSuaChuaCount;
 		?>
 		<?= $phieuSuaChuaTotalCount>0?'<span class="badge bg-warning ms-2">'.$phieuSuaChuaTotalCount.'</span>':'' ?>
 		<?php endif;?>
@@ -35,7 +35,7 @@ use app\modules\user\models\User;
 							<li class="side-menu__label1"><a href="javascript:void(0)">Danh mục chức năng</a>
 							</li>
 							<?php if(User::canRoute('suachua/phieu-sua-chua/index')) :?>
-							<li class=""><a href="<?= Yii::getAlias('@web/suachua/phieu-sua-chua?menu=psc1') ?>" class="slide-item" data-menu="psc1">Phiếu sửa chữa</a>
+							<li class=""><a href="<?= Yii::getAlias('@web/suachua/phieu-sua-chua?menu=psc1') ?>" class="slide-item" data-menu="psc1">Phiếu sửa chữa  <?= User::hasPermission('qDuyetBaoGiaSuaChua',false) ? ( $dsPhieuSuaChuaCount>0?'<span class="badge bg-warning ms-2">'.$dsPhieuSuaChuaCount.'</span>':'') : ''?></a>
 							</li>
 							<?php endif;?>
 							

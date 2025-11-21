@@ -21,6 +21,8 @@ use app\modules\user\models\User;
  */
 class DmVatTu extends \yii\db\ActiveRecord
 {
+    const TT_MOI = 'new';
+    const TT_HU_HONG = 'damaged';
     /**
      * {@inheritdoc}
      */
@@ -78,6 +80,8 @@ class DmVatTu extends \yii\db\ActiveRecord
         if ($this->isNewRecord) {
             $this->ngay_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
+            if($this->trang_thai == null)
+                $this->trang_thai = self::TT_MOI;
         }
 
         
@@ -89,8 +93,8 @@ class DmVatTu extends \yii\db\ActiveRecord
     }
     public static function getDmTrangThai(){
         return [
-            "new"=>'Mới',
-            "damaged"=>'Hư hỏng',
+            self::TT_MOI => 'Mới',
+            self::TT_HU_HONG => 'Hư hỏng',
 
         ];
     }

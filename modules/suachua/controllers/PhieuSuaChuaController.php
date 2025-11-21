@@ -77,6 +77,7 @@ class PhieuSuaChuaController extends Controller
     {         
         $request = Yii::$app->request;
         $phieuSuaChua = $this->findModel($id_phieu_sua_chua);
+        $phieuSuaChuaOld = $this->findModel($id_phieu_sua_chua);
         //check null model
         if($phieuSuaChua == null){
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
@@ -89,10 +90,22 @@ class PhieuSuaChuaController extends Controller
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
         
-        
-        if ($phieuSuaChua->load($request->post()) && $phieuSuaChua->save()) {
-            return $this->redirect(['detail', 'id_phieu_sua_chua' => $phieuSuaChua->id]);
+        $notSave = false;
+        if ($phieuSuaChua->load($request->post())) {
+            if( ($phieuSuaChua->trang_thai == 'new' && $phieuSuaChuaOld->trang_thai != 'new')
+                || ($phieuSuaChua->trang_thai == 'draft_reject' && $phieuSuaChuaOld->trang_thai != 'draft_reject')){
+                $phieuSuaChua->nguoi_duyet_phieu = Yii::$app->user->id;
+                $phieuSuaChua->thoi_gian_duyet_phieu = date('Y-m-d H:i:s');
+            }
+            if($phieuSuaChua->save()){
+                return $this->redirect(['detail', 'id_phieu_sua_chua' => $phieuSuaChua->id]);
+            }else{
+                $notSave = true;
+            }
         } else {
+            $notSave = true;
+        }
+        if($notSave) {
             //grid view vật tư
             $searchModelVatTu = new PhieuSuaChuaVatTuSearch();
             $searchModelVatTu->trang_thai="new";
@@ -316,6 +329,11 @@ class PhieuSuaChuaController extends Controller
                         return $this->redirect(['chi-tiet-phieu-sua-chua', 'id_phieu_sua_chua' => $model->id]);
                     }
                 }
+                if( ($model->trang_thai == 'new' && $oldModel->trang_thai != 'new')
+                    || ($model->trang_thai == 'draft_reject' && $oldModel->trang_thai != 'draft_reject')){
+                        $model->nguoi_duyet_phieu = Yii::$app->user->id;
+                        $model->thoi_gian_duyet_phieu = date('Y-m-d H:i:s');
+                }
                 if($model->save()){
                     return $this->redirect(['chi-tiet-phieu-sua-chua', 'id_phieu_sua_chua' => $model->id]);
                 }else {
@@ -341,14 +359,23 @@ class PhieuSuaChuaController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $delOk = true;
+        if(User::hasPermission('qDuyetBaoGiaSuaChua',false) || ($model->nguoi_tao == Yii::$app->user->id
+            && $model->trang_thai == 'draft' )){
+            $model->delete();
+        }else{
+            $delOk = false;
+        }
 
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax',
+                'tcontent'=>$delOk==true?'Xóa thành công!':'Không thể xóa!'
+            ];
         }else{
             /*
             *   Process for non-ajax request
@@ -375,7 +402,11 @@ class PhieuSuaChuaController extends Controller
         foreach ( $pks as $pk ) {
             $model = $this->findModel($pk);
             try{
-            	$model->delete();
+                if(User::hasPermission('qDuyetBaoGiaSuaChua',false) || ($model->nguoi_tao == Yii::$app->user->id
+                    && $model->trang_thai == 'draft' ))
+            	   $model->delete();
+                else
+                    $delOk = false;
             }catch(\Exception $e) {
             	$delOk = false;
             	$fList[] = $model->id;
