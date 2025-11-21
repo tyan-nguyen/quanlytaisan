@@ -23,9 +23,12 @@ $phieuMuaSamNew=PhieuMuaSam::getListMuaSamByStatus(['submited']);
 $baoGiaMuaSamNewCount=BaoGiaMuaSam::getCountNewByStatus(['submited']);
 $dsPhieuSuaChua = PhieuSuaChua::getListByStatus('draft_sent');
 $dsPhieuSuaChuaCount = PhieuSuaChua::getListByStatus('draft_sent')->count();
+//$dsPhieuXuatKho = PhieuSuaChua::getListByStatus('draft_sent');
+//$dsPhieuXuatKhoCount = PhieuSuaChua::getListByStatus('draft_sent')->count();
 //phieu bao gia
 $phieuSuaChua=BaoGiaSuaChua::getBaoGiaByStatus('submited');
 $phieuSuaChuaCount=BaoGiaSuaChua::getBaoGiaByStatus('submited')->count();
+$phieuXuatKhoSuaChua = PhieuSuaChua::getYeuCauVatTuByStatus('draft_sent');
 $phieuXuatKhoSuaChuaCount = PhieuSuaChua::getYeuCauVatTuByStatus('draft_sent')->count();
 
 ?>
@@ -58,7 +61,7 @@ $phieuXuatKhoSuaChuaCount = PhieuSuaChua::getYeuCauVatTuByStatus('draft_sent')->
 	<div class="page">
 
 		<?= $this->render('_top', compact('phieuMuaSamNew', 'phieuSuaChua', 
-		    'phieuSuaChuaCount', 'dsPhieuSuaChua', 'dsPhieuSuaChuaCount')) ?>
+		    'phieuSuaChuaCount', 'dsPhieuSuaChua', 'dsPhieuSuaChuaCount', 'phieuXuatKhoSuaChua', 'phieuXuatKhoSuaChuaCount')) ?>
 
 		<?= $this->render('_left', compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount', 'phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount', 'dsPhieuSuaChuaCount')) ?>
 
