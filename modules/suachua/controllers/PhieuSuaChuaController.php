@@ -374,7 +374,7 @@ class PhieuSuaChuaController extends Controller
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax',
-                'tcontent'=>$delOk==true?'Xóa thành công!':'Không thể xóa!'
+                'tcontent'=>$delOk==true?'Xóa thành công!':'Không thể xóa! Vui lòng liên hệ người duyệt phiếu hoặc quản lý hệ thống!'
             ];
         }else{
             /*
@@ -419,7 +419,8 @@ class PhieuSuaChuaController extends Controller
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax',
-            			'tcontent'=>$delOk==true?'Xóa thành công!':('Không thể xóa:'.implode('</br>', $fList)),
+            			'tcontent'=>$delOk==true?'Xóa thành công!':('Không thể xóa:'.implode('</br>', $fList)
+            			    .'. Vui lòng liên hệ người duyệt phiếu hoặc quản lý hệ thống!'),
             ];
         }else{
             /*
