@@ -144,6 +144,7 @@ if($model->ngay_dua_vao_su_dung != null)
                     <?= $form->field($model, 'serial')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col">
                     <?= $form->field($model, 'model')->textInput(['maxlength' => true]) ?>
@@ -152,6 +153,19 @@ if($model->ngay_dua_vao_su_dung != null)
                     <?= $form->field($model, 'xuat_xu')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
+            
+             <?php if(!$model->isNewRecord 
+                    && !($model->loaiThietBi->loai_thiet_bi == LoaiThietBi::TYPE_THIETBI) ){ ?>
+             <div class="row">
+                <div class="col">
+                    <?= $form->field($model, 'so_khung')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col">
+                    <?= $form->field($model, 'so_may')->textInput(['maxlength' => true]) ?>
+                </div>
+            </div>
+            <?php } ?>
+            
             <div class="row">
                 <div class="col">
                     <?= $form->field($model, 'id_hang_bao_hanh')->widget(Select2::classname(), [

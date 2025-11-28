@@ -87,7 +87,7 @@ class ThietBiBase extends \app\models\TsThietBi
             [['ngay_mua', 'han_bao_hanh', 'ngay_dua_vao_su_dung', 'ngay_ngung_hoat_dong', 'thoi_gian_tao'], 'safe'],
             [['ma_thiet_bi', 'nam_san_xuat', 'trang_thai'], 'string', 'max' => 20],
             [['autoid', 'ten_thiet_bi', 'serial', 'model'], 'string', 'max' => 255],
-            [['xuat_xu'], 'string', 'max' => 100],
+            [['xuat_xu', 'so_khung', 'so_may'], 'string', 'max' => 100],
             [['autoid'], 'unique'],
             [['id_loai_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => LoaiThietBi::class, 'targetAttribute' => ['id_loai_thiet_bi' => 'id']],
             [['id_bo_phan_quan_ly'], 'exist', 'skipOnError' => true, 'targetClass' => BoPhan::class, 'targetAttribute' => ['id_bo_phan_quan_ly' => 'id']],
@@ -114,6 +114,8 @@ class ThietBiBase extends \app\models\TsThietBi
             'nam_san_xuat' => 'Năm sản xuất', //*
             'serial' => 'Serial', //*
             'model' => 'Model', //*
+            'so_khung' => 'Số khung',
+            'so_may' => 'Số máy',
             'xuat_xu' => 'Xuất xứ', //*
             'id_hang_bao_hanh' => 'Bảo hành', //*
             'id_nhien_lieu' => 'Nhiên liệu',

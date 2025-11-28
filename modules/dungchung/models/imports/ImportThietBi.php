@@ -272,6 +272,11 @@ class ImportThietBi
                 //ghi_chu row W
                 $model->ghi_chu = $row['W'];
                 
+                //add 27/11/2025
+                //serial row X
+                $model->so_khung = $row['X'];
+                $model->so_may = $row['Y'];
+                
                 if($model->save()){
                     $successCount++;
                 } else {

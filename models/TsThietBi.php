@@ -19,6 +19,8 @@ use Yii;
  * @property int|null $id_layout
  * @property string|null $nam_san_xuat
  * @property string|null $serial
+ * @property string|null $so_khung
+ * @property string|null $so_may
  * @property string|null $model
  * @property string|null $xuat_xu
  * @property int|null $id_hang_bao_hanh
@@ -66,7 +68,7 @@ class TsThietBi extends \yii\db\ActiveRecord
             [['ngay_mua', 'han_bao_hanh', 'ngay_dua_vao_su_dung', 'ngay_ngung_hoat_dong', 'thoi_gian_tao'], 'safe'],
             [['ma_thiet_bi', 'nam_san_xuat', 'trang_thai'], 'string', 'max' => 20],
             [['autoid', 'ten_thiet_bi', 'serial', 'model'], 'string', 'max' => 255],
-            [['xuat_xu'], 'string', 'max' => 100],
+            [['xuat_xu', 'so_khung', 'so_may'], 'string', 'max' => 100],
             [['id_loai_thiet_bi'], 'exist', 'skipOnError' => true, 'targetClass' => TsLoaiThietBi::class, 'targetAttribute' => ['id_loai_thiet_bi' => 'id']],
             [['id_bo_phan_quan_ly'], 'exist', 'skipOnError' => true, 'targetClass' => TsBoPhan::class, 'targetAttribute' => ['id_bo_phan_quan_ly' => 'id']],
             [['id_nguoi_quan_ly'], 'exist', 'skipOnError' => true, 'targetClass' => TsNhanVien::class, 'targetAttribute' => ['id_nguoi_quan_ly' => 'id']],
@@ -91,6 +93,8 @@ class TsThietBi extends \yii\db\ActiveRecord
             'id_layout' => 'Id Layout',
             'nam_san_xuat' => 'Nam San Xuat',
             'serial' => 'Serial',
+            'so_khung' => 'Số khung',
+            'so_may' => 'Số máy',
             'model' => 'Model',
             'xuat_xu' => 'Xuat Xu',
             'id_hang_bao_hanh' => 'Id Hang Bao Hanh',

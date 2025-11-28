@@ -76,6 +76,16 @@ use app\widgets\views\ImageWithButtonWidget;
                                     ],
                                     'nam_san_xuat',
                                     'serial',
+                                    [
+                                        'attribute' => 'so_khung',
+                                        'value' => $model->so_khung,
+                                        'visible' => !($model->loaiThietBi->loai_thiet_bi==LoaiThietBi::TYPE_THIETBI) ,
+                                    ],
+                                    [
+                                        'attribute' => 'so_may',
+                                        'value' => $model->so_may,
+                                        'visible' => !($model->loaiThietBi->loai_thiet_bi==LoaiThietBi::TYPE_THIETBI) ,
+                                    ],
                                     'model',
                                     'xuat_xu',
                                     [

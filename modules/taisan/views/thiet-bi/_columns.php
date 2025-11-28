@@ -19,7 +19,7 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'ma_thiet_bi',
-        'width'=> '10%',
+        //'width'=> '10%',
         
     ],
       [
@@ -39,7 +39,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_loai_thiet_bi',
         'value'=>'tenLoaiThietBi',
-        'width'=> '20%',
+        //'width'=> '20%',
         //'filter'=>ArrayHelper::map(LoaiThietBi::find()->asArray()->all(), 'id', 'ten_loai'),
     ],
     /* [
@@ -53,6 +53,12 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id_bo_phan_quan_ly',
         'value'=>'boPhanQuanLy.ten_bo_phan',
+        
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_nguoi_quan_ly',
+        'value'=>'tenNguoiQuanLy',
         
     ],
     [
