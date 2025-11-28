@@ -36,7 +36,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
-        'visible'=>$isUpdate && User::hasPermission('qThemBaoGiaSuaChua'),
+        'visible'=>/* $isUpdate &&  */User::hasPermission('qThemBaoGiaSuaChua'),
         'width' => '50px',
         'template'=>'{update} {delete}',
         'urlCreator' => function($action, $model, $key, $index) { 
