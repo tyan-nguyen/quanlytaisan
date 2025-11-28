@@ -152,7 +152,8 @@ class BaoGiaSuaChuaController extends Controller
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
         //check quyền truy cập phiếu
-        if(User::canRoute($this->route, false) && $model->nguoi_tao != Yii::$app->user->id){
+        //if(User::canRoute($this->route, false) && $model->nguoi_tao != Yii::$app->user->id){
+        if(User::canRoute($this->route, true) && $model->nguoi_tao != Yii::$app->user->id){
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 
