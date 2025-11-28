@@ -10,6 +10,7 @@ class LoaiThietBiBase extends \app\models\TsLoaiThietBi {
     const TYPE_THIETBI = 'THIETBI';
     const TYPE_COGIOI = 'COGIOI';
     const TYPE_VANCHUYEN = 'VANCHUYEN';
+    const TYPE_TRUONG = 'DAOTAO';
     
     /**
      * Danh muc loai thiet bi
@@ -20,6 +21,7 @@ class LoaiThietBiBase extends \app\models\TsLoaiThietBi {
             LoaiThietBiBase::TYPE_THIETBI=>'Thiết bị/Máy móc',
             LoaiThietBiBase::TYPE_COGIOI=>'Xe cơ giới',
             LoaiThietBiBase::TYPE_VANCHUYEN=>'Xe vận chuyển',
+            LoaiThietBiBase::TYPE_TRUONG=>'Xe trường lái',
         ];
     }
     
@@ -41,6 +43,9 @@ class LoaiThietBiBase extends \app\models\TsLoaiThietBi {
                 break;
             case LoaiThietBiBase::TYPE_VANCHUYEN: 
                 $label = "Xe vận chuyển"; 
+                break;
+            case LoaiThietBiBase::TYPE_TRUONG:
+                $label = "Xe trường lái";
                 break;
             default: 
                 $label = '';
