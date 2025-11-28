@@ -27,6 +27,7 @@ class ViboonAsset extends AssetBundle
         'assets/switcher/demo.css',
         'css/site.css?v=1.3',
         'assets/fontawesome-free-6.4.0-web/css/all.min.css',
+        'js/fancybox/fancybox.css',
     ];
     public $js = [
         'js/ModalRemote.js',
@@ -45,6 +46,7 @@ class ViboonAsset extends AssetBundle
         'assets/plugins/fullcalendar/fullcalendar.min.js',
         'assets/plugins/fullcalendar/locales/vi.js',
         //'assets/js/fullcalendar.js',
+        'js/fancybox/fancybox.umd.js',
         
         'assets/js/custom.js?v=2',
         //'assets/js/custom-switcher.js',
@@ -55,9 +57,10 @@ class ViboonAsset extends AssetBundle
         'assets/js/carousel.js',
         'js/print-this/printThis.js',
 
-        'js/custom.js?v=1',
+        'js/custom.js?v=2',
         //'assets/plugins/tabs/jquery.multipurpose_tabcontent.js',
         //'assets/plugins/tabs/tab-content.js'
+        
     ];
     public $depends = [
         'yii\web\YiiAsset',

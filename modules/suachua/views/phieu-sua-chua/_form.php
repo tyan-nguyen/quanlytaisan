@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 use app\widgets\forms\RadioWidget;
 use app\modules\bophan\models\BoPhan;
 use app\modules\user\models\User;
+use app\modules\taisan\models\ThietBi;
 /* @var $this yii\web\View */
 /* @var $model app\modules\suachua\models\PhieuSuaChua */
 /* @var $form yii\widgets\ActiveForm */
@@ -40,8 +41,27 @@ if(!$model->isNewRecord){
     <div class="row">
         <div class="col-6">
         <div class="form-group">
+            <?php 
+                $tbs = null;
+                if(User::hasPermission('qDuyetPhieuSuaChua')){
+                    $tbs = ThietBiBase::find()->all();
+                } else {
+                    $tbs = ThietBiBase::find()->where([
+                        'id_nguoi_quan_ly' => User::getCurrentNhanVienID()
+                    ])->all();
+                }
+                $dataTB = ArrayHelper::map($tbs, 'id', 'ten_thiet_bi', function($model) {
+                    return $model->loaiThietBi->ten_loai;
+                });
+                if(!$model->isNewRecord){
+                    $thietBiSua = ThietBi::findOne($model->id_thiet_bi);
+                    if($thietBiSua !=null){
+                        $dataTB['Khác'] = [$thietBiSua->id => $thietBiSua->ten_thiet_bi];
+                    }
+                }
+            ?>
             <?=$form->field($model, 'id_thiet_bi')->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(ThietBiBase::find()->all(), 'id', 'ten_thiet_bi'),
+                'data' => $dataTB,
                 'language' => 'vi',
                 'options' => [
                     'placeholder' => 'Chọn thiết bị...'
@@ -102,7 +122,7 @@ if(!$model->isNewRecord){
         </div>
         <?php if (!$model->isNewRecord) {?>
         <div class="col">
-            <?=$form->field($model, 'ngay_hoan_thanh')->widget(DatePicker::classname(), [
+            <?= $form->field($model, 'ngay_hoan_thanh')->widget(DatePicker::classname(), [
                 'options' => [
                     'placeholder' => 'Chọn ngày...',
                 ],
@@ -112,7 +132,7 @@ if(!$model->isNewRecord){
                     'todayHighlight' => true,
                     'todayBtn' => true,
                 ],
-            ]);?>
+            ]); ?>
         </div>
         <?php }?>
     </div>
@@ -122,7 +142,6 @@ if(!$model->isNewRecord){
         <div class="col-12">
             <?=$form->field($model, 'dia_chi')->textInput(['maxlength' => true])?>
         </div>
-        
     </div>
 
     <div class="row">
@@ -143,18 +162,14 @@ if(!$model->isNewRecord){
         <div class="col-4">
             <?=$form->field($model, 'tong_tien')->textInput(['disabled' => true])?>
         </div>
-        
-        
+
     </div>
     <?php }?>
 
-
-
-
-    
     <div class="form-group">
     <?php if (!Yii::$app->request->isAjax && $model->trang_thai !== 'completed') {?>
-    <?= !$model->inDraft ? Html::a('Hoàn thành sửa chữa', null, [
+    
+    <?= (!$model->inDraft && User::hasPermission('qDuyetPhieuSuaChua')) ? Html::a('Hoàn thành sửa chữa', null, [
                 'class' => 'btn btn-success',
                 'style'=>"margin-left:5px",
                 'data' => [
@@ -163,42 +178,45 @@ if(!$model->isNewRecord){
                 ]
             ]) : '';
     ?>
-        <?= (!User::hasPermission('qThemBaoGiaSuaChua') && $model->trang_thai == 'draft_sent') ? '' : Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    
+    <?= ( (User::hasPermission('qThemPhieuSuaChua') && $model->trang_thai == 'draft') || User::hasPermission('qDuyetPhieuSuaChua') ) ? Html::submitButton($model->isNewRecord ? 'Thêm mới' : 'Cập nhật', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']):'' ?>
         
-        <!-- danh cho draft -->
-        <?= $model->trang_thai == 'draft' ? Html::a('Gửi yêu cầu đến trung tâm sửa chữa', null, [
-                'class' => 'btn btn-warning',
-                'style'=>"margin-left:5px",
-                'data' => [
-                    'method' => 'post',
-                    'params'=>['PhieuSuaChua[trang_thai]'=>'draft_sent'],
-                ],
-                //'role'=>'modal-remote-3',
-                'data-confirm' => 'Bạn có chắc muốn gửi yêu cầu đến trung tâm sửa chữa?',
-                //'data-confirm-title'=>'Gửi yêu cầu',
-                //'data-confirm-message'=>'Xác nhận gửi yêu cầu'
-            ]) : '';
-        ?>
-        <!-- danh cho draft, trung tam sua chua xac nhan -->
-        <?= (User::hasPermission('qDuyetPhieuSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Xác nhận yêu cầu', null, [
-                'class' => 'btn btn-warning',
-                'style'=>"margin-left:5px",
-                'data' => [
-                    'method' => 'post',
-                    'params'=>['PhieuSuaChua[trang_thai]'=>'new'],
-                ],
-            ]) : '';
-        ?>
-        <!-- danh cho draft, trung tam sua chua xac nhan -->
-        <?= (User::hasPermission('qDuyetPhieuSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Không chấp nhận yêu cầu', null, [
-                'class' => 'btn btn-warning',
-                'style'=>"margin-left:5px",
-                'data' => [
-                    'method' => 'post',
-                    'params'=>['PhieuSuaChua[trang_thai]'=>'draft_reject'],
-                ],
-            ]) : '';
-        ?>
+    <!-- danh cho draft -->
+    <?= $model->trang_thai == 'draft' ? Html::a('Gửi yêu cầu đến trung tâm sửa chữa', null, [
+            'class' => 'btn btn-warning',
+            'style'=>"margin-left:5px",
+            'data' => [
+                'method' => 'post',
+                'params'=>['PhieuSuaChua[trang_thai]'=>'draft_sent'],
+            ],
+            //'role'=>'modal-remote-3',
+            'data-confirm' => 'Bạn có chắc muốn gửi yêu cầu đến trung tâm sửa chữa?',
+            //'data-confirm-title'=>'Gửi yêu cầu',
+            //'data-confirm-message'=>'Xác nhận gửi yêu cầu'
+        ]) : '';
+    ?>
+    
+    <!-- danh cho draft, trung tam sua chua xac nhan -->
+    <?= (User::hasPermission('qDuyetPhieuSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Xác nhận yêu cầu', null, [
+            'class' => 'btn btn-warning',
+            'style'=>"margin-left:5px",
+            'data' => [
+                'method' => 'post',
+                'params'=>['PhieuSuaChua[trang_thai]'=>'new'],
+            ],
+        ]) : '';
+    ?>
+    
+    <!-- danh cho draft, trung tam sua chua xac nhan -->
+    <?= (User::hasPermission('qDuyetPhieuSuaChua') && $model->trang_thai == 'draft_sent') ? Html::a('Không chấp nhận yêu cầu', null, [
+            'class' => 'btn btn-warning',
+            'style'=>"margin-left:5px",
+            'data' => [
+                'method' => 'post',
+                'params'=>['PhieuSuaChua[trang_thai]'=>'draft_reject'],
+            ],
+        ]) : '';
+    ?>
         
         
         <?php } ?>

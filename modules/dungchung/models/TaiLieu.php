@@ -36,7 +36,12 @@ class TaiLieu extends TaiLieuBase
      * @return string
      */
     public function getExtUrl(){
-        return Yii::getAlias('@web') . $this::FOLDER_DOCUMENTS_ICONS . $this->file_extension . '.' . 'png';
+        $filePath = Yii::getAlias('@webroot') . $this::FOLDER_DOCUMENTS_ICONS . $this->file_extension . '.' . 'png';
+        if(file_exists($filePath)){
+            return Yii::getAlias('@web') . $this::FOLDER_DOCUMENTS_ICONS . $this->file_extension . '.' . 'png';
+        } else {
+            return Yii::getAlias('@web') . $this::FOLDER_DOCUMENTS_ICONS . 'other.png';
+        }
     }
     
     /**

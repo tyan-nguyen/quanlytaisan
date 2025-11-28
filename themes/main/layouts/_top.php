@@ -343,21 +343,10 @@ $countPhieuMuaSam=0;
                                 <img alt="avatar" src="<?= Yii::getAlias('@web') ?>/uploads/icons/user.png">
                                
                             </a>
-							<span data-bs-toggle="dropdown" style="margin-top:5px;margin-left:5px;cursor:pointer;"> Xin chào, <?= User::getCurrentUser()->username ?>! </span>
+							<span data-bs-toggle="dropdown" style="margin-top:5px;margin-left:5px;cursor:pointer;"> Xin chào, <?= User::getCurrentUser()?User::getCurrentUser()->username:'' ?>! </span>
 							
                             <div class="dropdown-menu dropdown-menu-arrow">
-                                <!-- <div class="header-navheading"> -->
-                                    <!-- <h6 class="main-notification-title mb-1"><?= User::getCurrentUser()->username ?>
-                                    </h6>-->
-                                   <!-- <span class="tx-13 text-muted"><?= User::getCurrentUser()->tenNhanVien ?></span> --> 
-                                    <!-- <br/><span class="tx-13 text-muted"><?= User::getCurrentUser()->chucVu ?></span>-->
-                                 <!--  </div>  -->
-                                <!-- <a class="dropdown-item border-top text-wrap" href="<?= Yii::getAlias('@web') ?>/user/info">
-									<i class="fe fe-user"></i> <span class="lh-1">Thông tin</span>
-								</a> -->
-                                <!-- <a class="dropdown-item text-wrap" href="<?= Yii::getAlias('@web') ?>/user/info-edit">
-									<i class="fe fe-edit"></i> <span class="lh-1">Edit Profile</span>
-								</a> -->
+                              
                                 <a class="dropdown-item text-wrap"
                                     href="<?= Yii::getAlias('@web') ?>/user/auth/change-own-password">
                                     <i class="fe fe-lock "></i> <span class="lh-1">Thay đổi mật khẩu</span>

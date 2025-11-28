@@ -83,13 +83,11 @@ if (Yii::$app->session->hasFlash('error')) {
                         <?= $this->render('update', [
                             'model' => $phieuSuaChua
                         ]) ?>
-
                     </div>
                     
                     <?php if(!$model->inDraft){//2?>
                     
                     <div class="tab-pane" id="tab26" role="tabpanel">
-                       
 
                         <?= $this->render('../ct-bao-gia-sua-chua/grid-view-pjax', [
                             'model' => $model,
@@ -98,7 +96,6 @@ if (Yii::$app->session->hasFlash('error')) {
                             "baoGiaSuaChua"=>$baoGiaSuaChua,
                             "phieuSuaChua"=>$phieuSuaChua,
                             'dataProviderBgsc'=>$dataProviderBgsc
-                            
                         ]) ?>
 
                     </div>

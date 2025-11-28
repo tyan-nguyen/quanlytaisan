@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use app\modules\dungchung\models\CustomFunc;
+use yii\helpers\Html;
 
 return [
     [
@@ -20,8 +21,9 @@ return [
         'attribute'=>'id_phieu_sua_chua',
         'value'=>function($model)
         {
-            return ($model->phieuSuaChua!=null && $model->phieuSuaChua->thietBi!=null) ? $model->phieuSuaChua->thietBi->ten_thiet_bi : '';
-        }
+            return Html::a( ($model->phieuSuaChua!=null && $model->phieuSuaChua->thietBi!=null) ? $model->phieuSuaChua->thietBi->ten_thiet_bi : '', ['phieu-sua-chua/chi-tiet-phieu-sua-chua', 'id_phieu_sua_chua'=>$model->id_phieu_sua_chua], ['target'=>'_blank', 'data-pjax'=>'0', 'class'=>'text-primary'] );
+        },
+        'format' => 'raw'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
