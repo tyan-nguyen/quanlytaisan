@@ -35,6 +35,9 @@ use app\modules\user\models\User;
 				<li class="side-item side-item-category">Module</li>
 
 				<?= $this->render('menus/tai-san') ?>
+				
+				<?= $this->render('menus/sua-chua',compact('phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount', 'dsPhieuSuaChuaCount')) ?>
+				<?= $this->render('menus/mua-sam',compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount')) ?>
 
 				<?= $this->render('menus/dieu-chuyen')?>
 				
@@ -43,8 +46,7 @@ use app\modules\user\models\User;
 				<?php // $this->render('menus/kho-luu-tru') ?>
 				
 				<?= $this->render('menus/bao-tri') ?>
-				<?= $this->render('menus/sua-chua',compact('phieuSuaChua', 'phieuSuaChuaCount', 'phieuXuatKhoSuaChuaCount', 'dsPhieuSuaChuaCount')) ?>
-				<?= $this->render('menus/mua-sam',compact('phieuMuaSamNew', 'baoGiaMuaSamNewCount')) ?>
+				
 				<?= $this->render('menus/tai-khoan') ?>
 				
 				<li class="side-item side-item-category">Tùy chỉnh</li>
