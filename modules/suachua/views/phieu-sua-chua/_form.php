@@ -169,7 +169,7 @@ if(!$model->isNewRecord){
     <div class="form-group">
     <?php if (!Yii::$app->request->isAjax && $model->trang_thai !== 'completed') {?>
     
-    <?= (!$model->inDraft && User::hasPermission('qDuyetPhieuSuaChua')) ? Html::a('Hoàn thành sửa chữa', null, [
+    <?= (!$model->inDraft && User::hasPermission('qThemPhieuSuaChua')) ? Html::a('Hoàn thành sửa chữa', null, [
                 'class' => 'btn btn-success',
                 'style'=>"margin-left:5px",
                 'data' => [
