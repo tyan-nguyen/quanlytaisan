@@ -330,7 +330,9 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         parent::afterSave($insert, $changedAttributes);
         //create qr code
-        DungChung::createQRcode($this::QR_FOLDER, $this->autoid);
+        //DungChung::createQRcode($this::QR_FOLDER, $this->autoid);
+        //create qr code with link
+        DungChung::createQRcode($this::QR_FOLDER, \Yii::$app->params['siteUrl' . '/public/info?item='.$this->autoid]);
         //create history
         History::addHistory($this::MODEL_ID, $changedAttributes, $this, $insert);
     }
