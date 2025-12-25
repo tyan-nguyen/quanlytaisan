@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\modules\taisan\models\ThietBi;
 
 class PublicController extends Controller
 {
@@ -31,7 +32,8 @@ class PublicController extends Controller
     public function actionInfo($item)
     {
         $this->layout = 'public';
-        return $this->render('info');
+        $model= ThietBi::find()->where(['autoid'=>$item])->one();
+        return $this->render('info', ['model'=>$model]);
     }
 
 }
