@@ -105,7 +105,7 @@ use app\widgets\views\ImageWithButtonWidget;
                                         <h6 class="card-title mb-1">QR CODE</h6>
                                     </div>
                                     <div>
-                                        <?= Html::img($model->qrCode, ['width' => 100]) ?>
+                                        <?= Html::img($model->qrCode . '?v=' . date('s'), ['width' => 100]) ?>
                                     </div>
                                     <div style="margin-top:20px">
                                         <button type="button" onClick="printQr()" class="btn ripple btn-success btn-sm btn-block">In Mã QR</button>
