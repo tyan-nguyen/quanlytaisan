@@ -8,10 +8,32 @@ use app\modules\taisan\models\ThietBi;
 </div>
 <div>
 	<h3><?= $model->ten_thiet_bi ?></h3>
+	<p>Mã thiết bị: <?= $model->ma_thiet_bi ?></p>
 	<p>Loại: <?= $model->tenLoaiThietBi ?></p>
 	<p>Bộ phận: <?= $model->tenBoPhanQuanLy ?></p>
 	<p>Người quản lý: <?= $model->tenNguoiQuanLy ?></p>
 	<p><strong>Hình ảnh</strong></p>
+	<?php if($model->nam_san_xuat) { ?>
+	<p>Năm sản xuất: <?= $model->nam_san_xuat ?></p>
+	<?php } ?>
+	<?php if($model->serial) { ?>
+	<p>Serial: <?= $model->serial ?></p>
+	<?php } ?>
+	<?php if($model->so_khung) { ?>
+	<p>Số khung: <?= $model->so_khung ?></p>
+	<?php } ?>
+	<?php if($model->so_may) { ?>
+	<p>Số máy: <?= $model->so_may ?></p>
+	<?php } ?>
+	<?php if($model->model) { ?>
+	<p>Model: <?= $model->model ?></p>
+	<?php } ?>
+	<?php if($model->xuat_xu) { ?>
+	<p>Xuất xứ: <?= $model->xuat_xu ?></p>
+	<?php } ?>
+	<?php if($model->dac_tinh_ky_thuat) { ?>
+	<p>Đặc tính kỹ thuật: <?= $model->dac_tinh_ky_thuat ?></p>
+	<?php } ?>
 	<p style="text-align: center">
 	<?php 
 	   $data = HinhAnh::getHinhAnhThamChieu(ThietBi::MODEL_ID, $model->id);
