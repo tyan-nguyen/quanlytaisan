@@ -12,7 +12,6 @@ use app\modules\taisan\models\ThietBi;
 	<p>Loại: <?= $model->tenLoaiThietBi ?></p>
 	<p>Bộ phận: <?= $model->tenBoPhanQuanLy ?></p>
 	<p>Người quản lý: <?= $model->tenNguoiQuanLy ?></p>
-	<p><strong>Hình ảnh</strong></p>
 	<?php if($model->nam_san_xuat) { ?>
 	<p>Năm sản xuất: <?= $model->nam_san_xuat ?></p>
 	<?php } ?>
@@ -34,6 +33,7 @@ use app\modules\taisan\models\ThietBi;
 	<?php if($model->dac_tinh_ky_thuat) { ?>
 	<p>Đặc tính kỹ thuật: <?= $model->dac_tinh_ky_thuat ?></p>
 	<?php } ?>
+	<p><strong>Hình ảnh</strong></p>
 	<p style="text-align: center">
 	<?php 
 	   $data = HinhAnh::getHinhAnhThamChieu(ThietBi::MODEL_ID, $model->id);
