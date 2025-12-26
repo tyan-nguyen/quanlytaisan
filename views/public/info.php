@@ -1,5 +1,6 @@
 <?php
 use app\modules\dungchung\models\HinhAnh;
+use app\modules\taisan\models\ThietBi;
 ?>
 <div style="text-align:center">
 	<img src="/assets/images/brand/favicon.png" width="100" />
@@ -12,7 +13,7 @@ use app\modules\dungchung\models\HinhAnh;
 	<p>Người quản lý: <?= $model->tenNguoiQuanLy ?></p>
 	<p>Hình ảnh</p>
 	<?php 
-	   $data = HinhAnh::getHinhAnhThamChieu($this->loai, $this->id_tham_chieu);
+	   $data = HinhAnh::getHinhAnhThamChieu(ThietBi::MODEL_ID, $model->id);
 	   if($data){
 	       foreach ($data as $iData=>$val){
 	           echo '<img src="'.$val->hinhAnhUrl.'" width="200" />';
