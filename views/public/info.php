@@ -1,10 +1,10 @@
 <div>
-	<h1>DNTN SX-TM NGUYỄN TRÌNH</h1>
+	<img src="/assets/images/brand/favicon.png" width="100" height="100" />
+	<h2>DNTN SX-TM NGUYỄN TRÌNH</h2>
 </div>
 <div>
-	<h2>THÔNG TIN TÀI SẢN</h2>
 	<h2><?= $model->ten_thiet_bi ?></h2>
-	<p><?= $model->tenLoaiThietBi ?></p>
-	<p><?= $model->tenBoPhanQuanLy ?></p>
-	<p><?= $model->tenNguoiQuanLy ?></p>
+	<p>Loại: <?= $model->tenLoaiThietBi ?></p>
+	<p>Bộ phận: <?= $model->tenBoPhanQuanLy ?></p>
+	<p>Người quản lý: <?= $model->tenNguoiQuanLy ?></p>
 </div>
