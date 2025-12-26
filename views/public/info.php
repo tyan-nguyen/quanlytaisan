@@ -1,10 +1,23 @@
+<?php
+use app\modules\dungchung\models\HinhAnh;
+?>
 <div style="text-align:center">
 	<img src="/assets/images/brand/favicon.png" width="100" />
 	<h3 style="margin-top:5px">DNTN SX-TM NGUYỄN TRÌNH</h3>
 </div>
 <div>
-	<h2><?= $model->ten_thiet_bi ?></h2>
+	<h3><?= $model->ten_thiet_bi ?></h3>
 	<p>Loại: <?= $model->tenLoaiThietBi ?></p>
 	<p>Bộ phận: <?= $model->tenBoPhanQuanLy ?></p>
 	<p>Người quản lý: <?= $model->tenNguoiQuanLy ?></p>
+	<p>Hình ảnh</p>
+	<?php 
+	   $data = HinhAnh::getHinhAnhThamChieu($this->loai, $this->id_tham_chieu);
+	   if($data){
+	       foreach ($data as $iData=>$val){
+	           echo '<img src="'.$val->hinhAnhUrl.'" width="200" />';
+	       }
+	   }
+	?>
+	
 </div>
