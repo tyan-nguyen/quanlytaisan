@@ -14,11 +14,11 @@ table,tr,td{
 	width:270px;
 	height:80px;
 	margin-left: 5px;
-	margin-top:5px;
+	margin-top:1px;
 	padding: 0px;
 }
 .wrap2{
-	padding-top:5px;
+	padding-top:1px;
 }
 .div-left{
 	width: 130px;
@@ -34,7 +34,7 @@ table,tr,td{
 }
 .title{
 	font-weight: bold;
-	font-size:7px;
+	font-size:9px;
 	text-align: center;
 }
 .title-2{
