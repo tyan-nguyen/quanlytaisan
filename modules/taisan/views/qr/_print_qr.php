@@ -14,7 +14,7 @@ use yii\helpers\Html;
             	<td><?= Html::img('assets/images/brand/favicon.png', ['class'=>'img']) ?></td>
             </tr>     
             <tr>
-            	<td colspan="2" align="center" class="title"><?= $model->ten_thiet_bi ?></td>
+            	<td colspan="2" align="center" class="title" style="font-size:10pt"><?= $model->ten_thiet_bi ?></td>
             </tr>   
         </table>
     </div>
