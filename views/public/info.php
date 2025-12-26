@@ -11,7 +11,8 @@ use app\modules\taisan\models\ThietBi;
 	<p>Loại: <?= $model->tenLoaiThietBi ?></p>
 	<p>Bộ phận: <?= $model->tenBoPhanQuanLy ?></p>
 	<p>Người quản lý: <?= $model->tenNguoiQuanLy ?></p>
-	<p>Hình ảnh</p>
+	<p><strong>Hình ảnh</strong></p>
+	<p style="text-align: center">
 	<?php 
 	   $data = HinhAnh::getHinhAnhThamChieu(ThietBi::MODEL_ID, $model->id);
 	   if($data){
@@ -20,5 +21,6 @@ use app\modules\taisan\models\ThietBi;
 	       }
 	   }
 	?>
+	</p>
 	
 </div>
