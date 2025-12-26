@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 ?>
-<link href="/css/print-display.css" rel="stylesheet">
+<link href="/css/print-display.css?v=1" rel="stylesheet">
 <div class="row text-center">
     <div class="col-md-12">    
     <h3 class="text-primary">DANH SÁCH IN TEM</h3>
@@ -19,12 +19,15 @@ use yii\helpers\Html;
            ?>
                 <div class="div-<?= $index%2==0?'left':'right' ?>">
                 <table>
+                <!-- <tr>
+                	<td colspan="2" align="center" class="title-2">DNTN SX-TM Nguyễn Trình</td>
+                </tr> -->
                 <tr>
-                	<td><?= Html::img($model->qrCode, ['class'=>'img']) ?></td>
+                	<td><?= Html::img($model->qrCode . '?v='.date('s'), ['class'=>'img']) ?></td>
                 	<td class="title"><?= $model->ten_thiet_bi ?></td>
                 </tr>
                 <tr>
-                <td colspan="2" align="center" class="title-2">DNTN SX-TM Nguyễn Trình</td>
+                	<td colspan="2" align="center" class="title"><?= $model->ten_thiet_bi ?></td>
                 </tr>
                 </table>
                 </div>
