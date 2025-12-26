@@ -24,7 +24,8 @@ use yii\helpers\Html;
                 </tr> -->
                 <tr>
                 	<td><?= Html::img($model->qrCode . '?v='.date('s'), ['class'=>'img']) ?></td>
-                	<td class="title"><?= $model->ten_thiet_bi ?></td>
+                	<!-- <td class="title"><?= $model->ten_thiet_bi ?></td>-->
+                	<td><?= Html::img('assets/images/brand/favicon.png', ['class'=>'img']) ?></td>
                 </tr>
                 <tr>
                 	<td colspan="2" align="center" class="title"><?= $model->ten_thiet_bi ?></td>
