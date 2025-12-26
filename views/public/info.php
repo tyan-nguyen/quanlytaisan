@@ -1,6 +1,5 @@
-<div>
-	<img src="/assets/images/brand/favicon.png" width="100" height="100" />
-	<h2>DNTN SX-TM NGUYỄN TRÌNH</h2>
+<div style="text-align:center">
+	<img src="/assets/images/brand/favicon.png" width="100" />
 </div>
 <div>
 	<h2><?= $model->ten_thiet_bi ?></h2>
