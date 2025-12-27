@@ -25,7 +25,7 @@ function printQr(){
 	$('#print').printThis({
 		 //debug: false,               // show the iframe for debugging
 		 importCSS: false,            // import parent page css
-		 loadCSS: ['/css/print-single.css?v=28'],
+		 loadCSS: ['/css/print-single.css?v=29'],
 		 //printDelay: 333,
     });
 }

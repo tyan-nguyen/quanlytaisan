@@ -30,7 +30,7 @@ table,tr,td{
 	padding-left:10px;
 }
 .img{
-	max-width: 130px;
+	width: 48px;
 }
 .title{
 	font-weight: bold;
