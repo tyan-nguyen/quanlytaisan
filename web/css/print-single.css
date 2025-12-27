@@ -28,6 +28,7 @@ table,tr,td{
 	width: 130px;
 	float:left;
 	padding-left:10px;
+	border-left:1px solid #212121;
 }
 .img{
 	width: 48px;
