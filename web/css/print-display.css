@@ -8,7 +8,7 @@
 	margin:0 auto;
 	margin-left: 5px;
 	margin-top: 5px;
-	border:1px solid #212121;
+	/*border:1px solid #212121;*/
 }
 .wrap2{
 	padding-top:1px;
@@ -22,7 +22,7 @@
 	
 	float:left;
 	padding-left:10px;
-	border-left:1px solid #212121;
+	/*border-left:1px solid #212121;*/
 }
 .img{
 	width: 48px;

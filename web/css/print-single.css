@@ -15,7 +15,7 @@ table,tr,td{
 	height:75px;
 	margin-left: 5px;
 	margin-top: 5px;
-	border:1px solid #212121;
+	/*border:1px solid #212121;*/
 }
 .wrap2{
 	padding-top:1px;
@@ -28,7 +28,7 @@ table,tr,td{
 	width: 130px;
 	float:left;
 	padding-left:10px;
-	border-left:1px solid #212121;
+	/*border-left:1px solid #212121;*/
 }
 .img{
 	width: 48px;
