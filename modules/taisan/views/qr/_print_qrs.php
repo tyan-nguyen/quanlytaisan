@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 ?>
-<link href="/css/print-display.css?v=1" rel="stylesheet">
+<link href="/css/print-display.css?v=2" rel="stylesheet">
 <div class="row text-center">
     <div class="col-md-12">    
     <h3 class="text-primary">DANH SÁCH IN TEM</h3>
