@@ -20,11 +20,10 @@ if ($model->ngay_sua_chua != null) {
     			<td>
     				<span style="font-weight: bold; font-size:14pt">DNTN SX-TM NGUYỄN TRÌNH</span>
     				<br/>
-    				<span style="font-size:10pt">ĐC: Nguyễn Đáng, Khóm 10, P.9, TP.TV</span>
+    				<span style="font-size:10pt">ĐC: Nguyễn Đáng, Khóm 20, Phường Trà Vinh, tỉnh Vĩnh Long</span>
     				<br/>
-    				<span style="font-size:10pt">ĐT: 0903.794.530 - 0903.794.531 - 0903.794.532</span>
-    				<br/>
-    				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10pt">0903.794.533 - 0903.794.534 - 0903.794.535</span> 				
+    				<span style="font-size:10pt">ĐT: 0903.336470</span>
+    				 				
     			</td>
     			<td width="100px">
     				<div>
