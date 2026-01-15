@@ -15,7 +15,7 @@ table,tr,td{
 	vertical-align: top;
 }
 #table-top tr td:first-child{
-	width: 20%;
+	width: 15%;
 }
 #table-top tr td:nth-child(2){
 	width: 60%;

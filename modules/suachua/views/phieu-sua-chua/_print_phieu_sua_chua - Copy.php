@@ -8,7 +8,6 @@ $ngaySuaChua="";
 if ($model->ngay_sua_chua != null) {
     $ngaySuaChua = $custom->convertYMDToDMY($model->ngay_sua_chua);
 }
-$isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 'TL003', 'TL004', 'TL005']);
 ?>
 <!-- <link href="/css/print-hoa-don.css" rel="stylesheet"> -->
 <div class="row text-center" style="width: 100%">
@@ -16,31 +15,22 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
     	<table id="table-top" style="width: 100%">
     		<tr>
     			<td width="100px">
-    				<?php if (!$isTruongLai){ ?><img src="/assets/images/brand/logo_500.png" width="75px" />
-    				<?php } else { ?><img src="/assets/images/brand/logo_tl.png" width="100%" />
-    				<?php } ?>
+    				<img src="/assets/images/brand/logo_500.png" width="100px" />
     			</td>
     			<td>
-    				<?php if (!$isTruongLai){ ?><span style="font-weight: bold; font-size:14pt">DNTN SX-TM NGUYỄN TRÌNH</span>
+    				<span style="font-weight: bold; font-size:14pt">DNTN SX-TM NGUYỄN TRÌNH</span>
     				<br/>
-    				<span style="font-size:11pt">ĐC: Nguyễn Đáng, Khóm 20, Phường Trà Vinh, tỉnh Vĩnh Long</span>
+    				<span style="font-size:10pt">ĐC: Nguyễn Đáng, Khóm 20, Phường Trà Vinh, tỉnh Vĩnh Long</span>
     				<br/>
-    				<span style="font-size:11pt">ĐT: 0903.336470</span>
-    				<?php } else { ?>
-    				<span style="font-weight: bold; font-size:14pt">TRUNG TÂM GDNN & SHLX NGUYỄN TRÌNH</span>
-    				<br/>
-    				<span style="font-size:11pt">ĐC: Ấp Giồng Trôm, xã Châu Thành, tỉnh Vĩnh Long</span>
-    				<br/>
-    				<span style="font-size:11pt">ĐT: 0903.336470</span>
-    				<?php } ?>				
+    				<span style="font-size:10pt">ĐT: 0903.336470</span>
+    				 				
     			</td>
     			<td width="100px">
     				<div>
     				Số phiếu: P-<?= substr("0000000{$model->id}", -6) ?>
-    				<?php /*?><br/>
+    				<br/>
     				(<?= $baoGia!=null?$baoGia->getDmTrangThai()[$baoGia->trang_thai]:'Không có BG'  ?>)
     				<?= $model->trangThaiDuyetKho?('<br/>VT kho: ' . $model->trangThaiDuyetKho):''  ?>
-    				<?php */ ?>
     				</div>
     			</td>
     		</tr>
@@ -70,12 +60,7 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
     		</tr>
     		
     	</table>
-    	
-    	<?php 
-    		if($baoGia!=null && $baoGia->ctBaoGiaSuaChuas){
-    		?>
     	<p style="margin:5px 0px"><strong>Nội dung đề nghị sửa chữa:</strong></p>
-    	
     	<table class="table-content" style="width: 100%; margin-top:5px;">
     		<thead>
         		<tr>
@@ -90,8 +75,14 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
     		</thead> 
     		<tbody>
 
-    		
     		<?php 
+    		if($baoGia==null || !$baoGia->ctBaoGiaSuaChuas){
+    		?>
+    		<tr>
+            	<td colspan="6" style="text-align:center">Không có</td>
+            </tr>
+    		<?php 
+    		} else {
     		foreach ($baoGia->ctBaoGiaSuaChuas as $indexCt => $item){
             ?>
             <tr>
@@ -103,15 +94,10 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
             	<td style="text-align:right"><?= number_format($item->thanh_tien) ?></td>
             	<td></td>
             </tr>
-            <?php } ?>	
+            <?php }} ?>	
             </tbody>
     	</table>
-    	<?php } ?>
-    	
-    	<?php 
-    		if($model->vatTus){
-    		?>
-    	<p style="margin:5px 0px"><strong>Vật tư đề nghị:</strong></p>
+    	<p style="margin:5px 0px"><strong>Vật tư đề nghị (nếu có):</strong></p>
     	<table class="table-content" style="width: 100%; margin-top:5px;">
     		<thead>
         		<tr>
@@ -125,8 +111,14 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
     		</thead> 
     		<tbody>
 
-    		
     		<?php 
+    		if(!$model->vatTus){
+    		?>
+    		 <tr>
+            	<td colspan="6" style="text-align:center">Không đề nghị vật tư</td>
+            </tr>
+    		<?php     
+    		} else {
     		foreach ($model->vatTus as $indexCt => $item){
             ?>
             <tr>
@@ -137,10 +129,9 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
             	<td style="text-align:right"><?= $item->so_luong ?></td>
             	<td><?= $item->ghi_chu ?></td>
             </tr>
-            <?php } ?>	
+            <?php } } ?>	
             </tbody>
     	</table>
-    	<?php } ?>
     	
     	<table id="table-ky-ten" style="width: 100%; margin-top:10px;">
     		<tr>
@@ -150,10 +141,10 @@ $isTruongLai = in_array($thietBi->boPhanQuanLy->ma_bo_phan , ['TL001', 'TL002', 
     	
     	<table id="table-ky-ten" style="width: 100%; margin-top:10px;">
     		<tr>
-    			<td style="text-align:left;font-weight:bold;">DUYỆT PHIẾU</td>
+    			<td style="text-align:left;font-weight:bold;">NGƯỜI YÊU CẦU</td>
     			<td style="text-align:center;font-weight:bold;"></td>
     			<td style="text-align:center;font-weight:bold;"></td>
-    			<td style="text-align:right;font-weight:bold;">NGƯỜI YÊU CẦU</td>
+    			<td style="text-align:right;font-weight:bold;">DUYỆT PHIẾU</td>
     		</tr>
     	</table>
     	
