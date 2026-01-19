@@ -511,6 +511,40 @@ class ThietBiController extends Controller
         }
        
     }
+    
+    /**
+     * check đã chọn (nhiều)
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionCheckKiemTra()
+    {
+        $request = Yii::$app->request;
+        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
+        foreach ( $pks as $pk ) {
+            $model = $this->findModel($pk);
+            if($model!=null){
+                $model->da_check = 1;
+                $model->updateAttributes(['da_check']);
+            }
+        }
+        
+        if($request->isAjax){
+            /*
+             *   Process for ajax request
+             */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+        }else{
+            /*
+             *   Process for non-ajax request
+             */
+            return $this->redirect(['index']);
+        }
+        
+    }
 
     /**
      * Finds the ThietBi model based on its primary key value.

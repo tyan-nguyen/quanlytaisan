@@ -120,7 +120,18 @@ $btns = '<a style="margin-left:10px" class="btn ripple btn-primary dropdown-togg
                                     'data-confirm-title'=>'Thông báo',
                                     'data-confirm-message'=>'Để không ảnh hưởng dữ liệu liên quan vui lòng cập nhật trạng thái tài sản đã hỏng hoặc đã thanh lý. Nếu vẫn muốn xóa thì dữ liệu liên quan tài sản/thiết bị như: lịch sử thay đổi, lịch sử sữa chữa, phiếu bảo trì, kế hoạch bảo trì, tài liệu sẽ cũng được xóa theo. Bạn có chắc xoá dòng được chọn không?'
                                 ]),
-                ]). $btns . '<div class="clearfix"></div>',
+                ]). $btns 
+                . '&nbsp;' . Html::a('<i class="ion-checkmark-circled" aria-hidden="true"></i>&nbsp; Đã kiểm tra',
+                    ["check-kiem-tra"] ,
+                    [
+                        "class"=>"btn btn-info btn-xs",
+                        'role'=>'modal-remote-bulk',
+                        'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                        'data-request-method'=>'post',
+                        'data-confirm-title'=>'Thông báo',
+                        'data-confirm-message'=>'Bạn có chắc muốn xác nhận tất cả dữ liệu đã chọn đã kiểm tra?'
+                    ]) .
+                '<div class="clearfix"></div>',
             ]
         ])?>
     </div><!-- #ajaxCrudDatatable -->
