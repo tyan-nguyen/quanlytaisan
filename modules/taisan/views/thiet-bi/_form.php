@@ -361,6 +361,12 @@ if($model->ngay_dua_vao_su_dung != null)
                 </div>
             </div>
             
+            <div class="row">
+                <div class="col">
+                    <?= $form->field($model, 'da_check')->checkbox() ?>
+                </div>
+            </div>
+            
             </fieldset><!--End thoi gian trang thai-->
             
            

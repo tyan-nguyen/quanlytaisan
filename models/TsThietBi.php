@@ -40,6 +40,7 @@ use Yii;
  * @property int|null $nguoi_tao
  * @property int|null $id_phieu_mua_sam
  * @property int|null $id_kho
+ * @property int|null $da_check
  *
  * @property TsBoPhan $boPhanQuanLy
  * @property TsLoaiThietBi $loaiThietBi
@@ -63,7 +64,7 @@ class TsThietBi extends \yii\db\ActiveRecord
     {
         return [
             [['ma_thiet_bi', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'ten_thiet_bi', 'id_nguoi_quan_ly'], 'required'],
-            [['id_vi_tri', 'id_he_thong', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao', 'id_phieu_mua_sam', 'id_kho'], 'integer'],
+            [['id_vi_tri', 'id_he_thong', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao', 'id_phieu_mua_sam', 'id_kho', 'da_check'], 'integer'],
             [['dac_tinh_ky_thuat', 'ghi_chu'], 'string'],
             [['ngay_mua', 'han_bao_hanh', 'ngay_dua_vao_su_dung', 'ngay_ngung_hoat_dong', 'thoi_gian_tao'], 'safe'],
             [['ma_thiet_bi', 'nam_san_xuat', 'trang_thai'], 'string', 'max' => 20],
@@ -113,7 +114,8 @@ class TsThietBi extends \yii\db\ActiveRecord
             'thoi_gian_tao' => 'Thoi Gian Tao',
             'nguoi_tao' => 'Nguoi Tao',
             'id_phieu_mua_sam' => 'Id Phieu Mua Sam',
-            'id_kho' => 'ID Kho'
+            'id_kho' => 'ID Kho',
+            'da_check' => 'Đã kiểm tra'
         ];
     }
 

@@ -67,6 +67,17 @@ return [
         'format'=>'raw',
         'value'=>'tenTrangThaiWithBadge'
     ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'da_check',
+        'format'=>'raw',
+        'value'=>function($model){
+            return $model->da_check?'<i class="ion-checkmark-circled text-success"></i>':'';
+        },
+        'label'=>'Đã KT',
+        'width'=> '5%',
+        'contentOptions' => [ 'style' => 'text-align:center' ],
+    ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'ten_thiet_bi',

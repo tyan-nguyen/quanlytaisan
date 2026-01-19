@@ -49,6 +49,12 @@ class ThietBiSearch extends ThietBi
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'da_check' => SORT_DESC,
+                    'id' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);

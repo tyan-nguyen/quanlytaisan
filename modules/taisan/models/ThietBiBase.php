@@ -82,7 +82,7 @@ class ThietBiBase extends \app\models\TsThietBi
     {
         return [
             [['ma_thiet_bi', 'id_loai_thiet_bi', 'id_bo_phan_quan_ly', 'ten_thiet_bi', 'id_nguoi_quan_ly'], 'required'],
-            [['id_vi_tri', 'id_he_thong', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao', 'id_phieu_mua_sam', 'id_kho'], 'integer'],
+            [['id_vi_tri', 'id_he_thong', 'id_bo_phan_quan_ly', 'id_thiet_bi_cha', 'id_layout', 'id_hang_bao_hanh', 'id_nhien_lieu', 'id_lop_hu_hong', 'id_trung_tam_chi_phi', 'id_don_vi_bao_tri', 'id_nguoi_quan_ly', 'nguoi_tao', 'id_phieu_mua_sam', 'id_kho', 'da_check'], 'integer'],
             [['dac_tinh_ky_thuat', 'ghi_chu'], 'string'],
             [['ngay_mua', 'han_bao_hanh', 'ngay_dua_vao_su_dung', 'ngay_ngung_hoat_dong', 'thoi_gian_tao'], 'safe'],
             [['ma_thiet_bi', 'nam_san_xuat', 'trang_thai'], 'string', 'max' => 20],
@@ -133,7 +133,8 @@ class ThietBiBase extends \app\models\TsThietBi
             'thoi_gian_tao' => 'Thời gian tạo',
             'nguoi_tao' => 'Người tạo',
             'id_phieu_mua_sam' => 'Phiếu mua sắm',
-            'id_kho' => 'Kho lưu trữ'
+            'id_kho' => 'Kho lưu trữ',
+            'da_check' => 'Đã kiểm tra'
         ];
     }
 
@@ -303,6 +304,9 @@ class ThietBiBase extends \app\models\TsThietBi
         if ($this->isNewRecord) {
             $this->thoi_gian_tao = date('Y-m-d H:i:s');
             $this->nguoi_tao = Yii::$app->user->id;
+            //áp dụng từ ngày 19/01/2026
+            if ($this->da_check == null)
+                $this->da_check = 1;
         }
         //neu la record moi hoac du lieu cu chua co autoid
         if ($this->autoid == null) {
@@ -319,7 +323,6 @@ class ThietBiBase extends \app\models\TsThietBi
             $this->ngay_mua = $cus->convertDMYToYMD($this->ngay_mua);
         if ($this->ngay_dua_vao_su_dung != null)
             $this->ngay_dua_vao_su_dung = $cus->convertDMYToYMD($this->ngay_dua_vao_su_dung);
-
         return parent::beforeSave($insert);
     }
 
